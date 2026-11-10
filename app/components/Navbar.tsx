@@ -11,27 +11,11 @@ interface NavbarProps {
 export function Navbar({ onOpenPilotModal }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      const yOffset = -80; // Account for fixed navbar
-      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
-
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#090A0D]/85 border-b border-white/[0.08]">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* FitCheck Official Brand Identity */}
-        <a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="flex items-center gap-3 group cursor-pointer"
-        >
+        <a href="#" className="flex items-center gap-3 group">
           <div className="w-8 h-8 rounded-lg bg-[#0038FF] flex items-center justify-center text-white relative shadow-[0_0_16px_rgba(0,56,255,0.4)] transition-transform group-hover:scale-105">
             {/* Viewfinder brackets inside icon */}
             <svg
@@ -67,36 +51,21 @@ export function Navbar({ onOpenPilotModal }: NavbarProps) {
 
         {/* Navigation links */}
         <nav className="hidden md:flex items-center gap-8 text-xs font-mono tracking-wider uppercase text-slate-300">
-          <button
-            onClick={() => scrollTo("mirror-demo")}
-            className="hover:text-white transition cursor-pointer text-left"
-          >
+          <a href="#mirror-demo" className="hover:text-white transition">
             Live Mirror
-          </button>
-          <button
-            onClick={() => scrollTo("assisted-flow")}
-            className="hover:text-white transition cursor-pointer text-left"
-          >
+          </a>
+          <a href="#assisted-flow" className="hover:text-white transition">
             Assisted Flow
-          </button>
-          <button
-            onClick={() => scrollTo("target-segments")}
-            className="hover:text-white transition cursor-pointer text-left"
-          >
+          </a>
+          <a href="#target-segments" className="hover:text-white transition">
             Brand Fit
-          </button>
-          <button
-            onClick={() => scrollTo("pricing")}
-            className="hover:text-white transition cursor-pointer text-left"
-          >
+          </a>
+          <a href="#pricing" className="hover:text-white transition">
             Pilot Packs (₱)
-          </button>
-          <button
-            onClick={() => scrollTo("trust-guardrails")}
-            className="hover:text-white transition cursor-pointer text-left"
-          >
+          </a>
+          <a href="#trust-guardrails" className="hover:text-white transition">
             Privacy & DPA
-          </button>
+          </a>
         </nav>
 
         {/* Call to action */}
@@ -124,51 +93,41 @@ export function Navbar({ onOpenPilotModal }: NavbarProps) {
       {/* Mobile drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-white/[0.08] bg-[#0E1015] px-6 py-4 space-y-3">
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              scrollTo("mirror-demo");
-            }}
-            className="block w-full text-left text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
+          <a
+            href="#mirror-demo"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
           >
             Live Mirror
-          </button>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              scrollTo("assisted-flow");
-            }}
-            className="block w-full text-left text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
+          </a>
+          <a
+            href="#assisted-flow"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
           >
             Assisted Flow
-          </button>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              scrollTo("target-segments");
-            }}
-            className="block w-full text-left text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
+          </a>
+          <a
+            href="#target-segments"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
           >
             Brand Fit
-          </button>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              scrollTo("pricing");
-            }}
-            className="block w-full text-left text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
+          </a>
+          <a
+            href="#pricing"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
           >
             Pilot Packs (₱)
-          </button>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              scrollTo("trust-guardrails");
-            }}
-            className="block w-full text-left text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
+          </a>
+          <a
+            href="#trust-guardrails"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
           >
             Privacy & DPA
-          </button>
+          </a>
           <div className="pt-2">
             <Button
               size="sm"
