@@ -6,41 +6,31 @@
 web
 
 ## Stack
-Next.js 16 (App Router), React 19, Tailwind CSS v4, TypeScript, shadcn/ui, Radix UI primitives, Framer Motion, Lucide React, Shiki.
+Next.js 16 (App Router), React 19, Tailwind CSS v4, TypeScript, shadcn/ui, Radix UI primitives, Framer Motion, Lucide React.
 
 ## Users
-- **Primary:** High-growth fashion e-commerce founders, D2C apparel VPs of eCommerce, Shopify Plus / Headless store managers, and digital merchandising directors.
-- **Secondary:** Lead frontend engineers and technical agency developers responsible for drop-in PDP (Product Detail Page) widget integration.
+- **Primary:** Founders and e-commerce managers of Philippine fashion brands, curated boutiques, and social-commerce labels (selling via Instagram/TikTok DMs, WhatsApp, and Shopify).
+- **Secondary:** Filipino online shoppers seeking a 30-second moving visual preview of curated garments before purchase.
 
 ## Product Purpose
-FitCheck AI delivers an enterprise-grade virtual fitting, size recommendation, and garment drape intelligence engine embedded directly into fashion brand storefronts. It solves the apparel industry's #1 margin killer—size-related returns—while dramatically lifting PDP add-to-cart conversions through editorial-grade, low-friction shopper experiences.
+FitCheck is a browser-based live virtual style mirror: "See it on you." Shoppers preview the appearance of a selected garment on themselves while moving in their phone or laptop browser. It serves as an interactive visual inspiration and purchase-decision aid—explicitly **not** a sizing guarantee, fabric simulation, or promise of fewer returns.
 
-## Positioning
-Unlike consumer-facing novelty AI try-on tools or clinical, clunky legacy size charts, FitCheck AI is built exclusively for luxury, contemporary, and premium streetwear brands. It operates as an invisible, high-performance retail micro-service that matches the brand's bespoke design language without adding bloat or degrading Core Web Vitals.
+## Positioning & Market
+FitCheck operates a controlled, seller-assisted Philippine pilot targeting 3–5 approved brands selling higher-margin tops, jackets, dresses, and curated statement pieces. Rather than unmetered free try-on on low-margin basics (where generation costs exceed margins), FitCheck empowers sellers to provide high-intent shoppers with short, capped 30-second previews during DM consultations.
 
 ## Operating Context
-- Contemporary and luxury brand e-commerce storefronts (Shopify Plus, Headless Commerce, Next.js / Hydrogen, BigCommerce).
-- Shoppers browsing PDPs on mobile devices demanding instant, zero-latency confidence before checkout.
-- Merchant growth teams monitoring return mitigation metrics, conversion lift, and customer retention.
+- Philippine boutique sales workflows (Instagram DM inquiries, appointment bookings, and assisted online checkout).
+- Mobile & desktop browsers without any required mobile application download.
+- Transparent unit economics with fixed prepaid packs in Philippine Pesos (₱499 and ₱1,799) with zero auto-overages.
 
 ## Capabilities and Constraints
-- Headless SDK and single-line embed widget with sub-100ms render time (<15KB initial bundle).
-- Photorealistic garment drape and dimensional fit prediction based on standard apparel pattern sizing.
-- Real-time conversion, fit-accuracy, and return-rate telemetry.
-- Seamless compatibility with dark and light brand themes without visual collision.
+- Zero-download web camera mirror preview with instant 30-second capped countdown.
+- Immediate manual "Stop Preview" control at any second.
+- Audio is strictly disabled by default.
+- Informed camera permission before any frame processing in accordance with the Philippine Data Privacy Act (DPA).
+- Explicit customer guardrails: previews are visual approximations only; physical sizing must always be verified via the brand's size chart.
 
 ## Brand Commitments
-- **Voice:** Discerning, authoritative, editorial, engineering-driven, and quantitatively rigorous.
-- **Visual Identity:** Luxury retail tech meets Swiss typography. High contrast, precise hairline borders, tactile glass surfaces, and calm, purposeful negative space.
-- **Anti-Slop Manifesto:** Strict prohibition of generic AI tropes: no neon purple glowing border cards, no cheap radial rainbow gradients, no centered emoji feature bullet points, and no generic purple badge pills.
-
-## Evidence on Hand
-- Industry benchmark impact: 38% reduction in size-based returns, 24% uplift in PDP-to-checkout conversion.
-- Verified 3-step developer integration workflow.
-
-## Product Principles
-1. **Editorial Restraint:** Honor the aesthetics of luxury fashion houses; third-party software must enhance rather than dilute brand equity.
-2. **Deterministic Speed:** Zero hesitation on the PDP. Interactions must feel instantaneous, native, and tactile.
-3. **B2B Proof Over Hype:** Speak in return reductions, net margin recovery, and integration uptime rather than generic AI buzzwords.
-4. **Developer Elegance:** Clean APIs, copy-paste snippets, and robust TypeScript ergonomics for agency and in-house engineering teams.
-
+- **Voice:** Discerning, direct, honest, transparent, and grounded in real Philippine retail economics.
+- **Visual Identity:** Electric Royal Blue (`#0038FF`) and deep midnight obsidian (`#090A0D`), viewfinder camera brackets (`⌜ ⌝ ⌞ ⌟`), clean high-contrast Swiss typography.
+- **Strict Anti-Overclaim Rule:** Never claim sizing precision, 100% on-device processing, or guaranteed return/sales lifts without verified evidence.

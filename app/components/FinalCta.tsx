@@ -10,8 +10,13 @@ const initialState: DemoRequestState = {
   message: "",
 };
 
-export function FinalCta() {
+interface FinalCtaProps {
+  onOpenPilotModal?: () => void;
+}
+
+export function FinalCta({ onOpenPilotModal }: FinalCtaProps = {}) {
   const [state, formAction, isPending] = useActionState(submitDemoRequest, initialState);
+  void onOpenPilotModal;
 
   return (
     <section id="final-cta" className="py-24 sm:py-32 px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">

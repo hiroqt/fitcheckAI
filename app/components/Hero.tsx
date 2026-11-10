@@ -5,7 +5,11 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function Hero() {
+interface HeroProps {
+  onOpenPilotModal?: () => void;
+}
+
+export function Hero({ onOpenPilotModal }: HeroProps = {}) {
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
       {/* Editorial Category Tag */}
@@ -55,7 +59,11 @@ export function Hero() {
           size="lg"
           className="w-full sm:w-auto h-13 px-8 bg-white hover:bg-slate-200 text-[#090A0D] font-medium text-base rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(255,255,255,0.15)] cursor-pointer"
           onClick={() => {
-            document.getElementById("interactive-demo")?.scrollIntoView({ behavior: "smooth" });
+            if (onOpenPilotModal) {
+              onOpenPilotModal();
+            } else {
+              document.getElementById("interactive-demo")?.scrollIntoView({ behavior: "smooth" });
+            }
           }}
         >
           <span>Try Interactive Sandbox</span>

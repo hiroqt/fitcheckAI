@@ -60,7 +60,11 @@ const TIERS = [
   },
 ];
 
-export function Pricing() {
+interface PricingProps {
+  onOpenPilotModal?: () => void;
+}
+
+export function Pricing({ onOpenPilotModal }: PricingProps = {}) {
   const [billingCycle, setBillingCycle] = useState<"annual" | "monthly">("annual");
 
   return (
@@ -157,7 +161,11 @@ export function Pricing() {
                       : "bg-white/10 hover:bg-white/20 text-white"
                   }`}
                   onClick={() => {
-                    document.getElementById("final-cta")?.scrollIntoView({ behavior: "smooth" });
+                    if (onOpenPilotModal) {
+                      onOpenPilotModal();
+                    } else {
+                      document.getElementById("final-cta")?.scrollIntoView({ behavior: "smooth" });
+                    }
                   }}
                 >
                   {tier.cta}
