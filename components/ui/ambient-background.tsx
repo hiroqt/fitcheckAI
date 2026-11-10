@@ -11,7 +11,7 @@ export function AmbientBackground({
   return (
     <div
       className={cn(
-        "relative min-h-screen w-full bg-[#090A0D] text-slate-100 overflow-hidden",
+        "relative min-h-screen w-full bg-[#090A0D] text-slate-100 overflow-x-clip",
         className
       )}
     >
