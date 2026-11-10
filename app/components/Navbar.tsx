@@ -56,19 +56,19 @@ export function Navbar({ onOpenPilotModal }: NavbarProps) {
           </div>
         </button>
 
-        {/* Navigation links (Desktop) */}
+        {/* Navigation links (Desktop) - In exact page order */}
         <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs font-mono tracking-wider uppercase text-slate-300">
-          <button
-            onClick={() => scrollTo("mirror-demo")}
-            className="hover:text-white transition cursor-pointer text-left"
-          >
-            Live Mirror
-          </button>
           <button
             onClick={() => scrollTo("assisted-flow")}
             className="hover:text-white transition cursor-pointer text-left"
           >
             Assisted Flow
+          </button>
+          <button
+            onClick={() => scrollTo("mirror-demo")}
+            className="hover:text-white transition cursor-pointer text-left"
+          >
+            Live Mirror
           </button>
           <button
             onClick={() => scrollTo("target-segments")}
@@ -112,18 +112,9 @@ export function Navbar({ onOpenPilotModal }: NavbarProps) {
         </button>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer - In exact page order */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-white/[0.08] bg-[#0E1015] px-6 py-4 space-y-3 animate-in fade-in duration-150">
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              scrollTo("mirror-demo");
-            }}
-            className="block w-full text-left text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
-          >
-            Live Mirror
-          </button>
           <button
             onClick={() => {
               setMobileMenuOpen(false);
@@ -132,6 +123,15 @@ export function Navbar({ onOpenPilotModal }: NavbarProps) {
             className="block w-full text-left text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
           >
             Assisted Flow
+          </button>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              scrollTo("mirror-demo");
+            }}
+            className="block w-full text-left text-sm text-slate-300 hover:text-white py-1 font-mono uppercase text-xs"
+          >
+            Live Mirror
           </button>
           <button
             onClick={() => {

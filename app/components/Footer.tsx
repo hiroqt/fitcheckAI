@@ -44,10 +44,12 @@ export function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 text-[11px] font-mono text-slate-400">
           <div>© 2026 FitCheck. Strategy & Pilot Planning Release.</div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
             <a href="#assisted-flow" className="hover:text-white transition">Assisted Flow</a>
+            <a href="#mirror-demo" className="hover:text-white transition">Live Mirror</a>
+            <a href="#target-segments" className="hover:text-white transition">Brand Fit</a>
             <a href="#pricing" className="hover:text-white transition">Pilot Pricing (₱)</a>
-            <a href="#trust-guardrails" className="hover:text-white transition">Privacy Guardrails</a>
+            <a href="#trust-guardrails" className="hover:text-white transition">Privacy & DPA</a>
           </div>
         </div>
       </div>
