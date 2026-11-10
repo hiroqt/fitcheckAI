@@ -5,12 +5,17 @@ import { Check, X, ShieldAlert, ShieldCheck } from "lucide-react";
 
 export function TrustGuardrails() {
   return (
-    <section id="trust-guardrails" className="py-24 sm:py-32 px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
-      <div className="max-w-3xl mb-16">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
+    <section id="trust-guardrails" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+      {/* Center Aligned Section Header & Badge */}
+      <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
+        <div className="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full border border-white/[0.1] bg-white/[0.02] text-xs font-mono uppercase tracking-widest text-slate-400 mb-4 mx-auto text-center">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+          <span>Section 10 Legal & Ethical Protocol</span>
+        </div>
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight text-balance">
           Trust guardrails and Philippine Data Privacy compliance
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-slate-400 leading-relaxed">
+        <p className="mt-4 text-sm sm:text-base lg:text-lg text-slate-400 leading-relaxed text-balance max-w-2xl mx-auto">
           E-commerce shoppers trust brands that respect their privacy. We enforce clear legal guardrails and transparent disclosures before any camera session begins.
         </p>
       </div>

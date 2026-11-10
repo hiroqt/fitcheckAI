@@ -43,12 +43,17 @@ const FAQS = [
 
 export function FaqAccordion() {
   return (
-    <section className="py-24 sm:py-32 px-6 lg:px-8 max-w-4xl mx-auto">
-      <div className="mb-16">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
+    <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+      {/* Center Aligned Section Header & Badge */}
+      <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
+        <div className="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full border border-white/[0.1] bg-white/[0.02] text-xs font-mono uppercase tracking-widest text-slate-400 mb-4 mx-auto text-center">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#0038FF]" />
+          <span>Operational Pilot FAQs</span>
+        </div>
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight text-balance">
           Frequently asked questions regarding the pilot
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-slate-400 leading-relaxed">
+        <p className="mt-4 text-sm sm:text-base lg:text-lg text-slate-400 leading-relaxed text-balance max-w-2xl mx-auto">
           Operational details on unit economics, privacy compliance, session limits, and seller integration.
         </p>
       </div>

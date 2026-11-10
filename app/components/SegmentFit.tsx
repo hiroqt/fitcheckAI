@@ -56,12 +56,17 @@ const SEGMENTS = [
 
 export function SegmentFit() {
   return (
-    <section id="target-segments" className="py-24 sm:py-32 px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
-      <div className="max-w-3xl mb-16">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
+    <section id="target-segments" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+      {/* Center Aligned Section Header & Badge */}
+      <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
+        <div className="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full border border-white/[0.1] bg-white/[0.02] text-xs font-mono uppercase tracking-widest text-slate-400 mb-4 mx-auto text-center">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#0038FF]" />
+          <span>Section 03 Strategic Fit Matrix</span>
+        </div>
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight text-balance">
           Who should (and should not) buy FitCheck
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-slate-400 leading-relaxed">
+        <p className="mt-4 text-sm sm:text-base lg:text-lg text-slate-400 leading-relaxed text-balance max-w-2xl mx-auto">
           FitCheck is intentionally engineered for brands with sufficient product contribution margin to justify paid visual previews. Here is our strategic prioritization from internal source documents.
         </p>
       </div>

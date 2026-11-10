@@ -139,15 +139,20 @@ export function InteractiveDemo() {
   };
 
   return (
-    <section id="mirror-demo" className="py-24 sm:py-32 px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+    <section id="mirror-demo" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
       {/* Target anchor alias */}
       <div id="interactive-demo" className="scroll-mt-24" />
 
-      <div className="max-w-3xl mb-12">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
+      {/* Center Aligned Section Header & Badge */}
+      <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
+        <div className="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full border border-[#0038FF]/30 bg-[#0038FF]/10 text-xs font-mono uppercase tracking-widest text-[#60A5FA] mb-4 mx-auto text-center">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#0038FF]" />
+          <span>Interactive Browser Mirror</span>
+        </div>
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight text-balance">
           Experience the 30-second browser style mirror
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-slate-400 leading-relaxed">
+        <p className="mt-4 text-sm sm:text-base lg:text-lg text-slate-400 leading-relaxed text-balance max-w-2xl mx-auto">
           This is the exact browser sandbox experienced by high-intent shoppers. Test the 30-second capped session, camera consent requirements, and mandatory size chart verification.
         </p>
       </div>
