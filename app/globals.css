@@ -9,6 +9,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-serif);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -154,3 +155,16 @@
 .animate-marquee-vertical {
   animation: marquee-vertical var(--duration, 40s) linear infinite;
 }
+
+/* Kinetic Typography High-Contrast Stroke Outlines (Lando Norris style) */
+.text-stroke-highlight {
+  color: transparent;
+  -webkit-text-stroke: 1.4px #FFFFFF;
+  text-shadow: 0 0 20px rgba(0, 56, 255, 0.5);
+}
+
+.text-stroke-subtle {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
+}
+

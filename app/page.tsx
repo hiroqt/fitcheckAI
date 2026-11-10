@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import { AmbientBackground } from "@/components/ui/ambient-background";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import { ProblemSolution } from "./components/ProblemSolution";
-import { InteractiveDemo } from "./components/InteractiveDemo";
-import { SegmentFit } from "./components/SegmentFit";
-import { Pricing } from "./components/Pricing";
-import { TrustGuardrails } from "./components/TrustGuardrails";
-import { FaqAccordion } from "./components/FaqAccordion";
-import { FinalCta } from "./components/FinalCta";
+import { InteractiveShowroom } from "./components/InteractiveShowroom";
+import { ArchitectureBento } from "./components/ArchitectureBento";
+import { ScrollHorizontalTicker } from "@/components/ui/scroll-horizontal-ticker";
+import { EditorialFlow } from "./components/EditorialFlow";
+import { MinimalPricing } from "./components/MinimalPricing";
+import { EditorialCta } from "./components/EditorialCta";
+import { CommunityHub } from "./components/CommunityHub";
 import { Footer } from "./components/Footer";
 import { PilotModal } from "./components/PilotModal";
 
@@ -27,40 +27,73 @@ export default function LandingPage() {
 
   return (
     <AmbientBackground>
-      {/* Navigation Header */}
+      {/* 1. Floating Burger Menu Header (Lando Norris Inspired) */}
       <Navbar onOpenPilotModal={handleOpenPilotModal} />
 
-      {/* Main Landing Page Experience */}
+      {/* 2. 1-Page Cinematic Scene Sequence with Scroll-Driven Horizontal Text */}
       <main className="relative">
-        {/* 1. Hero: See it on you. The live style mirror in your browser */}
+        {/* Scene 1: Monolithic Hero */}
         <Hero onOpenPilotModal={handleOpenPilotModal} />
 
-        {/* 2. Problem & 5-Step Assisted Sales Journey */}
-        <ProblemSolution />
+        {/* Scene 2: 3D Garment Orbit & Live Mirror Showroom */}
+        <InteractiveShowroom />
 
-        {/* 3. The Live Optical Style Mirror Simulator (30s Capped Session) */}
-        <InteractiveDemo />
+        {/* Signature Lando Norris Horizontal Text Scrub (Row 1 left, Row 2 right) */}
+        <ScrollHorizontalTicker
+          row1Text={[
+            "SEE IT ON YOU",
+            "ZERO DOWNLOAD",
+            "30S LIVE PREVIEW",
+            "OPTICAL STYLE MIRROR",
+            "SEE IT ON YOU",
+          ]}
+          row2Text={[
+            "INSTAGRAM DM SALES",
+            "₱499 PILOT PACK",
+            "PHILIPPINE DPA 10173",
+            "AUDIO STRICTLY MUTED",
+            "INSTAGRAM DM SALES",
+          ]}
+        />
 
-        {/* 4. Strategic Customer Segment Prioritization */}
-        <SegmentFit />
+        {/* Scene 3: Text-Focused Information Bento Grid (Pure Telemetry & Metrics) */}
+        <ArchitectureBento />
 
-        {/* 5. Prepaid Pilot Pricing (₱499 & ₱1,799) & Interactive ROI Breakeven Calculator */}
-        <Pricing onOpenPilotModal={handleOpenPilotModal} />
+        {/* Scene 4: 3-Beat Assisted Sales Journey */}
+        <EditorialFlow />
 
-        {/* 6. Legal Trust Guardrails & Philippine Data Privacy Act */}
-        <TrustGuardrails />
+        {/* Second Opposing Horizontal Kinetic Marquee */}
+        <ScrollHorizontalTicker
+          row1Text={[
+            "PIÑA-SILK BARONG",
+            "RESORT LINEN",
+            "TERRACOTTA SATIN",
+            "INABEL WEAVE",
+            "PIÑA-SILK BARONG",
+          ]}
+          row2Text={[
+            "FIXED PREPAID PACKS",
+            "ZERO OVERAGES",
+            "3–5 LAUNCH PARTNERS",
+            "MANILA / PH",
+            "FIXED PREPAID PACKS",
+          ]}
+        />
 
-        {/* 7. Operational FAQs */}
-        <FaqAccordion />
+        {/* Scene 4: Transparent Unit Economics (₱499 & ₱1,799) */}
+        <MinimalPricing onOpenPilotModal={handleOpenPilotModal} />
 
-        {/* 8. Controlled Pilot Intake & Criteria Checklist */}
-        <FinalCta onOpenPilotModal={handleOpenPilotModal} />
+        {/* Scene 5: Controlled Pilot Intake */}
+        <EditorialCta onOpenPilotModal={handleOpenPilotModal} />
+
+        {/* Scene 6: Second-to-Last Section - Lando Norris Community & Social Media Hub */}
+        <CommunityHub />
       </main>
 
-      {/* Footer & Mandatory Legal Disclaimers */}
-      <Footer />
+      {/* 3. Docked Immersive Bottom Console / Footer */}
+      <Footer onOpenPilotModal={handleOpenPilotModal} />
 
-      {/* Brand Pilot Application Modal */}
+      {/* 4. Brand Pilot Intake Modal */}
       <PilotModal isOpen={isPilotModalOpen} onClose={handleClosePilotModal} />
     </AmbientBackground>
   );

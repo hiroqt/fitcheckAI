@@ -5,4 +5,7 @@ export * from "@/components/ui/dialog";
 export * from "@/components/ui/marquee";
 export * from "@/components/ui/bento-grid";
 export * from "@/components/ui/ambient-background";
+export * from "@/components/ui/global-background";
+export * from "@/components/ui/ambient-canvas-background";
+export * from "@/components/ui/scroll-color-grading-overlay";
 
