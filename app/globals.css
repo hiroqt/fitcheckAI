@@ -169,12 +169,15 @@
 }
 
 .campaign-hero {
+  display: flex;
+  flex-direction: column;
+  min-height: max(100vh, 100svh);
   background: #0038ff;
   overflow: hidden;
-  border-radius: 10px;
 }
 
 .campaign-stage {
+  flex: 1;
   position: relative;
   isolation: isolate;
   display: grid;
@@ -209,7 +212,6 @@
   z-index: 1;
   pointer-events: none;
   inset: 10% 15% 2%;
-  animation: garment-arrive 850ms cubic-bezier(.2, .75, .25, 1) both;
 }
 
 .campaign-garment img {
@@ -419,12 +421,6 @@ details[open] .faq-chevron {
   }
 }
 
-@keyframes garment-arrive {
-  from {
-    transform: translateY(18px) rotate(-3deg);
-  }
-}
-
 @media (max-width: 767px) {
   .campaign-stage {
     display: flex;
@@ -465,10 +461,6 @@ details[open] .faq-chevron {
     scroll-behavior: auto;
   }
 
-  .campaign-garment {
-    animation: none;
-  }
-
   .animate-marquee,
   .animate-marquee-vertical {
     animation: none;
@@ -499,6 +491,7 @@ details[open] .faq-chevron {
 }
 
 html {
+  overflow-x: clip;
   scroll-padding-top: 1rem;
 }
 

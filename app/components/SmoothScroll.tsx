@@ -30,6 +30,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
+      anchors: true,
       wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
       autoRaf: false, // We control the RAF loop explicitly

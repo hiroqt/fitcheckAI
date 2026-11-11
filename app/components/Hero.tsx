@@ -2,9 +2,15 @@
 
 import Image from "next/image";
 import { ArrowDownRight } from "lucide-react";
-import { useCallback, useRef, useState, useSyncExternalStore } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { Navbar } from "./Navbar";
+
+const HERO_GARMENTS = [
+  { name: "jacket", src: "/floating-jacket.webp", alt: "Cobalt technical jacket suspended in midair" },
+  { name: "shirt", src: "/floating-shirt.png", alt: "Ivory long-sleeve shirt with intricate cobalt embroidery suspended in midair" },
+  { name: "barong", src: "/floating-barong.png", alt: "Ivory embroidered barong suspended in midair" },
+];
 
 function subscribeReducedMotion(callback: () => void) {
   if (typeof window === "undefined") return () => {};
@@ -30,6 +36,16 @@ export function Hero({ onOpenPilotModal }: { onOpenPilotModal: () => void }) {
     getReducedMotionServerSnapshot
   );
   const [isHovered, setIsHovered] = useState(false);
+  const [garmentIndex, setGarmentIndex] = useState(0);
+  const garment = HERO_GARMENTS[garmentIndex];
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const interval = window.setInterval(() => {
+      setGarmentIndex((current) => (current + 1) % HERO_GARMENTS.length);
+    }, 3000);
+    return () => window.clearInterval(interval);
+  }, [reducedMotion]);
 
   // Motion values for smooth cursor physics
   const mouseX = useMotionValue(0);
@@ -69,7 +85,7 @@ export function Hero({ onOpenPilotModal }: { onOpenPilotModal: () => void }) {
   }, [mouseX, mouseY]);
 
   return (
-    <section id="scene-hero" className="campaign-hero relative text-white">
+    <section id="scene-hero" className="campaign-hero relative left-1/2 -ml-[50vw] -mt-2.5 w-screen text-white sm:-mt-4">
       <Navbar onOpenPilotModal={onOpenPilotModal} />
 
       <div
@@ -113,7 +129,7 @@ export function Hero({ onOpenPilotModal }: { onOpenPilotModal: () => void }) {
           STYLE, IN MOTION
         </motion.h1>
 
-        {/* 3D Reactive Suspended Garment */}
+        {/* Reactive suspended garment */}
         <motion.div
           style={
             reducedMotion
@@ -128,14 +144,25 @@ export function Hero({ onOpenPilotModal }: { onOpenPilotModal: () => void }) {
           }
           className="campaign-garment pointer-events-auto cursor-grab will-change-transform active:cursor-grabbing"
         >
-          <Image
-            src="/floating-jacket.webp"
-            fill
-            preload
-            sizes="(max-width: 767px) 96vw, (max-width: 1400px) 64vw, 896px"
-            alt="Cobalt technical jacket suspended in midair"
-            className="drop-shadow-[0_20px_45px_rgba(0,18,90,0.45)] transition-transform duration-300"
-          />
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={garment.name}
+              className="absolute inset-0"
+              initial={reducedMotion ? false : { opacity: 0, y: 24, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={reducedMotion ? undefined : { opacity: 0, y: -20, scale: 1.02 }}
+              transition={{ duration: reducedMotion ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Image
+                src={garment.src}
+                fill
+                preload={garmentIndex === 0}
+                sizes="(max-width: 767px) 96vw, (max-width: 1400px) 64vw, 896px"
+                alt={garment.alt}
+                className="object-contain drop-shadow-[0_20px_45px_rgba(0,18,90,0.45)]"
+              />
+            </motion.div>
+          </AnimatePresence>
         </motion.div>
 
         {/* Hero Editorial Copy */}
@@ -144,7 +171,7 @@ export function Hero({ onOpenPilotModal }: { onOpenPilotModal: () => void }) {
             See it<br /> on you.
           </p>
           <p className="max-w-64 text-base sm:text-lg font-semibold italic tracking-[-0.025em] leading-snug text-white/95">
-            See how the featured jacket could look on you.
+            See how the featured {garment.name} could look on you.
           </p>
         </div>
 
