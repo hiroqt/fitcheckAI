@@ -1,3 +1,5 @@
+import { ChevronDown } from "lucide-react";
+
 const shopperFaqs = [
   {
     question: "Can FitCheck help me choose my size?",
@@ -19,7 +21,7 @@ const shopperFaqs = [
     question: "How is my camera video used?",
     answer: (
       <p>
-        If you start a live preview, your camera video and the selected garment image are processed to create the visual result. FitCheck’s evaluation database does not store those media files. The <a href="/privacy" className="text-[#0038ff]">Privacy Notice</a> explains what evaluation information is stored.
+        If you start a live preview, your camera video and the selected garment image are processed to create the visual result. FitCheck’s evaluation database does not store those media files. The <a href="/privacy" className="text-[#0038ff] underline hover:text-[#002bdc]">Privacy Notice</a> explains what evaluation information is stored.
       </p>
     ),
   },
@@ -35,7 +37,7 @@ const shopperFaqs = [
     question: "I can’t start or finish a preview. Can you help?",
     answer: (
       <p>
-        The live preview is available only in a configured evaluation, so it may not be available to every visitor. If you’re taking part and still have trouble after checking camera permission and your connection, <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff]">email FitCheck</a> and we’ll help you understand what to try next.
+        The live preview is available only in a configured evaluation, so it may not be available to every visitor. If you’re taking part and still have trouble after checking camera permission and your connection, <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff] underline hover:text-[#002bdc]">email FitCheck</a> and we’ll help you understand what to try next.
       </p>
     ),
   },
@@ -54,7 +56,7 @@ const brandFaqs = [
     question: "Which brands is the pilot intended for?",
     answer: (
       <p>
-        The pilot is aimed at Philippine fashion brands selling curated or higher-margin clothing through assisted sales. If you’re unsure whether your products are a fit, tell us about your brand and the garments you’d like to preview by <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff]">emailing FitCheck</a>.
+        The pilot is aimed at Philippine fashion brands selling curated or higher-margin clothing through assisted sales. If you’re unsure whether your products are a fit, tell us about your brand and the garments you’d like to preview by <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff] underline hover:text-[#002bdc]">emailing FitCheck</a>.
       </p>
     ),
   },
@@ -70,7 +72,7 @@ const brandFaqs = [
     question: "Does the brand pilot form enroll my business?",
     answer: (
       <p>
-        No. The form currently runs demo checks only; it does not save your details or confirm enrollment. Please don’t use it to send an actual application. To discuss a pilot, <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff]">contact FitCheck by email</a>.
+        No. The form currently runs demo checks only; it does not save your details or confirm enrollment. Please don’t use it to send an actual application. To discuss a pilot, <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff] underline hover:text-[#002bdc]">contact FitCheck by email</a>.
       </p>
     ),
   },
@@ -105,27 +107,33 @@ const faqColumns = [
 export function FaqAccordion() {
   return (
     <section id="faq" aria-labelledby="faq-title" className="editorial-section scroll-mt-8 text-[#101b43]">
-      <div className="mx-auto mb-8 max-w-3xl text-center">
+      <div className="mx-auto mb-10 max-w-3xl text-center">
         <h2 id="faq-title" className="editorial-heading italic faq-scroll-heading">
           Questions, answered.
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-[#34436f]">
+        <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium italic tracking-[-0.025em] leading-relaxed text-[#253360]">
           Whether you’re exploring a look or considering a brand pilot, we’re here to help you understand what FitCheck can do.
         </p>
       </div>
-      <div className="grid gap-x-8 border-t border-[#c9d4ff] md:grid-cols-2">
+      <div className="grid gap-x-10 border-t border-[#c9d4ff] md:grid-cols-2">
         {faqColumns.map((column, index) => (
           <div key={`faq-column-${index}`} className="flex flex-col">
             {column.map(({ question, answer, audience }) => (
               <details key={question} name="fitcheck-faq" className="border-b border-[#d5d5e4]">
-                <summary className="faq-summary flex cursor-pointer list-none items-start justify-between gap-4 py-3 text-left text-base font-semibold text-[#101b43] sm:text-lg">
+                <summary
+                  className="faq-summary flex cursor-pointer list-none items-start justify-between gap-4 py-4 px-2.5 text-left text-base font-semibold text-[#101b43] transition-colors duration-200 hover:bg-[#0038ff]/[0.04] rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff] sm:text-lg"
+                >
                   <span>
-                    <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#0038ff]">{audience}</span>
+                    <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-[#0038ff]">{audience}</span>
                     <span className="block">{question}</span>
                   </span>
-                  <span aria-hidden="true" className="faq-chevron shrink-0 pt-1 text-[#66739a]">⌄</span>
+                  <ChevronDown
+                    size={20}
+                    aria-hidden="true"
+                    className="faq-chevron shrink-0 pt-0.5 text-[#66739a]"
+                  />
                 </summary>
-                <div className="max-w-3xl pb-4 text-sm leading-7 text-[#34436f] sm:text-base">
+                <div className="max-w-3xl px-2 pb-5 text-sm sm:text-base font-normal italic tracking-[-0.015em] leading-7 text-[#253360]">
                   {answer}
                 </div>
               </details>

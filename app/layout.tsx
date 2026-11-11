@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
-import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { SmoothScroll } from "./components/SmoothScroll";
+import { MagneticCursor } from "@/components/ui/magnetic-cursor";
+import { SiteLoader } from "./components/SiteLoader";
 const geistSans = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -39,7 +41,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${editorialDisplay.variable}`}
     >
       <body className="min-h-screen bg-[#f7f8ff] font-sans text-[#101b43] antialiased selection:bg-[#0038ff] selection:text-white">
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <SiteLoader />
+        <SmoothScroll>
+          <MagneticCursor />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

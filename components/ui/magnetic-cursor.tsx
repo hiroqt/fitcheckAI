@@ -5,13 +5,13 @@ import { motion, useSpring, useMotionValue } from "framer-motion";
 
 export function MagneticCursor() {
   const [isVisible, setIsVisible] = useState(false);
-  const [cursorText, setCursorText] = useState("");
   const [isPointer, setIsPointer] = useState(false);
+  const [isDarkSurface, setIsDarkSurface] = useState(false);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  // Smooth springs for high-end fluid follow physics
+  // Smooth springs for minimal, fluid follow physics
   const springX = useSpring(cursorX, { damping: 28, stiffness: 350 });
   const springY = useSpring(cursorY, { damping: 28, stiffness: 350 });
 
@@ -26,19 +26,15 @@ export function MagneticCursor() {
       cursorY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
 
-      // Check if hovering an element with custom cursor metadata
       const target = e.target as HTMLElement | null;
       if (!target) return;
 
-      const cursorTarget = target.closest("[data-cursor]") as HTMLElement | null;
-      if (cursorTarget) {
-        setCursorText(cursorTarget.getAttribute("data-cursor") || "");
-        setIsPointer(true);
-      } else {
-        setCursorText("");
-        const interactive = target.closest("button, a, input, [role='button']");
-        setIsPointer(!!interactive);
-      }
+      const interactive = target.closest("button, a, input, select, textarea, [role='button'], summary");
+      setIsPointer(!!interactive);
+
+      // Check surface brightness for optimal contrast
+      const darkContainer = target.closest(".campaign-hero, [data-theme='dark'], footer, .bg-\\[\\#15152f\\], .bg-\\[\\#090A0D\\]");
+      setIsDarkSurface(!!darkContainer);
     };
 
     const leaveHandler = () => setIsVisible(false);
@@ -65,29 +61,23 @@ export function MagneticCursor() {
         y: springY,
       }}
     >
-      {cursorText ? (
-        <motion.div
-          initial={{ scale: 0.6, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.6, opacity: 0 }}
-          transition={{ duration: 0.18 }}
-          className="px-3.5 py-1.5 rounded-full bg-[#0038FF] text-white text-[10px] font-mono tracking-widest uppercase font-semibold shadow-[0_0_24px_rgba(0,56,255,0.6)] border border-white/20 whitespace-nowrap"
-        >
-          {cursorText}
-        </motion.div>
-      ) : (
-        <motion.div
-          animate={{
-            scale: isPointer ? 1.4 : 1,
-            borderColor: isPointer ? "rgba(0, 56, 255, 0.8)" : "rgba(255, 255, 255, 0.4)",
-            backgroundColor: isPointer ? "rgba(0, 56, 255, 0.2)" : "rgba(255, 255, 255, 0.08)",
-          }}
-          transition={{ duration: 0.15 }}
-          className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center backdrop-blur-[1px]"
-        >
-          <div className="w-1.5 h-1.5 rounded-full bg-white" />
-        </motion.div>
-      )}
+      <motion.div
+        animate={{
+          scale: isPointer ? 1.5 : 1,
+          borderColor: isPointer
+            ? isDarkSurface ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 56, 255, 0.7)"
+            : isDarkSurface ? "rgba(255, 255, 255, 0.3)" : "rgba(0, 56, 255, 0.3)",
+          backgroundColor: isPointer
+            ? isDarkSurface ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 56, 255, 0.08)"
+            : "transparent",
+        }}
+        transition={{ duration: 0.16, ease: "easeOut" }}
+        className="size-5 rounded-full border flex items-center justify-center"
+      >
+        <div
+          className={`size-1 rounded-full ${isDarkSurface ? "bg-white" : "bg-[#0038FF]"}`}
+        />
+      </motion.div>
     </motion.div>
   );
 }
