@@ -74,7 +74,7 @@ export default function LandingPage() {
       </main>
 
       <ScrollReveal margin="-40px">
-        <SiteFooter />
+        <SiteFooter onOpenPilotModal={openPilot} />
       </ScrollReveal>
 
       <PilotModal isOpen={isPilotModalOpen} selectedPack={pilotPack} returnFocusTo={pilotTrigger} onClose={() => setIsPilotModalOpen(false)} />
