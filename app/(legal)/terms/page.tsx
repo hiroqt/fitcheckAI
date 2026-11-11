@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "Terms | FitCheck", description: "Terms for using the FitCheck website and style preview." };
+export const metadata: Metadata = {
+  title: "Terms",
+  description: "Terms for using the FitCheck website and style preview.",
+};
 
 export default function TermsPage() {
   return (

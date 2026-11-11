@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "Privacy | FitCheck", description: "How FitCheck handles survey answers, account access, and try-on photos." };
+export const metadata: Metadata = {
+  title: "Privacy",
+  description: "How FitCheck handles survey answers, account access, and try-on photos.",
+};
 
 export default function PrivacyPage() {
   return (

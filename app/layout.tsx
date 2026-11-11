@@ -19,14 +19,39 @@ const editorialDisplay = Barlow_Condensed({
   weight: "900",
 });
 
-const title = "Floating Brand × FitCheck";
 const description = "Explore Floating Brand’s showroom and FitCheck’s live virtual try-on pilot.";
 
 export const metadata: Metadata = {
-  title,
+  title: {
+    default: "FitCheck",
+    template: "%s | FitCheck",
+  },
   description,
   authors: [{ name: "FitCheck" }],
-  openGraph: { title, description, type: "website" },
+  openGraph: {
+    title: {
+      default: "FitCheck",
+      template: "%s | FitCheck",
+    },
+    description,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: {
+      default: "FitCheck",
+      template: "%s | FitCheck",
+    },
+    description,
+  },
+  icons: {
+    icon: [
+      { url: "/favicon-fitcheck.png" },
+      { url: "/icon.png" },
+    ],
+    shortcut: "/favicon-fitcheck.png",
+    apple: "/favicon-fitcheck.png",
+  },
 };
 
 export default function RootLayout({
