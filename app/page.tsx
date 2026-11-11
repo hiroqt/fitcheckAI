@@ -1,24 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import { Hero } from "./components/Hero";
 import { InteractiveShowroom } from "./components/InteractiveShowroom";
 import { DemoPreviewVideo } from "./components/DemoPreviewVideo";
 import { MinimalPricing } from "./components/MinimalPricing";
 import { SocialShowcase } from "./components/SocialShowcase";
 import { FaqAccordion } from "./components/FaqAccordion";
-import { PilotModal } from "./components/PilotModal";
 import { SiteFooter } from "./components/SiteFooter";
 import { ScrollReveal, ScrollHeading, ScrollText } from "./components/ScrollReveal";
+import { getPilotMailto } from "./lib/pilotEmail";
 
 export default function LandingPage() {
-  const [isPilotModalOpen, setIsPilotModalOpen] = useState(false);
-  const [pilotTrigger, setPilotTrigger] = useState<HTMLElement | null>(null);
-  const [pilotPack, setPilotPack] = useState("499");
   const openPilot = (pack = "499") => {
-    setPilotTrigger(document.activeElement instanceof HTMLElement ? document.activeElement : null);
-    setPilotPack(pack);
-    setIsPilotModalOpen(true);
+    if (typeof window !== "undefined") {
+      window.location.href = getPilotMailto(pack);
+    }
   };
 
   return (
@@ -86,8 +82,6 @@ export default function LandingPage() {
       </main>
 
       <SiteFooter onOpenPilotModal={openPilot} />
-
-      <PilotModal isOpen={isPilotModalOpen} selectedPack={pilotPack} returnFocusTo={pilotTrigger} onClose={() => setIsPilotModalOpen(false)} />
     </>
   );
 }

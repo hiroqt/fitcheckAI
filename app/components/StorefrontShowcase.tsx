@@ -3,6 +3,7 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
 import { ScrollReveal, ScrollHeading, ScrollText } from "./ScrollReveal";
+import { getPilotMailto } from "@/app/lib/pilotEmail";
 
 interface StorefrontShowcaseProps {
   onOpenPilotModal?: (pack?: string) => void;
@@ -59,13 +60,18 @@ export function StorefrontShowcase({ onOpenPilotModal }: StorefrontShowcaseProps
             <ArrowUpRight size={16} aria-hidden="true" />
           </a>
 
-          <button
-            type="button"
-            onClick={() => onOpenPilotModal?.("enterprise")}
-            className="text-sm font-bold text-[#0038ff] hover:underline underline-offset-4 cursor-pointer px-3 py-2"
+          <a
+            href={getPilotMailto("enterprise")}
+            onClick={(e) => {
+              if (onOpenPilotModal) {
+                e.preventDefault();
+                onOpenPilotModal("enterprise");
+              }
+            }}
+            className="text-sm font-bold text-[#0038ff] hover:underline underline-offset-4 cursor-pointer px-3 py-2 transition-transform duration-150 active:scale-95"
           >
-            Apply for pilot &rarr;
-          </button>
+            Work with us &rarr;
+          </a>
         </div>
       </ScrollReveal>
 

@@ -3,6 +3,7 @@
 import { ArrowUpRight, Check } from "lucide-react";
 import { ScrollHeading, ScrollText, ScrollStagger, ScrollStaggerItem } from "./ScrollReveal";
 import { StorefrontShowcase } from "./StorefrontShowcase";
+import { getPilotMailto } from "@/app/lib/pilotEmail";
 
 const packs = [
   {
@@ -45,11 +46,11 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
     <section id="scene-pricing" className="editorial-section scroll-mt-8" aria-labelledby="pricing-title">
       <div className="text-center">
         <ScrollHeading margin="-80px">
-          <h2 id="pricing-title" className="editorial-heading italic">Choose the right pilot for your brand</h2>
+          <h2 id="pricing-title" className="editorial-heading italic">Choose the right plan for your brand</h2>
         </ScrollHeading>
         <ScrollText delay={0.1} margin="-80px">
           <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium tracking-[-0.025em] text-[#253360]">
-            Start small, choose the best value for regular use, or talk with us about a larger or custom pilot.
+            Start small, choose the best value for regular use, or talk with us about a custom setup.
           </p>
         </ScrollText>
       </div>
@@ -88,18 +89,23 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
                 ))}
               </ul>
 
-              <button
-                type="button"
-                onClick={() => onOpenPilotModal(selection)}
-                className={`mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-4 py-2.5 text-xs font-semibold shadow-sm transition-all duration-200 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff] sm:text-sm ${
+              <a
+                href={getPilotMailto(selection)}
+                onClick={(e) => {
+                  if (onOpenPilotModal) {
+                    e.preventDefault();
+                    onOpenPilotModal(selection);
+                  }
+                }}
+                className={`mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-4 py-2.5 text-xs font-semibold shadow-sm transition-all duration-150 active:scale-95 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff] sm:text-sm ${
                   recommended
                     ? "border-[#0038ff] bg-[#0038ff] text-white hover:bg-[#002bdc]"
                     : "border-[#0038ff] text-[#0038ff] hover:bg-[#eef1ff]"
                 }`}
               >
-                <span>{recommended ? "Choose Growth" : name === "Custom" ? "Discuss custom plan" : name === "Larger business" ? "Plan larger pilot" : "Choose Starter"}</span>
+                <span>{recommended ? "Choose Growth" : name === "Custom" ? "Discuss custom plan" : name === "Larger business" ? "Contact us" : "Choose Starter"}</span>
                 <ArrowUpRight size={15} aria-hidden="true" />
-              </button>
+              </a>
             </li>
           </ScrollStaggerItem>
         ))}
@@ -111,8 +117,8 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
         </p>
       </ScrollText>
 
-      {/* Interactive Website & Storefront Showcase */}
-      <StorefrontShowcase onOpenPilotModal={onOpenPilotModal} />
-    </section>
+      {/* Interactive Website & Storefront Showcase */ }
+  <StorefrontShowcase onOpenPilotModal={onOpenPilotModal} />
+    </section >
   );
 }

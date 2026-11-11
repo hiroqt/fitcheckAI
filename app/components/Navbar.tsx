@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
+import { getPilotMailto } from "@/app/lib/pilotEmail";
 
 const NAV_ITEMS = [
   { label: "Showroom", href: "#scene-showroom" },
@@ -10,7 +11,7 @@ const NAV_ITEMS = [
   { label: "FAQs", href: "#faq" },
 ];
 
-export function Navbar({ onOpenPilotModal }: { onOpenPilotModal: () => void }) {
+export function Navbar({ onOpenPilotModal }: { onOpenPilotModal?: () => void }) {
   return (
     <header className="relative z-20 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-b border-white/15 px-5 py-4 sm:px-9 lg:px-12">
       <a
@@ -43,14 +44,19 @@ export function Navbar({ onOpenPilotModal }: { onOpenPilotModal: () => void }) {
         ))}
       </nav>
 
-      <button
-        type="button"
-        onClick={onOpenPilotModal}
-        className="flex min-h-11 shrink-0 cursor-pointer items-center gap-2 rounded-sm border border-white/40 bg-white/5 px-4 text-sm sm:text-base font-medium text-white shadow-sm backdrop-blur-sm transition-all duration-200 hover:border-white hover:bg-white/15 active:scale-[0.98]"
+      <a
+        href={getPilotMailto()}
+        onClick={(e) => {
+          if (onOpenPilotModal) {
+            e.preventDefault();
+            onOpenPilotModal();
+          }
+        }}
+        className="flex min-h-11 shrink-0 cursor-pointer items-center gap-2 rounded-sm border border-white/40 bg-white/5 px-4 text-sm sm:text-base font-medium text-white shadow-sm backdrop-blur-sm transition-all duration-150 hover:border-white hover:bg-white/15 active:scale-95"
       >
-        <span>Brand pilot</span>
+        <span>Work with us</span>
         <ArrowUpRight size={17} aria-hidden="true" />
-      </button>
+      </a>
     </header>
   );
 }

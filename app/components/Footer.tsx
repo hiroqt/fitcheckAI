@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUp, ArrowRight, Sparkles } from "lucide-react";
 import { ScrollReveal, ScrollHeading, ScrollText } from "./ScrollReveal";
+import { getPilotMailto } from "@/app/lib/pilotEmail";
 
 interface FooterProps {
   onOpenPilotModal?: () => void;
@@ -69,14 +70,14 @@ const NAVIGATION_COLUMNS = [
       { label: "Overview", href: "/#scene-hero" },
       { label: "Showroom", href: "/#scene-showroom" },
       { label: "Style Preview", href: "/#how-it-works" },
-      { label: "Pilot Pricing", href: "/#scene-pricing" },
+      { label: "Plans & Pricing", href: "/#scene-pricing" },
       { label: "FAQ", href: "/#faq" },
     ],
   },
   {
     title: "Platform",
     links: [
-      { label: "Brand Pilot Intake", href: "/#scene-pricing", isPilotAction: true },
+      { label: "Work with us", href: "/#scene-pricing", isPilotAction: true },
       { label: "Floating Brand", href: "/#scene-showroom" },
       { label: "Garment Specs", href: "/#how-it-works" },
       { label: "Retail Integration", href: "mailto:fitcheckai0@gmail.com" },
@@ -233,38 +234,43 @@ export function Footer({ onOpenPilotModal, className = "" }: FooterProps) {
                 </h3>
                 <nav aria-label={col.title} className="flex flex-col space-y-2.5">
                   {col.links.map((link) => {
-                    if (link.isPilotAction && onOpenPilotModal) {
+                    if (link.isPilotAction) {
                       return (
-                        <button
+                        <a
                           key={link.label}
-                          type="button"
-                          onClick={onOpenPilotModal}
+                          href={getPilotMailto()}
+                          onClick={(e) => {
+                            if (onOpenPilotModal) {
+                              e.preventDefault();
+                              onOpenPilotModal();
+                            }
+                          }}
                           className="group inline-flex items-center gap-1.5 text-left text-sm text-zinc-400 transition-all duration-150 hover:text-white active:scale-95 active:text-[#0038ff] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
                         >
-                            <span className="transition-transform duration-200 group-hover:translate-x-0.5 group-active:translate-x-1">
-                              {link.label}
-                            </span>
-                            <Sparkles className="h-3 w-3 text-[#0038ff] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-active:opacity-100" />
-                        </button>
+                          <span className="transition-transform duration-200 group-hover:translate-x-0.5 group-active:translate-x-1">
+                            {link.label}
+                          </span>
+                          <Sparkles className="h-3 w-3 text-[#0038ff] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-active:opacity-100" />
+                        </a>
                       );
                     }
 
-                  const isExternal = link.href.startsWith("http") || link.href.startsWith("mailto:");
-                  return (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    onClick={(e) => handleAnchorClick(e, link.href)}
-                    {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="group inline-flex items-center gap-1.5 text-sm text-zinc-400 transition-all duration-150 hover:text-white active:scale-95 active:text-[#0038ff] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
-                  >
-                    <span className="transition-transform duration-200 group-hover:translate-x-0.5 group-active:translate-x-1">
-                      {link.label}
-                    </span>
-                    <ArrowRight className="h-3 w-3 text-[#0038ff] opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-active:translate-x-1 group-active:opacity-100" />
-                  </Link>
-                  );
-                                            })}
+                    const isExternal = link.href.startsWith("http") || link.href.startsWith("mailto:");
+                    return (
+                      <Link
+                        key={link.label}
+                        href={link.href}
+                        onClick={(e) => handleAnchorClick(e, link.href)}
+                        {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                        className="group inline-flex items-center gap-1.5 text-sm text-zinc-400 transition-all duration-150 hover:text-white active:scale-95 active:text-[#0038ff] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
+                      >
+                        <span className="transition-transform duration-200 group-hover:translate-x-0.5 group-active:translate-x-1">
+                          {link.label}
+                        </span>
+                        <ArrowRight className="h-3 w-3 text-[#0038ff] opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-active:translate-x-1 group-active:opacity-100" />
+                      </Link>
+                    );
+                  })}
                 </nav>
               </div>
             ))}

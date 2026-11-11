@@ -64,26 +64,26 @@ const brandFaqs = [
     ),
   },
   {
-    question: "Which brands is the pilot intended for?",
+    question: "Which brands is FitCheck designed for?",
     answer: (
       <p>
-        The pilot is aimed at Philippine fashion brands selling curated or higher-margin clothing through assisted sales. If you’re unsure whether your products are a fit, tell us about your brand and the garments you’d like to preview by <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff] underline hover:text-[#002bdc]">emailing FitCheck</a>.
+        FitCheck is aimed at Philippine fashion brands selling curated, tailored, or distinctive clothing. If you’re unsure whether your catalog is a good match, tell us about your brand and the garments you’d like to showcase by <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff] underline hover:text-[#002bdc]">emailing us</a>.
       </p>
     ),
   },
   {
-    question: "Are the pilot prices and packages final?",
+    question: "Are the prices and packages final?",
     answer: (
       <p>
-        The prices shown are proposed pilot offers, not confirmed checkout packages. Final allowances and billing terms still need to be agreed. If you’re interested, email us and we can talk through your needs before any pilot offer is confirmed.
+        The prices shown represent introductory plan tiers. Final allowances and billing terms are confirmed directly with your team. If you’re interested, send us an email and we’ll walk through your requirements together.
       </p>
     ),
   },
   {
-    question: "Does the brand pilot form enroll my business?",
+    question: "Does contacting you obligate or enroll my business?",
     answer: (
       <p>
-        The form prepares an email inquiry with the details you provide. Review and send it from your email app; this does not enroll your business or confirm a pilot.
+        No. Clicking &ldquo;Work with us&rdquo; simply opens a direct email message to our team so you can ask questions or tell us about your brand. There is no automatic commitment or obligation until you decide to move forward.
       </p>
     ),
   },
@@ -126,7 +126,7 @@ export function FaqAccordion() {
         </ScrollHeading>
         <ScrollText delay={0.1} margin="-80px">
           <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium tracking-[-0.025em] leading-relaxed text-[#253360]">
-            Whether you’re exploring a look or considering a brand pilot, we’re here to help you understand what FitCheck can do.
+            Whether you’re exploring a look or considering working with us, we’re here to help you understand what FitCheck can do.
           </p>
         </ScrollText>
       </div>
