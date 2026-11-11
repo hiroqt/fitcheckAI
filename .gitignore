@@ -44,3 +44,6 @@ next-env.d.ts
 *.exe
 **/bin/**
 
+# private Google Apps Script deployment source
+/integrations/google-apps-script/Code.gs
+

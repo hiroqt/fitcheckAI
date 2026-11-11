@@ -2,13 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Mail01Icon } from "@hugeicons/core-free-icons";
-
-const socials = [
-  { label: "Instagram", href: "https://www.instagram.com/fitcheck.startup/", icon: <Image src="/social-icons/instagram.svg" width={27} height={27} alt="" /> },
-  { label: "Threads", href: "https://www.threads.com/@fitcheck.startup", icon: <Image src="/social-icons/threads.svg" width={27} height={27} alt="" /> },
-  { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61596346923689", icon: <Image src="/social-icons/facebook.svg" width={32} height={32} alt="" /> },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/145435214/", icon: <Image src="/social-icons/linkedin.svg" width={27} height={27} alt="" /> },
-] as const;
+import { SocialLinks } from "./SocialLinks";
 
 export function SiteFooter() {
   return (
@@ -48,13 +42,7 @@ export function SiteFooter() {
       <div className="border-t border-white/20">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6 py-8 text-center sm:px-10">
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#aeb6dc]">Follow us</h2>
-          <nav aria-label="Social media" className="flex gap-4">
-            {socials.map(({ label, href, icon }) => (
-              <a key={label} aria-label={label} href={href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 min-w-12 items-center justify-center p-2.5 text-white transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-                {icon}
-              </a>
-            ))}
-          </nav>
+          <SocialLinks />
           <p className="text-sm font-medium text-[#c7cbe0]">© 2026 FitCheck. All rights reserved.</p>
         </div>
       </div>

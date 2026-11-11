@@ -33,11 +33,11 @@ export default function LandingPage() {
               <h2 className="text-balance font-black italic uppercase tracking-[-0.045em] text-4xl sm:text-6xl">
                 See it in motion.
               </h2>
-              <p className="text-[#34436f]">A short look at the live style preview.</p>
+              <p className="text-[#34436f]">Preview a look using your camera or an uploaded photo.</p>
               <p className="text-xl font-semibold text-[#101b43]">
-                Choose a garment and preview it live for up to 20 seconds.
+                Choose a preview, answer the questionnaire, then see one look for 15 seconds.
               </p>
-              <p className="text-[#34436f]">Audio stays off. Stop the preview whenever you like.</p>
+              <p className="text-[#34436f]">Sign in with Google for one try per hour per verified account. Stop the preview whenever you like.</p>
               <p className="border-t border-[#d5d5e4] pt-4 text-sm font-medium text-[#101b43]">
                 Visual guide only. Check the seller’s size chart for fit.
               </p>
