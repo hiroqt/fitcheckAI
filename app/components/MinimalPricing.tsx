@@ -2,6 +2,7 @@
 
 import { ArrowUpRight, Check } from "lucide-react";
 import { ScrollStagger, ScrollStaggerItem } from "./ScrollReveal";
+import { StorefrontShowcase } from "./StorefrontShowcase";
 
 const packs = [
   {
@@ -104,43 +105,8 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
         Pilot test offers from our planning guide. Starter and Growth are proposed prepaid packs with no automatic top-ups. Larger Business and Custom are planning options; Custom pricing is scoped around your expected usage and business needs. Final allowances, session rules, taxes, and billing terms must be confirmed before any paid pilot.
       </p>
 
-      {/* Website bundle showcase */}
-      <div className="mx-auto mt-16 max-w-5xl border-t border-[#d5d5e4] pt-10 text-center sm:pt-12">
-        <h3 className="text-balance text-3xl font-black italic tracking-[-0.04em] text-[#101b43] sm:text-4xl">
-          Don’t have a website?
-        </h3>
-        <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg font-medium tracking-[-0.02em] leading-relaxed text-[#253360]">
-          We can build a website for your clothing brand and bring it together with FitCheck. We’ll shape the site around your needs and agree on its scope and monthly subscription before work begins.
-        </p>
-
-        <div className="mx-auto mt-7 grid max-w-4xl gap-5 border-y border-[#d5d5e4] py-6 md:grid-cols-2">
-          <div className="flex flex-col items-center justify-center rounded-sm p-4 transition-colors duration-200 hover:bg-white/60">
-            <h4 className="font-bold text-[#101b43]">Monthly website subscription</h4>
-            <p className="mt-2 text-2xl font-black text-[#0038ff]">Custom monthly quote</p>
-            <p className="mt-2 max-w-sm text-sm font-medium tracking-[-0.015em] leading-relaxed text-[#34436f]">
-              The monthly price is based on the website your brand needs.
-            </p>
-          </div>
-          <div className="flex flex-col items-center justify-center border-t border-[#d5d5e4] p-4 transition-colors duration-200 hover:bg-white/60 md:border-l md:border-t-0">
-            <h4 className="font-bold text-[#101b43]">Bundle discount</h4>
-            <p className="mt-2 text-2xl font-black text-[#0038ff]">Proposed 10% off</p>
-            <p className="mt-2 max-w-sm text-sm font-medium tracking-[-0.015em] leading-relaxed text-[#34436f]">
-              Pair the website subscription with a paid FitCheck plan to save 10% on the monthly website fee. FitCheck previews are billed separately.
-            </p>
-          </div>
-        </div>
-
-        <a
-          className="editorial-action mt-6"
-          href="mailto:fitcheckai0@gmail.com?subject=Website%20and%20FitCheck%20bundle"
-        >
-          <span>Let’s talk about your website</span>
-          <ArrowUpRight size={16} aria-hidden="true" />
-        </a>
-        <p className="mx-auto mt-3 max-w-2xl text-xs font-medium tracking-[-0.015em] leading-relaxed text-[#515d82]">
-          The 10% bundle discount is a proposed offer. Website scope, monthly price, subscription terms, and discount eligibility are confirmed in your quote.
-        </p>
-      </div>
+      {/* Interactive Website & Storefront Showcase */}
+      <StorefrontShowcase onOpenPilotModal={onOpenPilotModal} />
     </section>
   );
 }
