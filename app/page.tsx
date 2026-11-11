@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Hero } from "./components/Hero";
 import { InteractiveShowroom } from "./components/InteractiveShowroom";
 import { DemoPreviewVideo } from "./components/DemoPreviewVideo";
@@ -8,19 +9,32 @@ import { SocialShowcase } from "./components/SocialShowcase";
 import { FaqAccordion } from "./components/FaqAccordion";
 import { SiteFooter } from "./components/SiteFooter";
 import { ScrollReveal, ScrollHeading, ScrollText } from "./components/ScrollReveal";
-import { getPilotMailto } from "./lib/pilotEmail";
+import { WorkWithUsModal } from "./components/WorkWithUsModal";
 
 export default function LandingPage() {
-  const openPilot = (pack = "499") => {
-    if (typeof window !== "undefined") {
-      window.location.href = getPilotMailto(pack);
-    }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+
+  const openWorkWithUs = (pack = "499") => {
+    const planNames: Record<string, string> = {
+      "499": "Starter · ₱499",
+      "1799": "Growth · ₱1,799",
+      "larger_business": "Larger business · ₱4,999/mo + metered usage",
+      "enterprise": "Custom · discovery quote",
+    };
+    const chosenPlan = planNames[pack] || "Brand collaboration";
+    setModalTitle(`Work with FitCheck: ${chosenPlan}`);
+    setModalMessage(
+      `Hello FitCheck Team,\n\nI am interested in working with FitCheck for my clothing brand (${chosenPlan}).\n\nBrand Name:\nStore or Instagram link:\nQuestions / details:\n`
+    );
+    setIsModalOpen(true);
   };
 
   return (
     <>
       <main className="mx-auto max-w-[1600px] px-2.5 pt-2.5 sm:px-4 sm:pt-4">
-        <Hero onOpenPilotModal={openPilot} />
+        <Hero onOpenPilotModal={() => openWorkWithUs("general")} />
 
         <InteractiveShowroom />
 
@@ -74,14 +88,21 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <MinimalPricing onOpenPilotModal={openPilot} />
+        <MinimalPricing onOpenPilotModal={openWorkWithUs} />
 
         <SocialShowcase />
 
         <FaqAccordion />
       </main>
 
-      <SiteFooter onOpenPilotModal={openPilot} />
+      <SiteFooter onOpenPilotModal={() => openWorkWithUs("general")} />
+
+      <WorkWithUsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        defaultTitle={modalTitle}
+        defaultMessage={modalMessage}
+      />
     </>
   );
 }
