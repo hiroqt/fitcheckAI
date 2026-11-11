@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
+import { Geist, Geist_Mono, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
-import "lenis/dist/lenis.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
-import { MagneticCursor } from "@/components/ui/magnetic-cursor";
-import { GlobalBackground } from "@/components/ui/global-background";
-
 const geistSans = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -16,31 +12,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const editorialSerif = Cormorant_Garamond({
-  variable: "--font-serif",
+const editorialDisplay = Barlow_Condensed({
+  variable: "--font-campaign",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: "900",
 });
 
+const title = "Floating Brand × FitCheck";
+const description = "Explore Floating Brand’s showroom and FitCheck’s live virtual try-on pilot.";
+
 export const metadata: Metadata = {
-  title: "FitCheck AI — The 30-Second Live Style Mirror in Your Browser",
-  description:
-    "See it on you. Browser-based moving garment style mirror for Philippine boutique fashion. Instant 30-second capped previews with zero downloads.",
-  keywords: [
-    "virtual style mirror",
-    "boutique fashion try on",
-    "Philippine fashion ecommerce",
-    "live mirror preview",
-    "garment drape",
-  ],
-  authors: [{ name: "FitCheck AI" }],
-  openGraph: {
-    title: "FitCheck AI — The 30-Second Live Style Mirror",
-    description:
-      "A moving visual preview of curated garments before purchase. Zero download. Controlled Philippine boutique pilot.",
-    type: "website",
-  },
+  title,
+  description,
+  authors: [{ name: "FitCheck" }],
+  openGraph: { title, description, type: "website" },
 };
 
 export default function RootLayout({
@@ -51,14 +36,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${editorialSerif.variable} dark`}
+      className={`${geistSans.variable} ${geistMono.variable} ${editorialDisplay.variable}`}
     >
-      <body className="min-h-screen bg-[#090A0D] text-slate-100 antialiased font-sans selection:bg-[#0038FF]/30 selection:text-white">
-        <GlobalBackground />
-        <SmoothScrollProvider>
-          <MagneticCursor />
-          {children}
-        </SmoothScrollProvider>
+      <body className="min-h-screen bg-[#f7f8ff] font-sans text-[#101b43] antialiased selection:bg-[#0038ff] selection:text-white">
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
   );
