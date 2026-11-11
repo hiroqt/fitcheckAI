@@ -80,7 +80,7 @@ export function MediaHoverPreview({
         <div className="absolute bottom-3 left-3 right-3 z-20 flex flex-col sm:flex-row sm:items-end justify-between gap-1 pointer-events-none">
           <div>
             <div className="font-mono text-[9px] text-[#60A5FA] tracking-wider uppercase">
-              {activeItem.num} // {activeItem.sub}
+              {activeItem.num} {"//"} {activeItem.sub}
             </div>
             <div className="text-xs sm:text-sm font-sans font-semibold text-white tracking-tight">
               {activeItem.label}

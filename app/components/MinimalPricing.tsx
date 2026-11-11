@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowUpRight, Check } from "lucide-react";
+import { ScrollStagger, ScrollStaggerItem } from "./ScrollReveal";
 
 const packs = [
   {
@@ -41,67 +44,87 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
     <section id="scene-pricing" className="editorial-section scroll-mt-8" aria-labelledby="pricing-title">
       <div className="text-center">
         <h2 id="pricing-title" className="editorial-heading italic">Choose the right pilot for your brand</h2>
-        <p className="mx-auto mt-3 max-w-2xl text-[#34436f]">
+        <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium italic tracking-[-0.025em] text-[#253360]">
           Start small, choose the best value for regular use, or talk with us about a larger or custom pilot.
         </p>
       </div>
 
-      <ul className="mt-8 grid list-none gap-4 p-0 md:grid-cols-2 md:items-stretch xl:grid-cols-4">
+      <ScrollStagger
+        stagger={0.08}
+        margin="-60px"
+        className="mt-10 grid list-none gap-5 p-0 md:grid-cols-2 md:items-stretch xl:grid-cols-4"
+      >
         {packs.map(({ name, price, detail, description, features, selection, recommended }) => (
-          <li key={name} className={`relative flex min-w-0 flex-col items-center rounded-md border bg-white p-5 text-center text-[#101b43] sm:p-6 ${recommended ? "border-2 border-[#0038ff] md:my-[-.75rem] md:py-8" : "border-[#aebce8]"}`}>
-            {recommended && (
-              <p className="mb-4 inline-flex w-fit items-center gap-1.5 rounded-sm bg-[#0038ff] px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white">
-                <Check size={14} aria-hidden="true" /> Best value
-              </p>
-            )}
-            <h3 className="text-lg font-bold">{name}</h3>
-            <p className="mt-3 text-3xl font-black leading-tight tabular-nums">{price}</p>
-            <p className="mt-2 text-sm font-semibold text-[#0038ff]">{detail}</p>
-            <p className="mt-4 min-h-12 leading-relaxed text-[#34436f]">{description}</p>
-            <ul className="mt-5 w-full grow list-none space-y-3 border-t border-[#d5d5e4] p-0 pt-4 text-sm leading-relaxed text-[#34436f]">
-              {features.map((feature) => (
-                <li key={feature} className="flex items-start justify-center gap-2.5">
-                  <Check size={16} aria-hidden="true" className="mt-0.5 shrink-0 text-[#0038ff]" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-            <button
-              type="button"
-              onClick={() => onOpenPilotModal(selection)}
-              className={`mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-3 py-2.5 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff] sm:text-sm ${recommended ? "border-[#0038ff] bg-[#0038ff] text-white hover:bg-[#002dcc]" : "border-[#0038ff] text-[#0038ff] hover:bg-[#eef1ff]"}`}
+          <ScrollStaggerItem key={name} className="flex">
+            <li
+              className={`relative flex min-w-0 w-full flex-col items-center rounded-md border bg-white p-6 text-center text-[#101b43] transition-all duration-200 hover:border-[#0038ff] hover:shadow-md ${
+                recommended
+                  ? "border-2 border-[#0038ff] md:my-[-.75rem] md:py-8"
+                  : "border-[#c4cee9]"
+              }`}
             >
-              {recommended ? "Choose Growth" : name === "Custom" ? "Discuss custom plan" : name === "Larger business" ? "Plan larger pilot" : "Choose Starter"}
-              <ArrowUpRight size={15} aria-hidden="true" />
-            </button>
-          </li>
-        ))}
-      </ul>
+              {recommended && (
+                <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#0038ff]">
+                  Best value
+                </p>
+              )}
 
-      <p className="mx-auto mt-6 max-w-4xl text-center text-sm leading-relaxed text-[#515d82]">
+              <h3 className="text-lg font-bold tracking-tight">{name}</h3>
+              <p className="mt-3 text-3xl font-black leading-tight tabular-nums tracking-tight">{price}</p>
+              <p className="mt-2 text-sm font-bold italic tracking-[-0.015em] text-[#0038ff]">{detail}</p>
+              <p className="mt-4 min-h-12 text-sm font-medium italic tracking-[-0.015em] leading-relaxed text-[#34436f]">{description}</p>
+
+              <ul className="mt-5 w-full grow list-none space-y-3 border-t border-[#d5d5e4] p-0 pt-4 text-sm leading-relaxed text-[#34436f]">
+                {features.map((feature) => (
+                  <li key={feature} className="flex items-start justify-center gap-2.5">
+                    <Check size={16} aria-hidden="true" className="mt-0.5 shrink-0 text-[#0038ff]" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <button
+                type="button"
+                onClick={() => onOpenPilotModal(selection)}
+                className={`mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-4 py-2.5 text-xs font-semibold shadow-sm transition-all duration-200 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff] sm:text-sm ${
+                  recommended
+                    ? "border-[#0038ff] bg-[#0038ff] text-white hover:bg-[#002bdc]"
+                    : "border-[#0038ff] text-[#0038ff] hover:bg-[#eef1ff]"
+                }`}
+              >
+                <span>{recommended ? "Choose Growth" : name === "Custom" ? "Discuss custom plan" : name === "Larger business" ? "Plan larger pilot" : "Choose Starter"}</span>
+                <ArrowUpRight size={15} aria-hidden="true" />
+              </button>
+            </li>
+          </ScrollStaggerItem>
+        ))}
+      </ScrollStagger>
+
+      <p className="mx-auto mt-8 max-w-4xl text-center text-sm font-medium italic tracking-[-0.015em] leading-relaxed text-[#515d82]">
         Pilot test offers from our planning guide. Starter and Growth are proposed prepaid packs with no automatic top-ups. Larger Business and Custom are planning options; Custom pricing is scoped around your expected usage and business needs. Final allowances, session rules, taxes, and billing terms must be confirmed before any paid pilot.
       </p>
 
+      {/* Website bundle showcase */}
       <div className="mx-auto mt-16 max-w-5xl border-t border-[#d5d5e4] pt-10 text-center sm:pt-12">
         <h3 className="text-balance text-3xl font-black italic tracking-[-0.04em] text-[#101b43] sm:text-4xl">
           Don’t have a website?
         </h3>
-        <p className="mx-auto mt-3 max-w-2xl leading-relaxed text-[#34436f]">
+        <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg font-medium italic tracking-[-0.02em] leading-relaxed text-[#253360]">
           We can build a website for your clothing brand and bring it together with FitCheck. We’ll shape the site around your needs and agree on its scope and monthly subscription before work begins.
         </p>
 
         <div className="mx-auto mt-7 grid max-w-4xl gap-5 border-y border-[#d5d5e4] py-6 md:grid-cols-2">
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center rounded-sm p-4 transition-colors duration-200 hover:bg-white/60">
             <h4 className="font-bold text-[#101b43]">Monthly website subscription</h4>
             <p className="mt-2 text-2xl font-black text-[#0038ff]">Custom monthly quote</p>
-            <p className="mt-2 max-w-sm text-sm leading-relaxed text-[#34436f]">
+            <p className="mt-2 max-w-sm text-sm font-medium italic tracking-[-0.015em] leading-relaxed text-[#34436f]">
               The monthly price is based on the website your brand needs.
             </p>
           </div>
-          <div className="flex flex-col items-center justify-center border-t border-[#d5d5e4] pt-5 md:border-l md:border-t-0 md:pt-0">
+          <div className="flex flex-col items-center justify-center border-t border-[#d5d5e4] p-4 transition-colors duration-200 hover:bg-white/60 md:border-l md:border-t-0">
             <h4 className="font-bold text-[#101b43]">Bundle discount</h4>
             <p className="mt-2 text-2xl font-black text-[#0038ff]">Proposed 10% off</p>
-            <p className="mt-2 max-w-sm text-sm leading-relaxed text-[#34436f]">
+            <p className="mt-2 max-w-sm text-sm font-medium italic tracking-[-0.015em] leading-relaxed text-[#34436f]">
               Pair the website subscription with a paid FitCheck plan to save 10% on the monthly website fee. FitCheck previews are billed separately.
             </p>
           </div>
@@ -111,9 +134,10 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
           className="editorial-action mt-6"
           href="mailto:fitcheckai0@gmail.com?subject=Website%20and%20FitCheck%20bundle"
         >
-          Let’s talk about your website <ArrowUpRight size={16} aria-hidden="true" />
+          <span>Let’s talk about your website</span>
+          <ArrowUpRight size={16} aria-hidden="true" />
         </a>
-        <p className="mx-auto mt-3 max-w-2xl text-xs leading-relaxed text-[#515d82]">
+        <p className="mx-auto mt-3 max-w-2xl text-xs font-medium italic tracking-[-0.015em] leading-relaxed text-[#515d82]">
           The 10% bundle discount is a proposed offer. Website scope, monthly price, subscription terms, and discount eligibility are confirmed in your quote.
         </p>
       </div>

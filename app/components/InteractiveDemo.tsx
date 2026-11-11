@@ -103,11 +103,10 @@ export function InteractiveDemo() {
   // Handle 30-second countdown session
   useEffect(() => {
     if (mirrorState === "active") {
-      setTimeLeft(30);
-      timerRef.current = setInterval(() => {
+      const id = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
-            clearInterval(timerRef.current!);
+            clearInterval(id);
             setMirrorState("ended");
             return 0;
           }
@@ -115,6 +114,8 @@ export function InteractiveDemo() {
         });
         setMotionSimulationAngle((prev) => (prev + 12) % 360);
       }, 1000);
+      timerRef.current = id;
+      return () => clearInterval(id);
     } else {
       if (timerRef.current) clearInterval(timerRef.current);
     }
@@ -125,6 +126,7 @@ export function InteractiveDemo() {
   }, [mirrorState]);
 
   const handleStartSession = () => {
+    setTimeLeft(30);
     setMirrorState("active");
   };
 
