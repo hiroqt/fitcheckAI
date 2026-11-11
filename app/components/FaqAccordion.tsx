@@ -5,23 +5,31 @@ const shopperFaqs = [
     question: "Can FitCheck help me choose my size?",
     answer: (
       <p>
-        FitCheck can give you a visual idea of how a style might look while you move, but it can’t confirm your size or guarantee how a garment will fit. For sizing, check the brand’s size chart. If you’re unsure how to read it, ask the seller before ordering.
+        FitCheck can give you a visual idea of how a style might look, but it can’t confirm your size or guarantee how a garment will fit. For sizing, check the brand’s size chart. If you’re unsure how to read it, ask the seller before ordering.
       </p>
     ),
   },
   {
-    question: "Do I have to use my camera?",
+    question: "Can I use a photo instead of my camera?",
     answer: (
       <p>
-        No. The live preview is optional, and you can browse without granting camera access. If you choose to try it, your browser will ask permission first. Your microphone stays off, and you can stop the preview at any time.
+        Yes. Choose live camera or upload a photo. The camera is used only if you choose that option and agree; audio stays off. You get one 15-second preview per hour per verified Google account across both options.
       </p>
     ),
   },
   {
-    question: "How is my camera video used?",
+    question: "How are my photo and camera video used?",
     answer: (
       <p>
-        If you start a live preview, your camera video and the selected garment image are processed to create the visual result. FitCheck’s evaluation database does not store those media files. The <a href="/privacy" className="text-[#0038ff] underline hover:text-[#002bdc]">Privacy Notice</a> explains what evaluation information is stored.
+        If you agree to continue, your live camera video or uploaded photo and the selected garment image stream from your browser to Decart. FitCheck does not save your media or generated video. Decart’s media handling must be approved before the preview is enabled. The <a href="/privacy" className="text-[#0038ff] underline hover:text-[#002bdc]">Privacy Notice</a> explains the survey and account data FitCheck stores.
+      </p>
+    ),
+  },
+  {
+    question: "How many previews can I use?",
+    answer: (
+      <p>
+        Choose live camera or photo, complete the questionnaire, and sign in with a verified Gmail or Google Workspace account. Each account can use one 15-second preview per hour across both options. If setup fails before the preview appears, the try is restored.
       </p>
     ),
   },
@@ -37,7 +45,7 @@ const shopperFaqs = [
     question: "I can’t start or finish a preview. Can you help?",
     answer: (
       <p>
-        The live preview is available only in a configured evaluation, so it may not be available to every visitor. If you’re taking part and still have trouble after checking camera permission and your connection, <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff] underline hover:text-[#002bdc]">email FitCheck</a> and we’ll help you understand what to try next.
+        The previews are available only after setup and provider approval. If enabled, choose an option and follow the steps on screen. If you still have trouble with your photo, camera, or connection, <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff] underline hover:text-[#002bdc]">email FitCheck</a> and we’ll help you understand what to try next.
       </p>
     ),
   },
@@ -72,7 +80,7 @@ const brandFaqs = [
     question: "Does the brand pilot form enroll my business?",
     answer: (
       <p>
-        No. The form currently runs demo checks only; it does not save your details or confirm enrollment. Please don’t use it to send an actual application. To discuss a pilot, <a href="mailto:fitcheckai0@gmail.com" className="text-[#0038ff] underline hover:text-[#002bdc]">contact FitCheck by email</a>.
+        The form prepares an email inquiry with the details you provide. Review and send it from your email app; this does not enroll your business or confirm a pilot.
       </p>
     ),
   },
