@@ -9,7 +9,7 @@ import { SocialLinks } from "../SocialLinks";
 
 const GARMENTS = {
   bomber: { name: "Floating Brand Bomber", displayName: ["Floating Brand", "Bomber"], image: "/floating-jacket.webp", prompt: "Dress the person in the cobalt technical bomber jacket from the reference. Preserve its ribbed cuffs and hem, sleeve pocket, zipper, face, body shape, pose and background." },
-  terno: { name: "The Manila Terno", displayName: ["The Manila", "Terno"], image: "/floating-terno.png", prompt: "Dress the person in the vivid cobalt blue contemporary Filipiniana terno dress in the reference. Preserve the person's face, body shape, pose and background." },
+  shirt: { name: "Embroidered Long-Sleeve Shirt", displayName: ["Embroidered", "Shirt"], image: "/floating-shirt.png", prompt: "Dress the person in the ivory long-sleeve button-up shirt with intricate cobalt and navy embroidery and chest pockets shown in the reference. Preserve its pattern, the person's face, body shape, pose and background." },
   barong: { name: "Midnight Barong", displayName: ["Midnight", "Barong"], image: "/floating-barong.png", prompt: "Dress the person in the modern ivory embroidered Filipino barong from the reference. Preserve its embroidery, the person's face, body shape, pose and background." },
 } as const;
 type Garment = keyof typeof GARMENTS;
