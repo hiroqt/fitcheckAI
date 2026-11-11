@@ -79,12 +79,12 @@ export function SocialShowcase() {
     >
       {/* Section Header */}
       <div className="mx-auto mb-10 max-w-3xl text-center">
-        <h2 id="community-title" className="editorial-heading">
-          Connect with FitCheck
-        </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium tracking-[-0.025em] leading-relaxed text-[#253360]">
-          Follow virtual style previews, read product updates, or get in touch across our official channels.
-        </p>
+          <h2 id="community-title" className="editorial-heading italic">
+            Connect with FitCheck
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium tracking-[-0.025em] leading-relaxed text-[#253360]">
+            Follow virtual style previews, read product updates, or get in touch across our official channels.
+          </p>
       </div>
 
       {/* Editorial List (Clean, unified sans-serif typography with thin dividers, no cards, no gradients) */}
