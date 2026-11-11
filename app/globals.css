@@ -122,9 +122,6 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-[#090A0D] text-slate-100 antialiased selection:bg-white/20 selection:text-white;
-  }
   html {
     @apply font-sans scroll-smooth;
   }
@@ -168,3 +165,196 @@
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
 }
 
+
+.campaign-hero {
+  background: #0038ff;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.campaign-stage {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 1.5rem;
+  min-height: clamp(35rem, 46vw, 46rem);
+  padding: 0 3rem 2.75rem;
+  container-type: inline-size;
+}
+
+.campaign-wordmark {
+  position: absolute;
+  z-index: 0;
+  opacity: 1;
+  top: 14%;
+  inset-inline: 0;
+  margin: 0;
+  color: #fff;
+  font-family: var(--font-sans), sans-serif;
+  font-size: clamp(3.5rem, 11cqw, 9rem);
+  font-weight: 850;
+  font-style: italic;
+  letter-spacing: .015em;
+  line-height: .95;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.campaign-garment {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  inset: 10% 15% 2%;
+  animation: garment-arrive 850ms cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.campaign-garment img {
+  object-fit: contain;
+}
+
+.campaign-copy {
+  align-self: end;
+}
+
+.campaign-tagline {
+  margin-bottom: .85rem;
+  font-size: clamp(3.4rem, 6vw, 6rem);
+  font-weight: 850;
+  font-style: italic;
+  line-height: .89;
+  letter-spacing: -.04em;
+}
+
+.campaign-link, .editorial-action {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 3px;
+  padding: .65rem 1rem;
+  background: #0038ff;
+  color: white;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.campaign-link:hover, .editorial-action:hover {
+  background: #0038ff;
+}
+
+.editorial-section {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 4vw, 3rem);
+}
+
+.editorial-heading {
+  font-size: clamp(2.15rem, 5.8vw, 5rem);
+  font-weight: 750;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+
+@keyframes faq-heading-enter {
+  from { opacity: .85; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.faq-scroll-heading {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.faq-summary::-webkit-details-marker { display: none; }
+.faq-chevron { transition: transform 160ms ease; }
+details[open] .faq-chevron { transform: rotate(180deg); }
+
+@supports (interpolate-size: allow-keywords) and selector(details::details-content) {
+  details { interpolate-size: allow-keywords; }
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    opacity: 0;
+    transition:
+      block-size 280ms cubic-bezier(.16, 1, .3, 1),
+      opacity 180ms ease,
+      content-visibility 280ms allow-discrete;
+  }
+  details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .faq-scroll-heading {
+    animation: faq-heading-enter linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-scroll-heading { animation: none; opacity: 1; transform: none; }
+  .faq-chevron { transition: none; }
+  details::details-content { transition: none; }
+}
+
+@keyframes garment-arrive {
+  from { transform: translateY(18px) rotate(-3deg); }
+}
+
+@media (max-width: 767px) {
+  .campaign-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: flex-end;
+    min-height: 0;
+    padding: clamp(16rem, 68vw, 29rem) 1.25rem 1.5rem;
+  }
+
+  .campaign-wordmark {
+    top: 12%;
+    padding-inline: .5rem;
+    font-size: clamp(2.25rem, 10.5cqw, 4rem);
+    letter-spacing: .005em;
+  }
+  .campaign-garment { inset: 2.4rem -2% auto; height: clamp(13rem, 58vw, 25rem); }
+  .campaign-copy { align-self: start; }
+  .campaign-tagline br { display: none; }
+  .campaign-tagline { font-size: clamp(2.6rem, 9vw, 4.5rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .campaign-garment { animation: none; }
+}
+
+:focus-visible {
+  outline: 2px solid #655aff;
+  outline-offset: 3px;
+}
+
+:root {
+  --background: #f7f8ff;
+  --foreground: #101b43;
+  --primary: #0038ff;
+  --primary-foreground: #ffffff;
+  --accent: #0038ff;
+  --accent-foreground: #ffffff;
+  --ring: #0038ff;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

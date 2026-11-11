@@ -1,249 +1,121 @@
-"use client";
+import { ArrowUpRight, Check } from "lucide-react";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useMagnetic } from "@/components/navigation/use-magnetic";
+const packs = [
+  {
+    name: "Starter",
+    price: "₱499",
+    detail: "5 previews · up to 30 seconds each",
+    description: "A simple way to try FitCheck with one collection.",
+    features: ["One-time prepaid pack", "About ₱100 per preview", "No automatic top-ups"],
+    selection: "499",
+  },
+  {
+    name: "Growth",
+    price: "₱1,799",
+    detail: "20 previews · up to 30 seconds each",
+    description: "For brands handling regular preview requests.",
+    features: ["One-time prepaid pack", "About ₱90 per preview", "Around 10% less per preview than Starter", "No automatic top-ups"],
+    selection: "1799",
+    recommended: true,
+  },
+  {
+    name: "Larger business",
+    price: "₱4,999 / month",
+    detail: "Plus metered usage",
+    description: "For multi-brand retailers planning a higher-volume pilot.",
+    features: ["Monthly plan with metered usage", "Usage and allowances tailored to the pilot", "Confirm session limits before launch"],
+    selection: "larger_business",
+  },
+  {
+    name: "Custom",
+    price: "Custom",
+    detail: "Quote after discovery",
+    description: "A tailored quote based on preview volume, number of brands, team access, and reporting or integration needs.",
+    features: ["Scope expected preview volume and session limits", "Plan for the number of brands and team access", "Discuss reporting or integration needs", "Final features and usage rates agreed before the pilot"],
+    selection: "enterprise",
+  },
+];
 
-interface MinimalPricingProps {
-  onOpenPilotModal?: () => void;
-}
-
-function MagneticActionButton({
-  label,
-  variant = "primary",
-  onClick,
-}: {
-  label: string;
-  variant?: "primary" | "outline";
-  onClick?: () => void;
-}) {
-  const { ref, x, y, handleMouseMove, handleMouseLeave } = useMagnetic({
-    strength: 0.22,
-    stiffness: 280,
-    damping: 22,
-  });
-
+export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?: string) => void }) {
   return (
-    <motion.div
-      ref={ref as React.RefObject<HTMLDivElement>}
-      style={{ x, y }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="inline-block w-full sm:w-auto"
-    >
-      <Button
-        onClick={onClick}
-        variant={variant === "outline" ? "outline" : "default"}
-        className={`w-full sm:w-auto h-13 px-8 rounded-xl font-mono text-xs uppercase tracking-wider flex items-center justify-center gap-2.5 cursor-pointer group transition-all duration-200 active:scale-98 ${
-          variant === "primary"
-            ? "bg-[#0038FF] hover:bg-[#1A4CFF] text-white shadow-[0_0_24px_rgba(0,56,255,0.4)]"
-            : "border-white/20 bg-black/40 text-white hover:bg-white/10"
-        }`}
-      >
-        <span>{label}</span>
-        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-      </Button>
-    </motion.div>
-  );
-}
+    <section id="scene-pricing" className="editorial-section scroll-mt-8" aria-labelledby="pricing-title">
+      <div className="text-center">
+        <h2 id="pricing-title" className="editorial-heading italic">Choose the right pilot for your brand</h2>
+        <p className="mx-auto mt-3 max-w-2xl text-[#34436f]">
+          Start small, choose the best value for regular use, or talk with us about a larger or custom pilot.
+        </p>
+      </div>
 
-export function MinimalPricing({ onOpenPilotModal }: MinimalPricingProps) {
-  const [hoveredPack, setHoveredPack] = useState<"starter" | "growth" | null>(null);
-
-  return (
-    <section
-      id="scene-pricing"
-      className="relative w-full flex flex-col justify-center px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto overflow-hidden py-12 sm:py-16 select-none"
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10 border-b border-white/[0.08] pb-6"
-      >
-        <div>
-          <span className="font-mono text-xs text-[#0038FF] uppercase tracking-widest block mb-2 font-semibold">
-            04 / TRANSPARENT PILOT PACKS
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-serif italic text-white tracking-tight">
-            Fixed prepaid packs. Zero overages.
-          </h2>
-        </div>
-        <div className="text-left md:text-right font-mono text-xs text-slate-400">
-          <span className="text-[#0038FF]">●</span> Philippine Retail Pilot Economics
-        </div>
-      </motion.div>
-
-      {/* Linked Cross-Highlighting Pricing Columns */}
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 items-stretch"
-        onMouseLeave={() => setHoveredPack(null)}
-      >
-        {/* Pack 1: Starter Drop Pack */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          onMouseEnter={() => setHoveredPack("starter")}
-          onFocus={() => setHoveredPack("starter")}
-          data-cursor="₱499 PACK"
-          className={`relative rounded-2xl border p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 cursor-pointer ${
-            hoveredPack === "starter"
-              ? "bg-[#111318] border-[#0038FF] shadow-[0_0_35px_rgba(0,56,255,0.3)] scale-[1.02] z-10 opacity-100"
-              : hoveredPack === "growth"
-              ? "border-white/[0.06] bg-transparent opacity-45 scale-[0.98]"
-              : "border-white/[0.1] bg-black/20 opacity-90 hover:border-white/30"
-          }`}
-        >
-          {hoveredPack === "starter" && (
-            <>
-              <span className="absolute top-2.5 left-3 font-mono text-[9px] text-[#0038FF] pointer-events-none select-none">
-                ⌜
-              </span>
-              <span className="absolute top-2.5 right-3 font-mono text-[9px] text-[#0038FF] pointer-events-none select-none">
-                ⌝
-              </span>
-              <span className="absolute bottom-2.5 left-3 font-mono text-[9px] text-[#0038FF] pointer-events-none select-none">
-                ⌞
-              </span>
-              <span className="absolute bottom-2.5 right-3 font-mono text-[9px] text-[#0038FF] pointer-events-none select-none">
-                ⌟
-              </span>
-            </>
-          )}
-
-          <div>
-            <div className="flex items-baseline justify-between mb-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-slate-400 font-semibold">
-                STARTER DROP PACK
-              </span>
-              <span className="font-mono text-xs text-slate-500">₱9.98 / preview</span>
-            </div>
-
-            {/* Kinetic Typography Price Morph */}
-            <div
-              className={`font-mono text-5xl sm:text-6xl font-light tracking-tight mb-4 transition-all duration-300 ${
-                hoveredPack === "starter" ? "text-stroke-highlight scale-105" : "text-white"
-              }`}
-            >
-              ₱499
-            </div>
-
-            <p className="text-sm sm:text-base text-slate-300 mb-6 leading-relaxed">
-              50 live 30-second previews. Designed for single-drop boutique collections and
-              Instagram DM sales.
-            </p>
-
-            <ul className="space-y-3 font-mono text-xs text-slate-400 mb-8">
-              <li className="flex items-center gap-2.5">
-                <Check className="w-3.5 h-3.5 text-[#0038FF]" />
-                <span>50 capped 30-second live previews</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Check className="w-3.5 h-3.5 text-[#0038FF]" />
-                <span>Zero auto-renewals or unexpected charges</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Check className="w-3.5 h-3.5 text-[#0038FF]" />
-                <span>Philippine DPA compliance disclaimer included</span>
-              </li>
+      <ul className="mt-8 grid list-none gap-4 p-0 md:grid-cols-2 md:items-stretch xl:grid-cols-4">
+        {packs.map(({ name, price, detail, description, features, selection, recommended }) => (
+          <li key={name} className={`relative flex min-w-0 flex-col items-center rounded-md border bg-white p-5 text-center text-[#101b43] sm:p-6 ${recommended ? "border-2 border-[#0038ff] md:my-[-.75rem] md:py-8" : "border-[#aebce8]"}`}>
+            {recommended && (
+              <p className="mb-4 inline-flex w-fit items-center gap-1.5 rounded-sm bg-[#0038ff] px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white">
+                <Check size={14} aria-hidden="true" /> Best value
+              </p>
+            )}
+            <h3 className="text-lg font-bold">{name}</h3>
+            <p className="mt-3 text-3xl font-black leading-tight tabular-nums">{price}</p>
+            <p className="mt-2 text-sm font-semibold text-[#0038ff]">{detail}</p>
+            <p className="mt-4 min-h-12 leading-relaxed text-[#34436f]">{description}</p>
+            <ul className="mt-5 w-full grow list-none space-y-3 border-t border-[#d5d5e4] p-0 pt-4 text-sm leading-relaxed text-[#34436f]">
+              {features.map((feature) => (
+                <li key={feature} className="flex items-start justify-center gap-2.5">
+                  <Check size={16} aria-hidden="true" className="mt-0.5 shrink-0 text-[#0038ff]" />
+                  <span>{feature}</span>
+                </li>
+              ))}
             </ul>
-          </div>
-
-          <div className="pt-4 border-t border-white/[0.08]">
-            <MagneticActionButton
-              label="Apply for Starter Pack"
-              variant="outline"
-              onClick={onOpenPilotModal}
-            />
-          </div>
-        </motion.div>
-
-        {/* Pack 2: Growth Boutique Pack */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          onMouseEnter={() => setHoveredPack("growth")}
-          onFocus={() => setHoveredPack("growth")}
-          data-cursor="₱1,799 PACK"
-          className={`relative rounded-2xl border-2 p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 cursor-pointer ${
-            hoveredPack === "growth"
-              ? "bg-[#111318] border-[#0038FF] shadow-[0_0_40px_rgba(0,56,255,0.4)] scale-[1.02] z-10 opacity-100"
-              : hoveredPack === "starter"
-              ? "border-[#0038FF]/40 bg-transparent opacity-45 scale-[0.98]"
-              : "border-[#0038FF]/80 bg-[#0038FF]/[0.03] opacity-95 hover:border-[#0038FF]"
-          }`}
-        >
-          {hoveredPack === "growth" && (
-            <>
-              <span className="absolute top-2.5 left-3 font-mono text-[9px] text-[#0038FF] pointer-events-none select-none">
-                ⌜
-              </span>
-              <span className="absolute top-2.5 right-3 font-mono text-[9px] text-[#0038FF] pointer-events-none select-none">
-                ⌝
-              </span>
-              <span className="absolute bottom-2.5 left-3 font-mono text-[9px] text-[#0038FF] pointer-events-none select-none">
-                ⌞
-              </span>
-              <span className="absolute bottom-2.5 right-3 font-mono text-[9px] text-[#0038FF] pointer-events-none select-none">
-                ⌟
-              </span>
-            </>
-          )}
-
-          <div>
-            <div className="flex items-baseline justify-between mb-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-[#60A5FA] font-semibold flex items-center gap-2">
-                <span>GROWTH BOUTIQUE PACK</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0038FF] animate-pulse" />
-              </span>
-              <span className="font-mono text-xs text-slate-400">₱7.19 / preview</span>
-            </div>
-
-            {/* Kinetic Typography Price Morph */}
-            <div
-              className={`font-mono text-5xl sm:text-6xl font-light tracking-tight mb-4 transition-all duration-300 ${
-                hoveredPack === "growth" ? "text-stroke-highlight scale-105" : "text-white"
-              }`}
+            <button
+              type="button"
+              onClick={() => onOpenPilotModal(selection)}
+              className={`mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-3 py-2.5 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff] sm:text-sm ${recommended ? "border-[#0038ff] bg-[#0038ff] text-white hover:bg-[#002dcc]" : "border-[#0038ff] text-[#0038ff] hover:bg-[#eef1ff]"}`}
             >
-              ₱1,799
-            </div>
+              {recommended ? "Choose Growth" : name === "Custom" ? "Discuss custom plan" : name === "Larger business" ? "Plan larger pilot" : "Choose Starter"}
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </button>
+          </li>
+        ))}
+      </ul>
 
-            <p className="text-sm sm:text-base text-slate-300 mb-6 leading-relaxed">
-              250 live 30-second previews. For high-volume boutique labels handling daily DM
-              inquiries and fittings.
+      <p className="mx-auto mt-6 max-w-4xl text-center text-sm leading-relaxed text-[#515d82]">
+        Pilot test offers from our planning guide. Starter and Growth are proposed prepaid packs with no automatic top-ups. Larger Business and Custom are planning options; Custom pricing is scoped around your expected usage and business needs. Final allowances, session rules, taxes, and billing terms must be confirmed before any paid pilot.
+      </p>
+
+      <div className="mx-auto mt-16 max-w-5xl border-t border-[#d5d5e4] pt-10 text-center sm:pt-12">
+        <h3 className="text-balance text-3xl font-black italic tracking-[-0.04em] text-[#101b43] sm:text-4xl">
+          Don’t have a website?
+        </h3>
+        <p className="mx-auto mt-3 max-w-2xl leading-relaxed text-[#34436f]">
+          We can build a website for your clothing brand and bring it together with FitCheck. We’ll shape the site around your needs and agree on its scope and monthly subscription before work begins.
+        </p>
+
+        <div className="mx-auto mt-7 grid max-w-4xl gap-5 border-y border-[#d5d5e4] py-6 md:grid-cols-2">
+          <div className="flex flex-col items-center justify-center">
+            <h4 className="font-bold text-[#101b43]">Monthly website subscription</h4>
+            <p className="mt-2 text-2xl font-black text-[#0038ff]">Custom monthly quote</p>
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-[#34436f]">
+              The monthly price is based on the website your brand needs.
             </p>
-
-            <ul className="space-y-3 font-mono text-xs text-slate-400 mb-8">
-              <li className="flex items-center gap-2.5">
-                <Check className="w-3.5 h-3.5 text-[#0038FF]" />
-                <span>250 capped 30-second live previews</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Check className="w-3.5 h-3.5 text-[#0038FF]" />
-                <span>Priority boutique onboarding & DM playbook</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Check className="w-3.5 h-3.5 text-[#0038FF]" />
-                <span>Direct size chart link integration</span>
-              </li>
-            </ul>
           </div>
-
-          <div className="pt-4 border-t border-white/[0.08]">
-            <MagneticActionButton
-              label="Apply for Growth Pack"
-              variant="primary"
-              onClick={onOpenPilotModal}
-            />
+          <div className="flex flex-col items-center justify-center border-t border-[#d5d5e4] pt-5 md:border-l md:border-t-0 md:pt-0">
+            <h4 className="font-bold text-[#101b43]">Bundle discount</h4>
+            <p className="mt-2 text-2xl font-black text-[#0038ff]">Proposed 10% off</p>
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-[#34436f]">
+              Pair the website subscription with a paid FitCheck plan to save 10% on the monthly website fee. FitCheck previews are billed separately.
+            </p>
           </div>
-        </motion.div>
+        </div>
+
+        <a
+          className="editorial-action mt-6"
+          href="mailto:fitcheckai0@gmail.com?subject=Website%20and%20FitCheck%20bundle"
+        >
+          Let’s talk about your website <ArrowUpRight size={16} aria-hidden="true" />
+        </a>
+        <p className="mx-auto mt-3 max-w-2xl text-xs leading-relaxed text-[#515d82]">
+          The 10% bundle discount is a proposed offer. Website scope, monthly price, subscription terms, and discount eligibility are confirmed in your quote.
+        </p>
       </div>
     </section>
   );

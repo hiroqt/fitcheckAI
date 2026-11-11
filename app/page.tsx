@@ -1,100 +1,54 @@
 "use client";
 
-import React, { useState } from "react";
-import { AmbientBackground } from "@/components/ui/ambient-background";
-import { Navbar } from "./components/Navbar";
+import { useState } from "react";
 import { Hero } from "./components/Hero";
 import { InteractiveShowroom } from "./components/InteractiveShowroom";
-import { ArchitectureBento } from "./components/ArchitectureBento";
-import { ScrollHorizontalTicker } from "@/components/ui/scroll-horizontal-ticker";
-import { EditorialFlow } from "./components/EditorialFlow";
+import { DemoPreviewVideo } from "./components/DemoPreviewVideo";
 import { MinimalPricing } from "./components/MinimalPricing";
-import { EditorialCta } from "./components/EditorialCta";
-import { CommunityHub } from "./components/CommunityHub";
-import { Footer } from "./components/Footer";
+import { FaqAccordion } from "./components/FaqAccordion";
 import { PilotModal } from "./components/PilotModal";
+import { SiteFooter } from "./components/SiteFooter";
 
 export default function LandingPage() {
   const [isPilotModalOpen, setIsPilotModalOpen] = useState(false);
-
-  const handleOpenPilotModal = () => {
+  const [pilotTrigger, setPilotTrigger] = useState<HTMLElement | null>(null);
+  const [pilotPack, setPilotPack] = useState("499");
+  const openPilot = (pack = "499") => {
+    setPilotTrigger(document.activeElement instanceof HTMLElement ? document.activeElement : null);
+    setPilotPack(pack);
     setIsPilotModalOpen(true);
   };
 
-  const handleClosePilotModal = () => {
-    setIsPilotModalOpen(false);
-  };
-
   return (
-    <AmbientBackground>
-      {/* 1. Floating Burger Menu Header (Lando Norris Inspired) */}
-      <Navbar onOpenPilotModal={handleOpenPilotModal} />
-
-      {/* 2. 1-Page Cinematic Scene Sequence with Scroll-Driven Horizontal Text */}
-      <main className="relative">
-        {/* Scene 1: Monolithic Hero */}
-        <Hero onOpenPilotModal={handleOpenPilotModal} />
-
-        {/* Scene 2: 3D Garment Orbit & Live Mirror Showroom */}
+    <>
+      <main className="mx-auto max-w-[1600px] px-2.5 pt-2.5 sm:px-4 sm:pt-4">
+        <Hero onOpenPilotModal={openPilot} />
         <InteractiveShowroom />
-
-        {/* Signature Lando Norris Horizontal Text Scrub (Row 1 left, Row 2 right) */}
-        <ScrollHorizontalTicker
-          row1Text={[
-            "SEE IT ON YOU",
-            "ZERO DOWNLOAD",
-            "30S LIVE PREVIEW",
-            "OPTICAL STYLE MIRROR",
-            "SEE IT ON YOU",
-          ]}
-          row2Text={[
-            "INSTAGRAM DM SALES",
-            "₱499 PILOT PACK",
-            "PHILIPPINE DPA 10173",
-            "AUDIO STRICTLY MUTED",
-            "INSTAGRAM DM SALES",
-          ]}
-        />
-
-        {/* Scene 3: Text-Focused Information Bento Grid (Pure Telemetry & Metrics) */}
-        <ArchitectureBento />
-
-        {/* Scene 4: 3-Beat Assisted Sales Journey */}
-        <EditorialFlow />
-
-        {/* Second Opposing Horizontal Kinetic Marquee */}
-        <ScrollHorizontalTicker
-          row1Text={[
-            "PIÑA-SILK BARONG",
-            "RESORT LINEN",
-            "TERRACOTTA SATIN",
-            "INABEL WEAVE",
-            "PIÑA-SILK BARONG",
-          ]}
-          row2Text={[
-            "FIXED PREPAID PACKS",
-            "ZERO OVERAGES",
-            "3–5 LAUNCH PARTNERS",
-            "MANILA / PH",
-            "FIXED PREPAID PACKS",
-          ]}
-        />
-
-        {/* Scene 4: Transparent Unit Economics (₱499 & ₱1,799) */}
-        <MinimalPricing onOpenPilotModal={handleOpenPilotModal} />
-
-        {/* Scene 5: Controlled Pilot Intake */}
-        <EditorialCta onOpenPilotModal={handleOpenPilotModal} />
-
-        {/* Scene 6: Second-to-Last Section - Lando Norris Community & Social Media Hub */}
-        <CommunityHub />
+        <section id="how-it-works" className="editorial-section scroll-mt-8">
+          <div className="grid items-center gap-6 md:grid-cols-[minmax(0,1.2fr)_minmax(16rem,0.8fr)] md:gap-12">
+            <div className="overflow-hidden border border-[#d5d5e4] bg-[#15152f]">
+              <DemoPreviewVideo />
+            </div>
+            <div className="space-y-4">
+              <h2 className="text-balance font-black italic uppercase tracking-[-0.045em] text-4xl sm:text-6xl">
+                See it in motion.
+              </h2>
+              <p className="text-[#34436f]">A short look at the live style preview.</p>
+              <p className="text-xl font-semibold text-[#101b43]">
+                Choose a garment and preview it live for up to 20 seconds.
+              </p>
+              <p className="text-[#34436f]">Audio stays off. Stop the preview whenever you like.</p>
+              <p className="border-t border-[#d5d5e4] pt-4 text-sm font-medium text-[#101b43]">
+                Visual guide only. Check the seller’s size chart for fit.
+              </p>
+            </div>
+          </div>
+        </section>
+        <MinimalPricing onOpenPilotModal={openPilot} />
+        <FaqAccordion />
       </main>
-
-      {/* 3. Docked Immersive Bottom Console / Footer */}
-      <Footer onOpenPilotModal={handleOpenPilotModal} />
-
-      {/* 4. Brand Pilot Intake Modal */}
-      <PilotModal isOpen={isPilotModalOpen} onClose={handleClosePilotModal} />
-    </AmbientBackground>
+      <SiteFooter />
+      <PilotModal isOpen={isPilotModalOpen} selectedPack={pilotPack} returnFocusTo={pilotTrigger} onClose={() => setIsPilotModalOpen(false)} />
+    </>
   );
 }
