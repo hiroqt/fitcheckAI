@@ -81,7 +81,7 @@ export function AmbientCanvasBackground({
     let idleBlend = 1; // 0 = active user interaction, 1 = full ambient idle mode
 
     // Dynamic color grading subscription state
-    let currentFilament = { r: 0, g: 56, b: 255 };
+    const currentFilament = { r: 0, g: 56, b: 255 };
     let targetFilament = { r: 0, g: 56, b: 255 };
 
     // 1. Configure Persistent Ambient Drifting Radiant Orbs

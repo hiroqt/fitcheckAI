@@ -194,7 +194,7 @@ function FloatingSocialLink({
 
       {/* Aesthetic delimiter between channels */}
       <span className="text-slate-700/80 font-mono text-2xl sm:text-4xl pl-4 sm:pl-8 select-none">
-        //
+        {"//"}
       </span>
     </a>
   );

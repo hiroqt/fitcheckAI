@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 import { submitPilotApplication, type PilotApplicationState } from "@/app/lib/actions";
 
 const initialState: PilotApplicationState = { success: false, message: "" };
-const fieldStyle = "mt-1 block min-h-11 w-full rounded-sm border border-[#9dadde] bg-white px-3 text-sm text-[#101b43]";
+const fieldStyle = "mt-1 block min-h-11 w-full rounded-sm border border-[#9dadde] bg-white px-3 text-sm text-[#101b43] transition-colors duration-200 hover:border-[#0038ff] focus:border-[#0038ff] focus:ring-2 focus:ring-[#0038ff]/20 focus:outline-none";
 
 interface PilotModalProps {
   isOpen: boolean;

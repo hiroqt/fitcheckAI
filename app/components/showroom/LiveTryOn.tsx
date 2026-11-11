@@ -376,7 +376,11 @@ export function LiveTryOn() {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-10">
       <div className="min-w-0 space-y-3">
-        <div className="relative isolate aspect-[4/3] min-w-0 overflow-hidden bg-[#15152f] text-white sm:aspect-video">
+        <div className="relative isolate aspect-[4/3] min-w-0 overflow-hidden rounded-md bg-[#15152f] text-white shadow-xl sm:aspect-video">
+          <span aria-hidden="true" className="viewfinder-bracket viewfinder-top-left text-white/50" />
+          <span aria-hidden="true" className="viewfinder-bracket viewfinder-top-right text-white/50" />
+          <span aria-hidden="true" className="viewfinder-bracket viewfinder-bottom-left text-white/50" />
+          <span aria-hidden="true" className="viewfinder-bracket viewfinder-bottom-right text-white/50" />
           {photo && stage !== "done" && <Image src={photo.url} alt="Your selected body photo, held in this page for preview" fill sizes="(max-width: 1023px) 100vw, 800px" unoptimized className={`object-contain ${stage === "live" ? "opacity-0" : ""}`} />}
           {!photo && stage !== "live" && (
             <>
