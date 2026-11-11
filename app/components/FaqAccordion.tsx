@@ -119,7 +119,7 @@ export function FaqAccordion() {
         <h2 id="faq-title" className="editorial-heading italic faq-scroll-heading">
           Questions, answered.
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium italic tracking-[-0.025em] leading-relaxed text-[#253360]">
+        <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium tracking-[-0.025em] leading-relaxed text-[#253360]">
           Whether you’re exploring a look or considering a brand pilot, we’re here to help you understand what FitCheck can do.
         </p>
       </div>
@@ -141,7 +141,7 @@ export function FaqAccordion() {
                     className="faq-chevron shrink-0 pt-0.5 text-[#66739a]"
                   />
                 </summary>
-                <div className="max-w-3xl px-2 pb-5 text-sm sm:text-base font-normal italic tracking-[-0.015em] leading-7 text-[#253360]">
+                <div className="max-w-3xl px-2 pb-5 text-sm sm:text-base font-normal tracking-[-0.015em] leading-7 text-[#253360]">
                   {answer}
                 </div>
               </details>
