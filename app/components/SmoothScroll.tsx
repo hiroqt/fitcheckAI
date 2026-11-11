@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
+
+declare global {
+  interface Window {
+    __lenis?: Lenis | null;
+  }
+}
 
 interface SmoothScrollProps {
   children: React.ReactNode;
@@ -16,6 +23,7 @@ interface SmoothScrollProps {
  */
 export function SmoothScroll({ children }: SmoothScrollProps) {
   const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     // Respect accessibility motion preference
@@ -37,6 +45,9 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
     });
 
     lenisRef.current = lenis;
+    if (typeof window !== "undefined") {
+      window.__lenis = lenis;
+    }
 
     let rafId: number;
 
@@ -78,8 +89,33 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
+      if (typeof window !== "undefined") {
+        window.__lenis = null;
+      }
     };
   }, []);
+
+  useEffect(() => {
+    if (!lenisRef.current) return;
+
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash;
+      if (hash) {
+        const target = document.querySelector(hash);
+        if (target) {
+          lenisRef.current.scrollTo(target as HTMLElement, {
+            offset: 0,
+            duration: 1.25,
+            force: true,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          });
+          return;
+        }
+      }
+      lenisRef.current.scrollTo(0, { immediate: true, force: true });
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
 
   return <>{children}</>;
 }

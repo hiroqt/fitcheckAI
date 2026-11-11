@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { ArrowUpRight, Mail } from "lucide-react";
+import { ScrollHeading, ScrollText, ScrollStagger, ScrollStaggerItem } from "./ScrollReveal";
 
 interface SocialChannel {
   name: string;
@@ -79,66 +80,75 @@ export function SocialShowcase() {
     >
       {/* Section Header */}
       <div className="mx-auto mb-10 max-w-3xl text-center">
+        <ScrollHeading margin="-80px">
           <h2 id="community-title" className="editorial-heading italic">
             Connect with FitCheck
           </h2>
+        </ScrollHeading>
+        <ScrollText delay={0.1} margin="-80px">
           <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium tracking-[-0.025em] leading-relaxed text-[#253360]">
             Follow virtual style previews, read product updates, or get in touch across our official channels.
           </p>
+        </ScrollText>
       </div>
 
       {/* Editorial List (Clean, unified sans-serif typography with thin dividers, no cards, no gradients) */}
-      <div className="divide-y divide-[#d5d5e4] border-y border-[#d5d5e4]">
+      <ScrollStagger
+        stagger={0.06}
+        margin="-80px"
+        className="divide-y divide-[#d5d5e4] border-y border-[#d5d5e4]"
+      >
         {CHANNELS.map((channel) => (
-          <a
-            key={channel.name}
-            href={channel.href}
-            {...(channel.isMail ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-            className="group flex flex-col gap-4 py-6 sm:py-7 transition-colors duration-200 hover:bg-[#0038ff]/[0.03] px-3 sm:px-6 rounded-sm sm:flex-row sm:items-center sm:justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff]"
-          >
-            {/* Channel Identity */}
-            <div className="flex items-center gap-4 sm:w-[35%] min-w-0">
-              <div
-                className={`flex size-11 shrink-0 items-center justify-center rounded-xl overflow-hidden transition-transform duration-200 group-hover:scale-105 ${channel.iconBgClass}`}
-              >
-                <Image
-                  src={channel.iconSrc}
-                  alt={channel.name}
-                  width={28}
-                  height={28}
-                  className="size-7 object-contain"
-                />
-              </div>
-              <div className="min-w-0">
-                <span className="block text-lg sm:text-xl font-bold tracking-[-0.02em] text-[#101b43]">
-                  {channel.name}
-                </span>
-                <span className="block text-sm font-medium text-[#66739a] truncate">
-                  {channel.handle}
-                </span>
-              </div>
-            </div>
-
-            {/* Detail / Description */}
-            <div className="sm:w-[48%] text-sm sm:text-base font-normal tracking-[-0.015em] leading-relaxed text-[#253360]">
-              {channel.detail}
-            </div>
-
-            {/* Action Link */}
-            <div
-              className="flex items-center gap-1.5 text-sm font-semibold tracking-[-0.01em] sm:w-[17%] sm:justify-end shrink-0 transition-transform duration-200 group-hover:translate-x-1"
-              style={{ color: channel.solidColor }}
+          <ScrollStaggerItem key={channel.name}>
+            <a
+              href={channel.href}
+              {...(channel.isMail ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+              className="group flex flex-col gap-4 py-6 sm:py-7 transition-colors duration-200 hover:bg-[#0038ff]/[0.03] px-3 sm:px-6 rounded-sm sm:flex-row sm:items-center sm:justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff]"
             >
-              <span>{channel.actionText}</span>
-              {channel.isMail ? (
-                <Mail className="size-4 shrink-0" />
-              ) : (
-                <ArrowUpRight className="size-4 shrink-0" />
-              )}
-            </div>
-          </a>
+              {/* Channel Identity */}
+              <div className="flex items-center gap-4 sm:w-[35%] min-w-0">
+                <div
+                  className={`flex size-11 shrink-0 items-center justify-center rounded-xl overflow-hidden transition-transform duration-200 group-hover:scale-105 ${channel.iconBgClass}`}
+                >
+                  <Image
+                    src={channel.iconSrc}
+                    alt={channel.name}
+                    width={28}
+                    height={28}
+                    className="size-7 object-contain"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <span className="block text-lg sm:text-xl font-bold tracking-[-0.02em] text-[#101b43]">
+                    {channel.name}
+                  </span>
+                  <span className="block text-sm font-medium text-[#66739a] truncate">
+                    {channel.handle}
+                  </span>
+                </div>
+              </div>
+
+              {/* Detail / Description */}
+              <div className="sm:w-[48%] text-sm sm:text-base font-normal tracking-[-0.015em] leading-relaxed text-[#253360]">
+                {channel.detail}
+              </div>
+
+              {/* Action Link */}
+              <div
+                className="flex items-center gap-1.5 text-sm font-semibold tracking-[-0.01em] sm:w-[17%] sm:justify-end shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+                style={{ color: channel.solidColor }}
+              >
+                <span>{channel.actionText}</span>
+                {channel.isMail ? (
+                  <Mail className="size-4 shrink-0" />
+                ) : (
+                  <ArrowUpRight className="size-4 shrink-0" />
+                )}
+              </div>
+            </a>
+          </ScrollStaggerItem>
         ))}
-      </div>
+      </ScrollStagger>
     </section>
   );
 }

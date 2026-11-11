@@ -20,8 +20,10 @@ const editorialDisplay = Barlow_Condensed({
 });
 
 const description = "Explore Floating Brand’s showroom and FitCheck’s live virtual try-on pilot.";
+const siteUrl = process.env.FITCHECK_SHOWROOM_ORIGIN || "https://tryfitcheckai.online";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "FitCheck",
     template: "%s | FitCheck",
@@ -35,6 +37,16 @@ export const metadata: Metadata = {
     },
     description,
     type: "website",
+    url: "/",
+    siteName: "FitCheck",
+    images: [
+      {
+        url: "/opengraph.png",
+        width: 1672,
+        height: 941,
+        alt: "FitCheck - Virtual Style Preview",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -43,6 +55,7 @@ export const metadata: Metadata = {
       template: "%s | FitCheck",
     },
     description,
+    images: ["/opengraph.png"],
   },
   icons: {
     icon: [

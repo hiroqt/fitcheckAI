@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight, Check } from "lucide-react";
-import { ScrollStagger, ScrollStaggerItem } from "./ScrollReveal";
+import { ScrollHeading, ScrollText, ScrollStagger, ScrollStaggerItem } from "./ScrollReveal";
 import { StorefrontShowcase } from "./StorefrontShowcase";
 
 const packs = [
@@ -44,15 +44,19 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
   return (
     <section id="scene-pricing" className="editorial-section scroll-mt-8" aria-labelledby="pricing-title">
       <div className="text-center">
-        <h2 id="pricing-title" className="editorial-heading italic">Choose the right pilot for your brand</h2>
-        <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium tracking-[-0.025em] text-[#253360]">
-          Start small, choose the best value for regular use, or talk with us about a larger or custom pilot.
-        </p>
+        <ScrollHeading margin="-80px">
+          <h2 id="pricing-title" className="editorial-heading italic">Choose the right pilot for your brand</h2>
+        </ScrollHeading>
+        <ScrollText delay={0.1} margin="-80px">
+          <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium tracking-[-0.025em] text-[#253360]">
+            Start small, choose the best value for regular use, or talk with us about a larger or custom pilot.
+          </p>
+        </ScrollText>
       </div>
 
       <ScrollStagger
         stagger={0.08}
-        margin="-60px"
+        margin="-80px"
         className="mt-10 grid list-none gap-5 p-0 md:grid-cols-2 md:items-stretch xl:grid-cols-4"
       >
         {packs.map(({ name, price, detail, description, features, selection, recommended }) => (
@@ -101,9 +105,11 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
         ))}
       </ScrollStagger>
 
-      <p className="mx-auto mt-8 max-w-4xl text-center text-sm font-medium tracking-[-0.015em] leading-relaxed text-[#515d82]">
-        Pilot test offers from our planning guide. Starter and Growth are proposed prepaid packs with no automatic top-ups. Larger Business and Custom are planning options; Custom pricing is scoped around your expected usage and business needs. Final allowances, session rules, taxes, and billing terms must be confirmed before any paid pilot.
-      </p>
+      <ScrollText delay={0.15} margin="-80px">
+        <p className="mx-auto mt-8 max-w-4xl text-center text-sm font-medium tracking-[-0.015em] leading-relaxed text-[#515d82]">
+          Pilot test offers from our planning guide. Starter and Growth are proposed prepaid packs with no automatic top-ups. Larger Business and Custom are planning options; Custom pricing is scoped around your expected usage and business needs. Final allowances, session rules, taxes, and billing terms must be confirmed before any paid pilot.
+        </p>
+      </ScrollText>
 
       {/* Interactive Website & Storefront Showcase */}
       <StorefrontShowcase onOpenPilotModal={onOpenPilotModal} />

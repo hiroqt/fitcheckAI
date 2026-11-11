@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUp, ArrowRight, Sparkles } from "lucide-react";
+import { ScrollReveal, ScrollHeading, ScrollText } from "./ScrollReveal";
 
 interface FooterProps {
   onOpenPilotModal?: () => void;
@@ -61,205 +62,262 @@ const SOCIAL_LINKS = [
   { label: "Instagram", href: "https://www.instagram.com/fitcheck.startup/", icon: InstagramIcon },
 ];
 
-            const NAVIGATION_COLUMNS = [
-              {
-                title: "Product",
-                links: [
-                  { label: "Overview", href: "/#scene-hero" },
-                  { label: "Showroom", href: "/#scene-showroom" },
-                  { label: "Style Preview", href: "/#how-it-works" },
-                  { label: "Pilot Pricing", href: "/#scene-pricing" },
-                  { label: "FAQ", href: "/#faq" },
-                ],
-              },
+const NAVIGATION_COLUMNS = [
   {
-                title: "Platform",
-                links: [
-                  { label: "Brand Pilot Intake", href: "/#scene-pricing", isPilotAction: true },
-                  { label: "Floating Brand", href: "/#scene-showroom" },
-                  { label: "Garment Specs", href: "/#how-it-works" },
-                  { label: "Retail Integration", href: "mailto:fitcheckai0@gmail.com" },
-                ],
-              },
+    title: "Product",
+    links: [
+      { label: "Overview", href: "/#scene-hero" },
+      { label: "Showroom", href: "/#scene-showroom" },
+      { label: "Style Preview", href: "/#how-it-works" },
+      { label: "Pilot Pricing", href: "/#scene-pricing" },
+      { label: "FAQ", href: "/#faq" },
+    ],
+  },
   {
-                title: "Legal & Safety",
-                links: [
-                  { label: "Privacy Policy", href: "/privacy" },
-                  { label: "Terms of Service", href: "/terms" },
-                ],
-              },
+    title: "Platform",
+    links: [
+      { label: "Brand Pilot Intake", href: "/#scene-pricing", isPilotAction: true },
+      { label: "Floating Brand", href: "/#scene-showroom" },
+      { label: "Garment Specs", href: "/#how-it-works" },
+      { label: "Retail Integration", href: "mailto:fitcheckai0@gmail.com" },
+    ],
+  },
+  {
+    title: "Legal & Safety",
+    links: [
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+    ],
+  },
 ];
 
-          export function Footer({ onOpenPilotModal, className = "" }: FooterProps) {
-            const scrollToTop = () => {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            };
+export function Footer({ onOpenPilotModal, className = "" }: FooterProps) {
+  const handleSlideUp = (target: string | number | HTMLElement) => {
+    if (typeof window === "undefined") return;
 
-                        return (
-                        <footer
-                          aria-label="Site Footer"
-                          className={`relative w-full border-t border-white/10 bg-[#0E121E] text-white ${className}`}
+    if (window.__lenis) {
+      window.__lenis.scrollTo(target as HTMLElement, {
+        offset: 0,
+        duration: 1.25,
+        immediate: false,
+        lock: false,
+        force: true, // Guarantees immediate interactive trigger on every single click
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+      return;
+    }
+
+    if (typeof target === "number") {
+      window.scrollTo({ top: target, behavior: "smooth" });
+    } else if (typeof target === "string") {
+      const el = document.querySelector(target);
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const scrollToTop = () => {
+    handleSlideUp(0);
+  };
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("/#") || href.startsWith("#")) {
+      const targetId = href.replace(/^\/?#/, "");
+      const element = document.getElementById(targetId);
+      if (element) {
+        e.preventDefault();
+        window.history.pushState(null, "", `#${targetId}`);
+        handleSlideUp(element);
+        return;
+      }
+      if (targetId === "scene-hero" || targetId === "top") {
+        if (window.location.pathname === "/") {
+          e.preventDefault();
+          window.history.pushState(null, "", "#scene-hero");
+          handleSlideUp(0);
+          return;
+        }
+      }
+    }
+  };
+
+  return (
+    <footer
+      aria-label="Site Footer"
+      className={`relative w-full border-t border-white/10 bg-[#0E121E] text-white ${className}`}
+    >
+      {/* "See what works for you" Floating Action Card */}
+      <section className="relative z-10 mx-auto -mt-14 mb-4 grid max-w-6xl gap-6 overflow-hidden rounded-xl border border-white/20 bg-[#0038ff] px-6 py-7 shadow-xl sm:-mt-16 sm:mb-6 sm:grid-cols-[1fr_auto] sm:items-center sm:px-10 sm:py-9">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-24 size-64 rounded-full border border-white/10" />
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 left-1/3 size-72 rounded-full border border-white/10" />
+        <div className="relative">
+          <ScrollHeading delay={0} margin="-80px">
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-white/90">
+              See what works for you
+            </p>
+            <h2 className="mt-2 text-balance text-4xl font-black italic tracking-[0.01em] text-white sm:text-5xl lg:text-6xl">
+              Curious about FitCheck?
+            </h2>
+          </ScrollHeading>
+          <ScrollText delay={0.1} margin="-80px">
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/90">
+              Try a style preview or send us a message. We’re happy to help you get started.
+            </p>
+          </ScrollText>
+        </div>
+        <ScrollReveal delay={0.15} margin="-80px" className="relative flex flex-wrap gap-3">
+          <Link
+            href="/#scene-showroom"
+            onClick={(e) => handleAnchorClick(e, "/#scene-showroom")}
+            className="inline-flex min-h-11 items-center justify-center rounded-md bg-white px-5 text-sm font-semibold text-[#101b43] transition-all duration-150 hover:bg-blue-50 active:scale-95 active:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0038ff] cursor-pointer"
+          >
+            Try a look
+          </Link>
+          <a
+            href="mailto:fitcheckai0@gmail.com"
+            className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/40 bg-white/10 px-5 text-sm font-semibold text-white transition-all duration-150 hover:bg-white/20 active:scale-95 active:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
+          >
+            Message us
+          </a>
+        </ScrollReveal>
+      </section>
+
+      {/* Main Footer Container - comfortably positioned upward relative to the card */}
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-6 pb-14 sm:px-10 sm:pt-8 sm:pb-16 lg:px-12 lg:pt-10 lg:pb-18">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+          {/* Brand Info (Left Asymmetric Column: 5 of 12 cols) */}
+          <div className="flex flex-col justify-between space-y-8 lg:col-span-5">
+            <div className="space-y-4">
+              {/* Wordmark */}
+              <ScrollReveal delay={0} margin="-80px">
+                <Link
+                  href="/#scene-hero"
+                  onClick={(e) => handleAnchorClick(e, "/#scene-hero")}
+                  aria-label="FitCheck home"
+                  className="inline-block transition-all duration-150 hover:opacity-85 active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
+                >
+                  <Image
+                    src="/fitcheck-wordmark.webp"
+                    width={138}
+                    height={38}
+                    alt="FitCheck AI"
+                    className="h-auto w-auto brightness-110"
+                    priority={false}
+                  />
+                </Link>
+              </ScrollReveal>
+
+              {/* Tagline */}
+              <ScrollHeading delay={0.06} margin="-80px">
+                <p className="text-balance text-base font-medium tracking-tight text-zinc-300 sm:text-lg">
+                  AI-powered digital wardrobe and clothing brand integration.
+                </p>
+              </ScrollHeading>
+
+              {/* Supporting Editorial Microcopy */}
+              <ScrollText delay={0.12} margin="-80px">
+                <p className="max-w-md text-xs font-normal leading-relaxed text-zinc-400">
+                  A browser-based style preview and moving mirror for curated fashion labels. Audio-off capture with zero biometric retention.
+                </p>
+              </ScrollText>
+            </div>
+          </div>
+
+          {/* Navigation Columns (Right Multi-Column Grid: 7 of 12 cols) */}
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7 lg:pl-6">
+            {NAVIGATION_COLUMNS.map((col) => (
+              <div key={col.title} className="space-y-4">
+                <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                  {col.title}
+                </h3>
+                <nav aria-label={col.title} className="flex flex-col space-y-2.5">
+                  {col.links.map((link) => {
+                    if (link.isPilotAction && onOpenPilotModal) {
+                      return (
+                        <button
+                          key={link.label}
+                          type="button"
+                          onClick={onOpenPilotModal}
+                          className="group inline-flex items-center gap-1.5 text-left text-sm text-zinc-400 transition-all duration-150 hover:text-white active:scale-95 active:text-[#0038ff] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
                         >
-                          {/* "See what works for you" Floating Action Card */}
-                          <section className="relative z-10 mx-auto -mt-14 mb-4 grid max-w-6xl gap-6 overflow-hidden rounded-xl border border-white/20 bg-[#0038ff] px-6 py-7 shadow-xl sm:-mt-16 sm:mb-6 sm:grid-cols-[1fr_auto] sm:items-center sm:px-10 sm:py-9">
-                            <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-24 size-64 rounded-full border border-white/10" />
-                            <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 left-1/3 size-72 rounded-full border border-white/10" />
-                            <div className="relative">
-                              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-white/90">
-                                See what works for you
-                              </p>
-                              <h2 className="mt-2 text-balance text-4xl font-black italic tracking-[0.01em] text-white sm:text-5xl lg:text-6xl">
-                                Curious about FitCheck?
-                              </h2>
-                              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/90">
-                                Try a style preview or send us a message. We’re happy to help you get started.
-                              </p>
-                            </div>
-                            <div className="relative flex flex-wrap gap-3">
-                              <Link
-                                href="/#scene-showroom"
-                                className="inline-flex min-h-11 items-center justify-center rounded-md bg-white px-5 text-sm font-semibold text-[#101b43] transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0038ff]"
-                              >
-                                Try a look
-                              </Link>
-                              <a
-                                href="mailto:fitcheckai0@gmail.com"
-                                className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/40 bg-white/10 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                              >
-                                Message us
-                              </a>
-                            </div>
-                          </section>
+                            <span className="transition-transform duration-200 group-hover:translate-x-0.5 group-active:translate-x-1">
+                              {link.label}
+                            </span>
+                            <Sparkles className="h-3 w-3 text-[#0038ff] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-active:opacity-100" />
+                        </button>
+                      );
+                    }
 
-                          {/* Main Footer Container - comfortably positioned upward relative to the card */}
-                          <div className="relative z-10 mx-auto max-w-7xl px-6 pt-6 pb-14 sm:px-10 sm:pt-8 sm:pb-16 lg:px-12 lg:pt-10 lg:pb-18">
-                            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-                              {/* Brand Info (Left Asymmetric Column: 5 of 12 cols) */}
-                              <div className="flex flex-col justify-between space-y-8 lg:col-span-5">
-                                <div className="space-y-4">
-                                  {/* Wordmark */}
-                                  <div>
-                                    <Link
-                                      href="/#scene-hero"
-                                      aria-label="FitCheck home"
-                                      className="inline-block transition-opacity duration-200 hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
-                                    >
-                                      <Image
-                                        src="/fitcheck-wordmark.webp"
-                                        width={138}
-                                        height={38}
-                                        alt="FitCheck AI"
-                                        className="h-auto w-auto brightness-110"
-                                        priority={false}
-                                      />
-                                    </Link>
-                                  </div>
-
-                                {/* Tagline */}
-                                <p className="text-balance text-base font-medium tracking-tight text-zinc-300 sm:text-lg">
-                                  AI-powered digital wardrobe and clothing brand integration.
-                                </p>
-
-                              {/* Supporting Editorial Microcopy */}
-                              <p className="max-w-md text-xs font-normal leading-relaxed text-zinc-400">
-                                A browser-based style preview and moving mirror for curated fashion labels. Audio-off capture with zero biometric retention.
-                              </p>
-                            </div>
-                          </div>
-
-                                    {/* Navigation Columns (Right Multi-Column Grid: 7 of 12 cols) */ }
-                                    <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7 lg:pl-6">
-                                      {NAVIGATION_COLUMNS.map((col) => (
-                                        <div key={col.title} className="space-y-4">
-                                          <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                                            {col.title}
-                                          </h3>
-                                          <nav aria-label={col.title} className="flex flex-col space-y-2.5">
-                                            {col.links.map((link) => {
-                                              if (link.isPilotAction && onOpenPilotModal) {
-                                                return (
-                                                  <button
-                                                    key={link.label}
-                                                    type="button"
-                                                    onClick={onOpenPilotModal}
-                                                    className="group inline-flex items-center gap-1.5 text-left text-sm text-zinc-400 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
-                                                  >
-                                                    <span className="transition-transform duration-200 group-hover:translate-x-0.5">
-                                                      {link.label}
-                                                    </span>
-                                                    <Sparkles className="h-3 w-3 text-[#0038ff] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-                                                  </button>
-                                                );
-                                              }
-
-                    const isExternal = link.href.startsWith("http") || link.href.startsWith("mailto:");
-                            return (
-                            <Link
-                              key={link.label}
-                              href={link.href}
-                              {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                              className="group inline-flex items-center gap-1.5 text-sm text-zinc-400 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
-                            >
-                              <span className="transition-transform duration-200 group-hover:translate-x-0.5">
-                                {link.label}
-                              </span>
-                              <ArrowRight className="h-3 w-3 text-[#0038ff] opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0" />
-                            </Link>
-                            );
-                  })}
-                          </nav>
-                      </div>
-            ))}
-                    </div>
-                  </div>
-
-                      {/* Divider */}
-                      <div className="mt-12 border-t border-white/10 pt-8 sm:mt-14 sm:pt-10">
-                        <div className="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row">
-                          {/* Copyright & Disclaimer */}
-                          <div className="flex flex-col items-center gap-1 text-center sm:items-start sm:text-left">
-                            <p className="text-xs text-zinc-400">
-                              © 2026 FitCheck AI. All rights reserved.
-                            </p>
-                            <p className="text-[11px] text-zinc-400">
-                              Style preview for fashion discovery. Refer to brand sizing charts for physical garments.
-                            </p>
-                          </div>
-
-                            {/* Social Icons & Back to Top */}
-                            <div className="flex flex-wrap items-center gap-4">
-                              {/* Social Channels */}
-                              <nav aria-label="Social media" className="flex items-center gap-2">
-                                {SOCIAL_LINKS.map(({ label, href, icon: IconComponent }) => (
-                                  <a
-                                    key={label}
-                                    href={href}
-                                    aria-label={label}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-zinc-400 transition-all duration-200 hover:border-white/30 hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
-                                  >
-                                    <IconComponent className="h-4 w-4" />
-                                  </a>
-                                ))}
-                              </nav>
-
-                              <div className="hidden h-5 w-px bg-white/10 sm:block" />
-
-                    {/* Back to top button */}
-                    <button
-                      type="button"
-                      onClick={scrollToTop}
-                      aria-label="Scroll back to top"
-                      className="group inline-flex h-9 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3.5 text-xs font-medium text-zinc-300 transition-all duration-200 hover:border-white/30 hover:bg-white/10 hover:text-white active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
-                    >
-                      <span>Back to top</span>
-                      <ArrowUp className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" />
-                    </button>
-                  </div>
-                </div>
+                  const isExternal = link.href.startsWith("http") || link.href.startsWith("mailto:");
+                  return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={(e) => handleAnchorClick(e, link.href)}
+                    {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    className="group inline-flex items-center gap-1.5 text-sm text-zinc-400 transition-all duration-150 hover:text-white active:scale-95 active:text-[#0038ff] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
+                  >
+                    <span className="transition-transform duration-200 group-hover:translate-x-0.5 group-active:translate-x-1">
+                      {link.label}
+                    </span>
+                    <ArrowRight className="h-3 w-3 text-[#0038ff] opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-active:translate-x-1 group-active:opacity-100" />
+                  </Link>
+                  );
+                                            })}
+                </nav>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="mt-12 border-t border-white/10 pt-8 sm:mt-14 sm:pt-10">
+          <div className="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row">
+            {/* Copyright & Disclaimer */}
+            <div className="flex flex-col items-center gap-1 text-center sm:items-start sm:text-left">
+              <p className="text-xs text-zinc-400">
+                © 2026 FitCheck AI. All rights reserved.
+              </p>
+              <p className="text-[11px] text-zinc-400">
+                Style preview for fashion discovery. Refer to brand sizing charts for physical garments.
+              </p>
+            </div>
+
+            {/* Social Icons & Back to Top */}
+            <div className="flex flex-wrap items-center gap-4">
+              {/* Social Channels */}
+              <nav aria-label="Social media" className="flex items-center gap-2">
+                {SOCIAL_LINKS.map(({ label, href, icon: IconComponent }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    aria-label={label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-zinc-400 transition-all duration-200 hover:border-white/30 hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
+                  >
+                    <IconComponent className="h-4 w-4" />
+                  </a>
+                ))}
+              </nav>
+
+              <div className="hidden h-5 w-px bg-white/10 sm:block" />
+
+              {/* Back to top button */}
+              <button
+                type="button"
+                onClick={scrollToTop}
+                aria-label="Scroll back to top"
+                className="group inline-flex h-9 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3.5 text-xs font-medium text-zinc-300 transition-all duration-150 hover:border-white/30 hover:bg-white/10 hover:text-white active:scale-90 active:bg-white/20 active:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0038ff]"
+              >
+                <span>Back to top</span>
+                <ArrowUp className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-active:-translate-y-1.5" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div >
     </footer >
   );
-          }
+}
