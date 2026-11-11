@@ -105,7 +105,7 @@ interface FooterProps {
                       <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 left-1/3 size-72 rounded-full border border-white/10" />
                       <div className="relative">
                         <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-white/90">See what works for you</p>
-                        <h2 className="mt-2 text-balance text-4xl font-black italic tracking-[-0.045em] text-white sm:text-5xl lg:text-6xl">Curious about FitCheck?</h2>
+                        <h2 className="mt-2 text-balance text-4xl font-black italic tracking-[0.01em] text-white sm:text-5xl lg:text-6xl">Curious about FitCheck?</h2>
                         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/90">
                           Try a style preview or send us a message. We’re happy to help you get started.
                         </p>
