@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUp, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowUp, ArrowRight, Sparkles } from "lucide-react";
 
 interface FooterProps {
   onOpenPilotModal?: () => void;
@@ -91,28 +91,6 @@ interface FooterProps {
                   ];
 
                   export function Footer({onOpenPilotModal, className = ""}: FooterProps) {
-  const [phtTime, setPhtTime] = useState("");
-
-  // Live Philippine Standard Time clock
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-                  setPhtTime(
-                  new Intl.DateTimeFormat("en-US", {
-                    timeZone: "Asia/Manila",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                  hour12: true,
-        }).format(now)
-                  );
-    };
-
-                  updateTime();
-                  const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   const scrollToTop = () => {
                     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -120,13 +98,35 @@ interface FooterProps {
                   return (
                   <footer
                     aria-label="Site Footer"
-                    className={`relative w-full border-t border-white/10 bg-zinc-950 text-white ${className}`}
+                    className={`relative w-full border-t border-white/10 bg-[#0E121E] text-white ${className}`}
                   >
-                    {/* Top subtle ambient highlight */}
-                    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#0038ff]/40 to-transparent" />
-
+                    <section className="relative z-10 mx-auto -mt-14 mb-10 grid max-w-6xl gap-6 overflow-hidden rounded-xl border border-white/20 bg-[#0038ff] px-6 py-7 shadow-xl sm:-mt-16 sm:grid-cols-[1fr_auto] sm:items-center sm:px-10 sm:py-9">
+                      <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-24 size-64 rounded-full border border-white/10" />
+                      <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 left-1/3 size-72 rounded-full border border-white/10" />
+                      <div className="relative">
+                        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-white/90">See what works for you</p>
+                        <h2 className="mt-2 text-balance text-4xl font-black italic tracking-[-0.045em] text-white sm:text-5xl lg:text-6xl">Curious about FitCheck?</h2>
+                        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/90">
+                          Try a style preview or send us a message. We’re happy to help you get started.
+                        </p>
+                      </div>
+                      <div className="relative flex flex-wrap gap-3">
+                        <Link
+                          href="/#scene-showroom"
+                          className="inline-flex min-h-11 items-center justify-center rounded-md bg-white px-5 text-sm font-semibold text-[#101b43] transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0038ff]"
+                        >
+                          Try a look
+                        </Link>
+                        <a
+                          href="mailto:fitcheckai0@gmail.com"
+                          className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/40 bg-white/10 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                        >
+                          Message us
+                        </a>
+                      </div>
+                    </section>
                     {/* Main Container */}
-                    <div className="mx-auto max-w-7xl px-6 py-16 sm:px-10 sm:py-20 lg:px-12">
+                    <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 sm:px-10 sm:py-20 lg:px-12">
                       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
                         {/* Brand Info (Left Asymmetric Column: 5 of 12 cols) */}
                         <div className="flex flex-col justify-between space-y-8 lg:col-span-5">
@@ -160,15 +160,6 @@ interface FooterProps {
                             </p>
                           </div>
 
-                          {/* Status & Privacy Compliance Micro-Bar */}
-                          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-mono text-zinc-500">
-                            <div className="flex items-center gap-1.5 text-white">
-                              <ShieldCheck className="h-3.5 w-3.5 text-white" />
-                              <span className="text-white">RA 10173 Compliant</span>
-                            </div>
-                            <span className="text-zinc-700">•</span>
-                            <div>Manila, PH: <span className="text-zinc-400 tabular-nums">{phtTime || "PST (UTC+8)"}</span></div>
-                          </div>
                         </div>
 
                         {/* Navigation Columns (Right Multi-Column Grid: 7 of 12 cols) */}

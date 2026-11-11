@@ -44,7 +44,7 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
     <section id="scene-pricing" className="editorial-section scroll-mt-8" aria-labelledby="pricing-title">
       <div className="text-center">
         <h2 id="pricing-title" className="editorial-heading italic">Choose the right pilot for your brand</h2>
-        <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium italic tracking-[-0.025em] text-[#253360]">
+        <p className="mx-auto mt-4 max-w-2xl text-lg sm:text-xl font-medium tracking-[-0.025em] text-[#253360]">
           Start small, choose the best value for regular use, or talk with us about a larger or custom pilot.
         </p>
       </div>
@@ -71,8 +71,8 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
 
               <h3 className="text-lg font-bold tracking-tight">{name}</h3>
               <p className="mt-3 text-3xl font-black leading-tight tabular-nums tracking-tight">{price}</p>
-              <p className="mt-2 text-sm font-bold italic tracking-[-0.015em] text-[#0038ff]">{detail}</p>
-              <p className="mt-4 min-h-12 text-sm font-medium italic tracking-[-0.015em] leading-relaxed text-[#34436f]">{description}</p>
+              <p className="mt-2 text-sm font-bold tracking-[-0.015em] text-[#0038ff]">{detail}</p>
+              <p className="mt-4 min-h-12 text-sm font-medium tracking-[-0.015em] leading-relaxed text-[#34436f]">{description}</p>
 
               <ul className="mt-5 w-full grow list-none space-y-3 border-t border-[#d5d5e4] p-0 pt-4 text-sm leading-relaxed text-[#34436f]">
                 {features.map((feature) => (
@@ -100,7 +100,7 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
         ))}
       </ScrollStagger>
 
-      <p className="mx-auto mt-8 max-w-4xl text-center text-sm font-medium italic tracking-[-0.015em] leading-relaxed text-[#515d82]">
+      <p className="mx-auto mt-8 max-w-4xl text-center text-sm font-medium tracking-[-0.015em] leading-relaxed text-[#515d82]">
         Pilot test offers from our planning guide. Starter and Growth are proposed prepaid packs with no automatic top-ups. Larger Business and Custom are planning options; Custom pricing is scoped around your expected usage and business needs. Final allowances, session rules, taxes, and billing terms must be confirmed before any paid pilot.
       </p>
 
@@ -109,7 +109,7 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
         <h3 className="text-balance text-3xl font-black italic tracking-[-0.04em] text-[#101b43] sm:text-4xl">
           Don’t have a website?
         </h3>
-        <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg font-medium italic tracking-[-0.02em] leading-relaxed text-[#253360]">
+        <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg font-medium tracking-[-0.02em] leading-relaxed text-[#253360]">
           We can build a website for your clothing brand and bring it together with FitCheck. We’ll shape the site around your needs and agree on its scope and monthly subscription before work begins.
         </p>
 
@@ -117,14 +117,14 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
           <div className="flex flex-col items-center justify-center rounded-sm p-4 transition-colors duration-200 hover:bg-white/60">
             <h4 className="font-bold text-[#101b43]">Monthly website subscription</h4>
             <p className="mt-2 text-2xl font-black text-[#0038ff]">Custom monthly quote</p>
-            <p className="mt-2 max-w-sm text-sm font-medium italic tracking-[-0.015em] leading-relaxed text-[#34436f]">
+            <p className="mt-2 max-w-sm text-sm font-medium tracking-[-0.015em] leading-relaxed text-[#34436f]">
               The monthly price is based on the website your brand needs.
             </p>
           </div>
           <div className="flex flex-col items-center justify-center border-t border-[#d5d5e4] p-4 transition-colors duration-200 hover:bg-white/60 md:border-l md:border-t-0">
             <h4 className="font-bold text-[#101b43]">Bundle discount</h4>
             <p className="mt-2 text-2xl font-black text-[#0038ff]">Proposed 10% off</p>
-            <p className="mt-2 max-w-sm text-sm font-medium italic tracking-[-0.015em] leading-relaxed text-[#34436f]">
+            <p className="mt-2 max-w-sm text-sm font-medium tracking-[-0.015em] leading-relaxed text-[#34436f]">
               Pair the website subscription with a paid FitCheck plan to save 10% on the monthly website fee. FitCheck previews are billed separately.
             </p>
           </div>
@@ -137,7 +137,7 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
           <span>Let’s talk about your website</span>
           <ArrowUpRight size={16} aria-hidden="true" />
         </a>
-        <p className="mx-auto mt-3 max-w-2xl text-xs font-medium italic tracking-[-0.015em] leading-relaxed text-[#515d82]">
+        <p className="mx-auto mt-3 max-w-2xl text-xs font-medium tracking-[-0.015em] leading-relaxed text-[#515d82]">
           The 10% bundle discount is a proposed offer. Website scope, monthly price, subscription terms, and discount eligibility are confirmed in your quote.
         </p>
       </div>

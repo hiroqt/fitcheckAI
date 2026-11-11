@@ -47,16 +47,16 @@ export default function LandingPage() {
                 <h2 className="text-balance font-black italic uppercase tracking-[-0.045em] text-4xl sm:text-6xl">
                   See it in motion.
                 </h2>
-                <p className="text-base font-bold italic tracking-[-0.025em] text-[#0038ff]">
+                <p className="text-base font-bold tracking-[-0.025em] text-[#0038ff]">
                   Preview a look using your camera or an uploaded photo.
                 </p>
-                <p className="text-xl sm:text-2xl font-black italic tracking-[-0.035em] text-[#101b43]">
+                <p className="text-xl sm:text-2xl font-bold tracking-[-0.035em] text-[#101b43]">
                   Choose a preview, answer the questionnaire, then see one look for 15 seconds.
                 </p>
-                <p className="text-base font-medium italic tracking-[-0.02em] text-[#34436f]">
+                <p className="text-base font-medium tracking-[-0.02em] text-[#34436f]">
                   Sign in with Google for one try per hour per verified account. Audio stays off, and you can stop anytime.
                 </p>
-                <p className="border-t border-[#d5d5e4] pt-4 text-sm font-bold italic tracking-[-0.02em] text-[#101b43]">
+                <p className="border-t border-[#d5d5e4] pt-4 text-sm font-bold tracking-[-0.02em] text-[#101b43]">
                   Visual guide only. Check the seller’s size chart for fit.
                 </p>
               </div>
