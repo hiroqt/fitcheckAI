@@ -5,6 +5,7 @@ import { Hero } from "./components/Hero";
 import { InteractiveShowroom } from "./components/InteractiveShowroom";
 import { DemoPreviewVideo } from "./components/DemoPreviewVideo";
 import { MinimalPricing } from "./components/MinimalPricing";
+import { SocialShowcase } from "./components/SocialShowcase";
 import { FaqAccordion } from "./components/FaqAccordion";
 import { PilotModal } from "./components/PilotModal";
 import { SiteFooter } from "./components/SiteFooter";
@@ -66,6 +67,10 @@ export default function LandingPage() {
 
         <ScrollReveal margin="-80px">
           <MinimalPricing onOpenPilotModal={openPilot} />
+        </ScrollReveal>
+
+        <ScrollReveal margin="-80px">
+          <SocialShowcase />
         </ScrollReveal>
 
         <ScrollReveal margin="-80px">

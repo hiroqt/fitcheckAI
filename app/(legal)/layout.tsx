@@ -16,7 +16,7 @@ export default function LegalLayout({ children }: Readonly<{ children: React.Rea
               <Link href="/#how-it-works" className="hover:underline">How it works</Link>
               <Link href="/#scene-pricing" className="hover:underline">Pricing</Link>
             </nav>
-            <Link href="/" className="inline-flex min-h-10 items-center border border-white/60 px-3.5 text-sm text-white hover:bg-white/10">
+            <Link href="/" className="inline-flex min-h-10 items-center border border-white/60 px-3.5 text-sm font-medium text-white hover:bg-white/10">
               Back to FitCheck
             </Link>
           </div>
