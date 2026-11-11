@@ -226,7 +226,12 @@ export function LiveTryOn() {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-10">
       <div className="min-w-0 space-y-3">
-        <div className="relative isolate aspect-[4/3] min-w-0 overflow-hidden bg-[#0038ff] text-white sm:aspect-video">
+        <div className="relative isolate aspect-[4/3] min-w-0 overflow-hidden rounded-md bg-[#0038ff] text-white shadow-xl sm:aspect-video">
+          {/* Viewfinder brackets */}
+          <span className="viewfinder-bracket viewfinder-top-left text-white/50" />
+          <span className="viewfinder-bracket viewfinder-top-right text-white/50" />
+          <span className="viewfinder-bracket viewfinder-bottom-left text-white/50" />
+          <span className="viewfinder-bracket viewfinder-bottom-right text-white/50" />
         {stage !== "live" && (
           <>
             <div aria-hidden="true" className="absolute inset-x-0 top-[10%] z-0 text-center text-[clamp(2rem,7vw,5.5rem)] font-black italic uppercase leading-[0.82] tracking-[-0.055em] text-white/30">
@@ -249,15 +254,20 @@ export function LiveTryOn() {
         </div>
 
         {stage === "form" && (
-          <div role="group" aria-label="Choose a garment" className="mx-auto grid w-full max-w-[600px] grid-cols-3 gap-2">
+          <div role="group" aria-label="Choose a garment" className="mx-auto grid w-full max-w-[600px] grid-cols-3 gap-2.5">
             {(Object.entries(GARMENTS) as [Garment, typeof GARMENTS[Garment]][]).map(([id, item]) => (
-              <button key={id} type="button" aria-pressed={garment === id} onClick={() => setGarment(id)}
-                className="group relative aspect-[4/3] overflow-hidden border border-white/30 bg-[#0038ff] text-left text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white aria-pressed:border-white aria-pressed:ring-1 aria-pressed:ring-white">
+              <button
+                key={id}
+                type="button"
+                aria-pressed={garment === id}
+                onClick={() => setGarment(id)}
+                className="relative aspect-[4/3] overflow-hidden rounded-sm border border-white/30 bg-[#0038ff] text-left text-white shadow-sm transition-all duration-200 hover:border-white hover:shadow-md active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white aria-pressed:border-white aria-pressed:ring-2 aria-pressed:ring-white"
+              >
                 <span aria-hidden="true" className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[clamp(.65rem,1.4vw,1rem)] font-black italic uppercase leading-[0.9] tracking-[-0.045em] text-white/35">
                   <span className="block">{item.displayName[0]}</span><span className="block">{item.displayName[1]}</span>
                 </span>
-                <Image src={item.image} alt="" fill sizes="(max-width: 1023px) 30vw, 12vw" className="z-10 object-contain p-1 transition-transform group-hover:scale-105" />
-                <span className="absolute inset-x-0 bottom-0 z-20 truncate bg-[#0b0c23]/95 px-1 py-1 text-center text-[0.64rem] leading-tight text-white sm:text-xs">{item.name}</span>
+                <Image src={item.image} alt="" fill sizes="(max-width: 1023px) 30vw, 12vw" className="z-10 object-contain p-1.5" />
+                <span className="absolute inset-x-0 bottom-0 z-20 truncate bg-[#0b0c23]/95 px-1 py-1 text-center text-[0.64rem] font-semibold leading-tight text-white sm:text-xs">{item.name}</span>
               </button>
             ))}
           </div>
@@ -268,9 +278,9 @@ export function LiveTryOn() {
         {stage === "form" && (
           <form onSubmit={start} className="space-y-4">
             <h3 className="text-2xl font-bold tracking-tight">{GARMENTS[garment].name}</h3>
-            <p className="text-sm text-[#51516c]">Choose a look for one free live preview, up to 20 seconds.</p>
-            <p className="text-xs text-[#51516c]">Illustrative collection concepts. Final previews can vary by garment.</p>
-            <p className="text-xs text-[#51516c]">Live previews show styling. Use the brand’s size chart to choose a size.</p>
+            <p className="text-base font-bold italic tracking-[-0.025em] text-[#101b43]">Choose a look for one free live preview, up to 20 seconds.</p>
+            <p className="text-xs font-medium italic tracking-[-0.015em] text-[#51516c]">Illustrative collection concepts. Final previews can vary by garment.</p>
+            <p className="text-xs font-semibold italic tracking-[-0.015em] text-[#0038ff]">Live previews show styling. Use the brand’s size chart to choose a size.</p>
             <label className="block text-sm font-semibold">
               What would you like to see?
               <select name="goal" defaultValue="" required className={`mt-1 ${FIELD}`}>
@@ -280,7 +290,7 @@ export function LiveTryOn() {
                 <option value="curious">I’m exploring the showroom</option>
               </select>
             </label>
-            <p id="showroom-camera-consent" className="text-sm leading-relaxed text-[#51516c]">
+            <p id="showroom-camera-consent" className="text-sm font-medium italic tracking-[-0.02em] leading-relaxed text-[#51516c]">
               Your live camera video and selected garment image are sent to an external AI service to generate this preview. FitCheck saves your answers and feedback. Your microphone stays off.
             </p>
             <label className="flex items-start gap-2 text-sm">
