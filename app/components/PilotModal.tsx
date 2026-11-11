@@ -28,7 +28,7 @@ export function PilotModal({ isOpen, selectedPack, onClose, returnFocusTo }: Pil
       >
         <DialogTitle className="pr-8 text-2xl font-bold">Brand pilot</DialogTitle>
         <DialogDescription className="text-[#34436f]">
-          Preview the pilot application for Philippine fashion brands. This demo checks the form and does not save your details.
+          Share your brand details to prepare an email inquiry. You can review and send it in your email app.
         </DialogDescription>
         {isOpen && <PilotForm selectedPack={selectedPack} onClose={onClose} />}
       </DialogContent>
@@ -48,7 +48,8 @@ function PilotForm({ selectedPack, onClose }: { selectedPack: string; onClose: (
   if (state.success) {
     return (
       <div className="space-y-4">
-        <p role="status">Your form passed the demo checks.</p>
+        <p role="status">{state.message}</p>
+        {state.emailDraft && <a className="editorial-action inline-flex" href={state.emailDraft}>Review and send email</a>}
         <button type="button" className="editorial-action" ref={closeButton} onClick={onClose}>Close</button>
       </div>
     );
@@ -59,22 +60,22 @@ function PilotForm({ selectedPack, onClose }: { selectedPack: string; onClose: (
       {state.message && <p role="alert" className="text-[#a51d49] sm:col-span-2">{state.message}</p>}
       <label>
         Brand name
-        <input className={fieldStyle} name="brandName" autoComplete="organization" required />
+        <input className={fieldStyle} name="brandName" autoComplete="organization" maxLength={120} required />
         {state.errors?.brandName && <span className="text-[#a51d49]">{state.errors.brandName[0]}</span>}
       </label>
       <label>
         Instagram or store link
-        <input className={fieldStyle} name="storeUrl" required />
+        <input className={fieldStyle} name="storeUrl" maxLength={500} required />
         {state.errors?.storeUrl && <span className="text-[#a51d49]">{state.errors.storeUrl[0]}</span>}
       </label>
       <label>
         Contact email
-        <input className={fieldStyle} name="contactEmail" type="email" autoComplete="email" required />
+        <input className={fieldStyle} name="contactEmail" type="email" autoComplete="email" maxLength={254} required />
         {state.errors?.contactEmail && <span className="text-[#a51d49]">{state.errors.contactEmail[0]}</span>}
       </label>
       <label>
         Average item price (₱)
-        <input className={fieldStyle} name="averagePrice" type="number" min="500" step="100" defaultValue="1800" required />
+        <input className={fieldStyle} name="averagePrice" type="number" min="500" max="1000000" step="100" defaultValue="1800" required />
         {state.errors?.averagePrice && <span className="text-[#a51d49]">{state.errors.averagePrice[0]}</span>}
       </label>
       <label>
@@ -96,7 +97,7 @@ function PilotForm({ selectedPack, onClose }: { selectedPack: string; onClose: (
         </select>
       </label>
       <button type="submit" disabled={isPending} className="editorial-action justify-center disabled:cursor-wait sm:col-span-2">
-        {isPending ? "Checking…" : "Check demo application"}
+        {isPending ? "Preparing email…" : "Prepare email inquiry"}
       </button>
     </form>
   );

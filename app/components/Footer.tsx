@@ -66,7 +66,7 @@ interface FooterProps {
                     title: "Product",
                   links: [
                   {label: "Overview", href: "/#scene-hero" },
-                  {label: "3D Showroom", href: "/#scene-showroom" },
+                  {label: "Showroom", href: "/#scene-showroom" },
                   {label: "Style Preview", href: "/#how-it-works" },
                   {label: "Pilot Pricing", href: "/#scene-pricing" },
                   {label: "FAQ", href: "/#faq" },
@@ -86,8 +86,6 @@ interface FooterProps {
                   links: [
                   {label: "Privacy Policy", href: "/privacy" },
                   {label: "Terms of Service", href: "/terms" },
-                  {label: "Biometric Safety", href: "/privacy#biometrics" },
-                  {label: "DPA 10173 Compliance", href: "/privacy#compliance" },
                   ],
   },
                   ];

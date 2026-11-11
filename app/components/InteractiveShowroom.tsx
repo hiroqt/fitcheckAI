@@ -61,7 +61,7 @@ export function InteractiveShowroom() {
                 className="absolute inset-0 rounded-sm bg-[#0038ff] shadow-sm"
               />
             )}
-            <span className="relative z-10">Live try-on</span>
+            <span className="relative z-10">Try on a look</span>
           </button>
 
           <button
