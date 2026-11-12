@@ -37,6 +37,21 @@ After sign-in, a verified Gmail or Google Workspace account can reserve one atte
 
 The survey text intentionally matches the supplied Google Form, including its camera and 30-second-preview research questions, although this prepared experience uses a photo and 15 seconds. Update the survey and matching validation/header values together if you want the metrics to describe the new experience.
 
+## Configure Work With Us email
+
+The Work With Us form sends inquiries through the server using Resend. Configure these server-only variables in the Vercel project before enabling live delivery:
+
+```dotenv
+RESEND_API_KEY=your-resend-api-key
+FITCHECK_CONTACT_FROM=FitCheck <contact@your-verified-domain.example>
+UPSTASH_REDIS_REST_URL=https://your-database.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your-upstash-rest-token
+```
+
+Verify the sender domain in Resend and use an authorized sender address. Create an Upstash Redis database with REST access; the endpoint must use HTTPS. Keep all four values in the hosting provider's server environment and out of browser-visible variables. When Vercel's trusted `x-vercel-forwarded-for` address is available, the endpoint allows up to 5 attempts per IP (IPv6 grouped by /64) and 50 total attempts in each 10-minute window. Without a trusted address, requests share one 5-attempt bucket per 10-minute window. Missing email or rate-limit configuration and Redis failures fail closed. If a deployment needs per-client-IP controls outside Vercel, configure its WAF separately; the app's shared fallback bucket remains active. If server delivery cannot proceed, the form offers an email draft for the visitor to open and send themselves; a draft being opened is not a sent or accepted inquiry.
+
+Do not report live email delivery until these settings are present and a controlled end-to-end check confirms provider acceptance. A successful provider response confirms acceptance for processing, not inbox delivery.
+
 ## Development
 
 Use `$fitcheck-development` for repository-specific development and review. The same guidance is available to contributors and tools that load instructions manually. [Development skill](.agents/skills/fitcheck-development/SKILL.md)
