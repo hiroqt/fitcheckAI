@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Hero } from "./components/Hero";
+import { Navbar } from "./components/Navbar";
 import { InteractiveShowroom } from "./components/InteractiveShowroom";
 import { DemoPreviewVideo } from "./components/DemoPreviewVideo";
 import { MinimalPricing } from "./components/MinimalPricing";
@@ -10,6 +11,7 @@ import { FaqAccordion } from "./components/FaqAccordion";
 import { SiteFooter } from "./components/SiteFooter";
 import { ScrollReveal, ScrollHeading, ScrollText } from "./components/ScrollReveal";
 import { WorkWithUsModal } from "./components/WorkWithUsModal";
+import { BrowserScenario } from "./components/BrowserScenario";
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,8 +24,9 @@ export default function LandingPage() {
 
   return (
     <>
+      <Navbar onOpenPilotModal={() => openWorkWithUs("general")} />
       <main className="mx-auto max-w-[1600px] px-2.5 pt-2.5 sm:px-4 sm:pt-4">
-        <Hero onOpenPilotModal={() => openWorkWithUs("general")} />
+        <Hero />
 
         <InteractiveShowroom />
 
@@ -78,6 +81,8 @@ export default function LandingPage() {
         </section>
 
         <MinimalPricing onOpenPilotModal={openWorkWithUs} />
+
+        <BrowserScenario onOpenPilotModal={() => openWorkWithUs("general")} />
 
         <SocialShowcase />
 

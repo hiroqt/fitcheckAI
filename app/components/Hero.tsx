@@ -4,7 +4,6 @@ import Image from "next/image";
 import { ArrowDownRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
-import { Navbar } from "./Navbar";
 
 const HERO_GARMENTS = [
   { name: "jacket", src: "/floating-jacket.webp", alt: "Cobalt technical jacket suspended in midair" },
@@ -28,7 +27,7 @@ function getReducedMotionServerSnapshot() {
   return false;
 }
 
-export function Hero({ onOpenPilotModal }: { onOpenPilotModal: () => void }) {
+export function Hero() {
   const stageRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useSyncExternalStore(
     subscribeReducedMotion,
@@ -86,8 +85,6 @@ export function Hero({ onOpenPilotModal }: { onOpenPilotModal: () => void }) {
 
   return (
     <section id="scene-hero" className="campaign-hero relative left-1/2 -ml-[50vw] -mt-2.5 w-screen text-white sm:-mt-4">
-      <Navbar onOpenPilotModal={onOpenPilotModal} />
-
       <div
         ref={stageRef}
         onMouseMove={handleMouseMove}
