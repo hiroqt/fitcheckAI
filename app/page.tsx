@@ -13,21 +13,10 @@ import { WorkWithUsModal } from "./components/WorkWithUsModal";
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
-  const [modalMessage, setModalMessage] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState<string | undefined>();
 
   const openWorkWithUs = (pack = "499") => {
-    const planNames: Record<string, string> = {
-      "499": "Starter · ₱499",
-      "1799": "Growth · ₱1,799",
-      "larger_business": "Larger business · ₱4,999/mo + metered usage",
-      "enterprise": "Custom · discovery quote",
-    };
-    const chosenPlan = planNames[pack] || "Brand collaboration";
-    setModalTitle(`Work with FitCheck: ${chosenPlan}`);
-    setModalMessage(
-      `Hello FitCheck Team,\n\nI am interested in working with FitCheck for my clothing brand (${chosenPlan}).\n\nBrand Name:\nStore or Instagram link:\nQuestions / details:\n`
-    );
+    setSelectedPlan(pack === "general" ? undefined : pack);
     setIsModalOpen(true);
   };
 
@@ -100,8 +89,7 @@ export default function LandingPage() {
       <WorkWithUsModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        defaultTitle={modalTitle}
-        defaultMessage={modalMessage}
+        selectedPlan={selectedPlan}
       />
     </>
   );

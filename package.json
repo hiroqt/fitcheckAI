@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "test": "node --test --experimental-strip-types app/api/contact/route.test.mjs"
+    "lint": "eslint"
   },
   "dependencies": {
     "@decartai/sdk": "0.2.14",
