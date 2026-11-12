@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { CheckCircle2, AlertCircle, Send, ArrowRight, Loader2 } from "lucide-react";
+import { FITCHECK_PILOT_EMAIL } from "@/app/lib/pilotEmail";
 
 interface WorkWithUsModalProps {
   isOpen: boolean;
@@ -49,11 +50,17 @@ function WorkWithUsModalContent({
   const [showConfirm, setShowConfirm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showEmailDraft, setShowEmailDraft] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const draftSubject = title.trim().replace(/[\r\n\u0000-\u001f\u007f-\u009f\u2028\u2029]/g, " ");
+  const draftBody = `From: ${email.trim()}\n\n${message.trim()}`.replace(/\r\n|\r|\n/g, "\r\n");
+  const emailDraftUrl = `mailto:${FITCHECK_PILOT_EMAIL}?${new URLSearchParams({ subject: draftSubject, body: draftBody }).toString().replace(/\+/g, "%20")}`;
 
   const handleInitialSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
+    setShowEmailDraft(false);
 
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       setErrorMessage("Please enter a valid email address.");
@@ -69,12 +76,15 @@ function WorkWithUsModalContent({
     }
 
     // Move to confirmation step
+    setShowEmailDraft(false);
     setShowConfirm(true);
   };
 
   const handleConfirmedSend = async () => {
     setIsSubmitting(true);
     setErrorMessage("");
+    setShowEmailDraft(false);
+    let canOfferDraft = true;
 
     try {
       const res = await fetch("/api/contact", {
@@ -87,16 +97,11 @@ function WorkWithUsModalContent({
         }),
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => null);
+      canOfferDraft = res.status === 429 || res.status >= 500 || (res.ok && data?.success !== true);
 
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || "Failed to send email. Please try again.");
-      }
-
-      // If server does not have SMTP credentials configured, launch the user's email client directly
-      // so it sends from their own account and reflects in their Sent tab and fitcheckai0@gmail.com inbox
-      if (data.needsMailtoFallback && data.mailtoUrl) {
-        window.open(data.mailtoUrl, "_blank");
+      if (!res.ok || data?.success !== true) {
+        throw new Error(typeof data?.error === "string" ? data.error : "Failed to send email. Please try again.");
       }
 
       setIsSuccess(true);
@@ -104,6 +109,7 @@ function WorkWithUsModalContent({
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrorMessage(msg);
+      setShowEmailDraft(canOfferDraft);
       setShowConfirm(false);
     } finally {
       setIsSubmitting(false);
@@ -130,11 +136,10 @@ function WorkWithUsModalContent({
                 <CheckCircle2 className="h-6 w-6" />
               </div>
               <DialogTitle className="text-xl font-bold tracking-tight text-[#101b43]">
-                Message Sent
+                Message submitted
               </DialogTitle>
               <DialogDescription className="text-xs text-zinc-500 max-w-xs mx-auto leading-relaxed">
-                Your message has been sent to <strong className="text-[#101b43]">fitcheckai0@gmail.com</strong>.
-                We will get back to your email shortly.
+                Your message was accepted for processing. We can’t confirm inbox delivery.
               </DialogDescription>
               <div className="pt-2">
                 <button
@@ -158,9 +163,9 @@ function WorkWithUsModalContent({
               </div>
 
               {errorMessage && (
-                <div className="mb-4 flex items-center gap-2 rounded-lg bg-rose-50 border border-rose-100 p-2.5 text-xs text-rose-600">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
-                  <span>{errorMessage}</span>
+                <div role="alert" className="mb-4 rounded-lg bg-rose-50 border border-rose-100 p-2.5 text-xs text-rose-600">
+                  <div className="flex items-center gap-2"><AlertCircle className="h-4 w-4 shrink-0" /><span>{errorMessage}</span></div>
+                  {showEmailDraft && <a href={emailDraftUrl} className="mt-2 inline-flex min-h-9 items-center font-semibold underline underline-offset-2">Open email draft</a>}
                 </div>
               )}
 
@@ -178,6 +183,7 @@ function WorkWithUsModalContent({
                     onChange={(e) => setEmail(e.target.value)}
                     className={fieldStyle}
                     autoComplete="email"
+                    maxLength={254}
                   />
                 </div>
 
@@ -263,13 +269,6 @@ function WorkWithUsModalContent({
               </p>
             </div>
           </div>
-
-          {errorMessage && (
-            <div className="mb-3 flex items-center gap-2 rounded-lg bg-rose-50 border border-rose-100 p-2 text-xs text-rose-600">
-              <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>{errorMessage}</span>
-            </div>
-          )}
 
           <div className="flex items-center justify-end gap-2 pt-1">
             <button
