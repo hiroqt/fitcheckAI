@@ -148,7 +148,6 @@ export function Footer({ onOpenPilotModal, className = "" }: FooterProps) {
       aria-label="Site Footer"
       className={`relative w-full border-t border-white/10 bg-[#0E121E] text-white ${className}`}
     >
-      {/* "See what works for you" Floating Action Card */}
       <section className="relative z-10 mx-auto -mt-14 mb-4 grid max-w-6xl gap-6 overflow-hidden rounded-xl border border-white/20 bg-[#0038ff] px-6 py-7 shadow-xl sm:-mt-16 sm:mb-6 sm:grid-cols-[1fr_auto] sm:items-center sm:px-10 sm:py-9">
         <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-24 size-64 rounded-full border border-white/10" />
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 left-1/3 size-72 rounded-full border border-white/10" />
@@ -184,7 +183,6 @@ export function Footer({ onOpenPilotModal, className = "" }: FooterProps) {
         </ScrollReveal>
       </section>
 
-      {/* Main Footer Container - comfortably positioned upward relative to the card */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 pt-6 pb-14 sm:px-10 sm:pt-8 sm:pb-16 lg:px-12 lg:pt-10 lg:pb-18">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Brand Info (Left Asymmetric Column: 5 of 12 cols) */}

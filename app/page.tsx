@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Hero } from "./components/Hero";
+import { Navbar } from "./components/Navbar";
 import { InteractiveShowroom } from "./components/InteractiveShowroom";
 import { DemoPreviewVideo } from "./components/DemoPreviewVideo";
 import { MinimalPricing } from "./components/MinimalPricing";
@@ -10,35 +11,29 @@ import { FaqAccordion } from "./components/FaqAccordion";
 import { SiteFooter } from "./components/SiteFooter";
 import { ScrollReveal, ScrollHeading, ScrollText } from "./components/ScrollReveal";
 import { WorkWithUsModal } from "./components/WorkWithUsModal";
+import { BrowserScenario } from "./components/BrowserScenario";
+import { HowItWorks } from "./components/HowItWorks";
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
-  const [modalMessage, setModalMessage] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState<string | undefined>();
 
   const openWorkWithUs = (pack = "499") => {
-    const planNames: Record<string, string> = {
-      "499": "Starter · ₱499",
-      "1799": "Growth · ₱1,799",
-      "larger_business": "Larger business · ₱4,999/mo + metered usage",
-      "enterprise": "Custom · discovery quote",
-    };
-    const chosenPlan = planNames[pack] || "Brand collaboration";
-    setModalTitle(`Work with FitCheck: ${chosenPlan}`);
-    setModalMessage(
-      `Hello FitCheck Team,\n\nI am interested in working with FitCheck for my clothing brand (${chosenPlan}).\n\nBrand Name:\nStore or Instagram link:\nQuestions / details:\n`
-    );
+    setSelectedPlan(pack === "general" ? undefined : pack);
     setIsModalOpen(true);
   };
 
   return (
     <>
+      <Navbar onOpenPilotModal={() => openWorkWithUs("general")} />
       <main className="mx-auto max-w-[1600px] px-2.5 pt-2.5 sm:px-4 sm:pt-4">
-        <Hero onOpenPilotModal={() => openWorkWithUs("general")} />
+        <Hero />
+
+        <HowItWorks className="my-10 sm:my-14 rounded-3xl" />
 
         <InteractiveShowroom />
 
-        <section id="how-it-works" className="editorial-section scroll-mt-8">
+        <section id="demo-preview" className="editorial-section scroll-mt-8">
           <div className="grid items-center gap-6 md:grid-cols-[minmax(0,1.2fr)_minmax(16rem,0.8fr)] md:gap-12">
             <ScrollReveal delay={0.05} margin="-80px">
               <div
@@ -90,6 +85,8 @@ export default function LandingPage() {
 
         <MinimalPricing onOpenPilotModal={openWorkWithUs} />
 
+        <BrowserScenario onOpenPilotModal={() => openWorkWithUs("general")} />
+
         <SocialShowcase />
 
         <FaqAccordion />
@@ -100,8 +97,7 @@ export default function LandingPage() {
       <WorkWithUsModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        defaultTitle={modalTitle}
-        defaultMessage={modalMessage}
+        selectedPlan={selectedPlan}
       />
     </>
   );

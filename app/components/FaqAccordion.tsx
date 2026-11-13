@@ -83,7 +83,7 @@ const brandFaqs = [
     question: "Does contacting you obligate or enroll my business?",
     answer: (
       <p>
-        No. Clicking &ldquo;Work with us&rdquo; simply opens a direct email message to our team so you can ask questions or tell us about your brand. There is no automatic commitment or obligation until you decide to move forward.
+        No. &ldquo;Work with us&rdquo; opens choices for a general inquiry, pricing and availability, or a demo request. Choosing one opens a prepared email draft for you to review and send. There is no automatic commitment or obligation.
       </p>
     ),
   },
