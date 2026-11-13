@@ -5,7 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const MODEL = "lucy-vton-3.6";
 const googleAuth = new OAuth2Client();
 const MAX_BODY_BYTES = 16 * 1024;
-const GARMENTS = new Set(["bomber", "shirt", "barong"]);
+const GARMENTS = new Set(["bomber", "shirt", "barong", "custom"]);
 const SPEND = new Set(["Below ₱500", "₱500–₱999", "₱1,000–₱1,999", "₱2,000–₱3,999", "₱4,000 or more"]);
 const CHALLENGE = new Set(["Unsure whether the size will fit", "Unsure how the clothing will look on me", "Product looks different from the photos", "Difficult to compare styles", "Other"]);
 const SKIPPED = new Set(["Yes, frequently", "Yes, sometimes", "Rarely", "Never"]);
