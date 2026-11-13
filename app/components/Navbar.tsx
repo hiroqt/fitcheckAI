@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { getPilotMailto } from "@/app/lib/pilotEmail";
 
 const NAV_ITEMS = [
-  { label: "Showroom", href: "#scene-showroom" },
   { label: "How it works", href: "#how-it-works" },
+  { label: "Showroom", href: "#scene-showroom" },
   { label: "Pricing", href: "#scene-pricing" },
   { label: "FAQs", href: "#faq" },
 ];
@@ -24,11 +24,10 @@ export function Navbar({ onOpenPilotModal }: { onOpenPilotModal?: () => void }) 
   }, []);
 
   return (
-    <header className={`sticky top-0 z-50 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-b px-5 py-4 transition-colors duration-300 sm:px-9 lg:px-12 ${
-      isScrolled
+    <header className={`sticky top-0 z-50 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-b px-5 py-4 transition-colors duration-300 sm:px-9 lg:px-12 ${isScrolled
         ? "border-[#d5d5e4] bg-white text-[#101b43] shadow-[0_4px_18px_rgba(16,27,67,0.08)]"
         : "border-white/15 bg-[#0038ff] text-white"
-    }`}>
+      }`}>
       <a
         href="#scene-hero"
         aria-label="FitCheck home"

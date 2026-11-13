@@ -12,6 +12,7 @@ import { SiteFooter } from "./components/SiteFooter";
 import { ScrollReveal, ScrollHeading, ScrollText } from "./components/ScrollReveal";
 import { WorkWithUsModal } from "./components/WorkWithUsModal";
 import { BrowserScenario } from "./components/BrowserScenario";
+import { HowItWorks } from "./components/HowItWorks";
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,9 +29,11 @@ export default function LandingPage() {
       <main className="mx-auto max-w-[1600px] px-2.5 pt-2.5 sm:px-4 sm:pt-4">
         <Hero />
 
+        <HowItWorks className="my-10 sm:my-14 rounded-3xl" />
+
         <InteractiveShowroom />
 
-        <section id="how-it-works" className="editorial-section scroll-mt-8">
+        <section id="demo-preview" className="editorial-section scroll-mt-8">
           <div className="grid items-center gap-6 md:grid-cols-[minmax(0,1.2fr)_minmax(16rem,0.8fr)] md:gap-12">
             <ScrollReveal delay={0.05} margin="-80px">
               <div
