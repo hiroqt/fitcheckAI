@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { label: "How it works", href: "#how-it-works" },
   { label: "Showroom", href: "#scene-showroom" },
   { label: "Pricing", href: "#scene-pricing" },
+  { label: "Socials", href: "#community" },
   { label: "FAQs", href: "#faq" },
 ];
 
