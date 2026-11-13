@@ -6,13 +6,15 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import type { createDecartClient } from "@decartai/sdk";
 import { SocialLinks } from "../SocialLinks";
+import { GarmentCutoutError, prepareGarmentCutout, removeGarmentBackground } from "@/lib/garment-cutout";
 
 const GARMENTS = {
   bomber: { name: "Floating Brand Bomber", displayName: ["Floating Brand", "Bomber"], image: "/floating-jacket.webp", prompt: "Dress the person in the cobalt technical bomber jacket from the reference. Preserve its ribbed cuffs and hem, sleeve pocket, zipper, face, body shape, pose and background." },
   shirt: { name: "Embroidered Long-Sleeve Shirt", displayName: ["Embroidered", "Shirt"], image: "/floating-shirt.png", prompt: "Dress the person in the ivory long-sleeve button-up shirt with intricate cobalt and navy embroidery and chest pockets shown in the reference. Preserve its pattern, the person's face, body shape, pose and background." },
   barong: { name: "Midnight Barong", displayName: ["Midnight", "Barong"], image: "/floating-barong.png", prompt: "Dress the person in the modern ivory embroidered Filipino barong from the reference. Preserve its embroidery, the person's face, body shape, pose and background." },
 } as const;
-type Garment = keyof typeof GARMENTS;
+type BuiltInGarment = keyof typeof GARMENTS;
+type Garment = BuiltInGarment | "custom";
 type Stage = "choose" | "survey" | "sign-in" | "upload" | "connecting" | "live" | "finished" | "done";
 type PreviewMode = "live" | "photo";
 type Survey = {
@@ -115,6 +117,8 @@ export function LiveTryOn() {
   const [stage, setStage] = useState<Stage>("choose");
   const [mode, setMode] = useState<PreviewMode>("live");
   const [garment, setGarment] = useState<Garment>("bomber");
+  const [customGarment, setCustomGarment] = useState<{ file: File; url: string } | null>(null);
+  const [cuttingOut, setCuttingOut] = useState(false);
   const [photo, setPhoto] = useState<{ url: string } | null>(null);
   const [survey, setSurvey] = useState<Survey | null>(null);
   const [surveyDraft, setSurveyDraft] = useState<Survey>(EMPTY_SURVEY);
@@ -144,6 +148,11 @@ export function LiveTryOn() {
   }, []);
 
   useEffect(() => () => { if (photo) URL.revokeObjectURL(photo.url); }, [photo]);
+  useEffect(() => () => { if (customGarment) URL.revokeObjectURL(customGarment.url); }, [customGarment]);
+
+  const selectedGarment = garment === "custom" && customGarment
+    ? { name: "Upload only", displayName: ["UPLOAD", "ONLY"], image: customGarment.url, prompt: "Dress the person in the garment shown in the reference image. Preserve the garment's visible colors, pattern and details, and preserve the person's face, body shape, pose and background." }
+    : GARMENTS[garment === "custom" ? "bomber" : garment];
 
   const release = useCallback((attempt: Attempt) => {
     if (!attempt.committed && attempt.reservationId) {
@@ -162,6 +171,8 @@ export function LiveTryOn() {
     setCredential(attempt.committed ? "" : attempt.credential);
     if (attempt.committed) {
       setPhoto(null);
+      setCustomGarment(null);
+      setGarment("bomber");
       setConsented(false);
       setStage("finished");
     } else {
@@ -261,6 +272,30 @@ export function LiveTryOn() {
     setPhoto({ url: URL.createObjectURL(file) });
   }
 
+  async function chooseGarment(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.currentTarget.files?.[0];
+    event.currentTarget.value = "";
+    setMessage("");
+    if (!file) return;
+    if (!PHOTO_TYPES.has(file.type) || file.size > MAX_PHOTO_BYTES) {
+      setMessage("Choose a JPG, PNG, or WebP garment image up to 10 MB.");
+      return;
+    }
+    setCuttingOut(true);
+    try {
+      // The garment is cut out of its background here, in this browser, so the reference
+      // image sent to Decart is the garment alone, like the built-in ones.
+      const cutout = await removeGarmentBackground(file);
+      setCustomGarment({ file: cutout.file, url: URL.createObjectURL(cutout.file) });
+      setGarment("custom");
+      if (!cutout.removed) setMessage("This image already had a transparent background, so it was used as is.");
+    } catch (error) {
+      setMessage(error instanceof GarmentCutoutError ? error.message : "This garment image could not be prepared. Try another image.");
+    } finally {
+      setCuttingOut(false);
+    }
+  }
+
   async function showFirstFrame() {
     const attempt = attemptRef.current;
     if (!attempt || attempt.shown || !attempt.reservationId) return;
@@ -284,7 +319,7 @@ export function LiveTryOn() {
   }
 
   async function start() {
-    if ((mode === "photo" && !photo) || !credential || !consented || !availability?.previewAvailable || attemptRef.current) return;
+    if ((mode === "photo" && !photo) || (garment === "custom" && !customGarment) || cuttingOut || !credential || !consented || !availability?.previewAvailable || attemptRef.current) return;
     const attempt: Attempt = { abort: new AbortController(), credential, committed: false, shown: false };
     attemptRef.current = attempt;
     setMessage("");
@@ -317,10 +352,12 @@ export function LiveTryOn() {
       attempt.stream = stream;
       setConnectionLabel("Connecting your preview…");
 
-      const image = await fetch(GARMENTS[garment].image, { signal: attempt.abort.signal }).then((response) => {
-        if (!response.ok) throw new Error("Garment unavailable");
-        return response.blob();
-      });
+      const image = garment === "custom" && customGarment
+        ? customGarment.file
+        : await fetch(GARMENTS[garment === "custom" ? "bomber" : garment].image, { signal: attempt.abort.signal }).then((response) => {
+          if (!response.ok) throw new Error("Garment unavailable");
+          return response.blob();
+        });
       const response = await post({ action: "start", credential, garment, consent: true }, attempt.abort.signal);
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "The live preview is not available right now.");
@@ -345,7 +382,7 @@ export function LiveTryOn() {
         mirror: false,
         initialState: {
           image,
-          prompt: { text: GARMENTS[garment].prompt, enhance: false },
+          prompt: { text: selectedGarment.prompt, enhance: false },
           passthrough: false,
         },
         onRemoteStream: (remote) => {
@@ -385,13 +422,13 @@ export function LiveTryOn() {
           {!photo && stage !== "live" && (
             <>
               <div aria-hidden="true" className="absolute inset-x-0 top-[10%] z-0 text-center text-[clamp(2rem,7vw,5.5rem)] font-black italic uppercase leading-[0.82] tracking-[-0.055em] text-white/30">
-                <span className="block">{GARMENTS[garment].displayName[0]}</span>
-                <span className="block">{GARMENTS[garment].displayName[1]}</span>
+                <span className="block">{garment === "custom" ? "UPLOAD" : selectedGarment.displayName[0]}</span>
+                <span className="block">{garment === "custom" ? "ONLY" : selectedGarment.displayName[1]}</span>
               </div>
-              <Image src={GARMENTS[garment].image} alt={`${GARMENTS[garment].name}, illustrative fashion concept`} fill sizes="(max-width: 1023px) 100vw, 800px" className="z-10 object-contain p-5" />
+              <Image src={selectedGarment.image} alt={`${selectedGarment.name}, illustrative fashion concept`} fill sizes="(max-width: 1023px) 100vw, 800px" unoptimized={garment === "custom"} className="z-10 object-contain p-5" />
               <div className="absolute inset-x-0 bottom-0 z-20 bg-[#15152f]/90 px-4 py-3 text-sm text-white">
-                <p className="font-semibold">{GARMENTS[garment].name}</p>
-                <p className="mt-1 text-white/75">Illustrative garment preview</p>
+                <p className="font-semibold">{selectedGarment.name}</p>
+                <p className="mt-1 text-white/75">{garment === "custom" ? "Uploaded garment, background removed" : "Illustrative garment preview"}</p>
               </div>
             </>
           )}
@@ -421,7 +458,7 @@ export function LiveTryOn() {
             <h3 className="text-2xl font-bold tracking-tight">Choose a preview</h3>
             <p className="text-sm text-[#51516c]">Choose live camera or upload a photo. Each verified Google account can use one 15-second preview per hour across both options.</p>
             <div role="group" aria-label="Choose a garment" className="grid grid-cols-3 gap-2">
-              {(Object.entries(GARMENTS) as [Garment, typeof GARMENTS[Garment]][]).map(([id, item]) => (
+              {(Object.entries(GARMENTS) as [BuiltInGarment, typeof GARMENTS[BuiltInGarment]][]).map(([id, item]) => (
                 <button key={id} type="button" aria-pressed={garment === id} onClick={() => setGarment(id)}
                   className="group relative aspect-[4/3] overflow-hidden border border-[#a3acd2] bg-[#0038ff] text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff] aria-pressed:border-[#0038ff] aria-pressed:ring-2 aria-pressed:ring-[#0038ff]">
                   <span aria-hidden="true" className="absolute inset-x-0 top-1/2 z-0 -translate-y-1/2 text-center text-[clamp(.65rem,1.4vw,1rem)] font-black italic uppercase leading-[0.9] tracking-[-0.045em] text-white/35">
@@ -432,8 +469,12 @@ export function LiveTryOn() {
                 </button>
               ))}
             </div>
+            <label className="block text-sm font-semibold">Or upload a garment image
+              <input type="file" accept="image/jpeg,image/png,image/webp" onClick={prepareGarmentCutout} onChange={chooseGarment} disabled={cuttingOut} className="mt-2 block w-full text-sm file:mr-3 file:min-h-11 file:border-0 file:bg-[#0038ff] file:px-4 file:font-semibold file:text-white disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff]" />
+              <span className="mt-1 block font-normal text-[#51516c]">JPG, PNG, or WebP up to 10 MB. The background is removed on your device; only the garment cutout is sent to Decart for this preview.</span>
+            </label>
+            {cuttingOut && <p role="status" className="flex items-center gap-2 text-sm text-[#51516c]"><LoadingSpinner />Removing the background on your device…</p>}
             <button type="button" onClick={() => startSurvey("live")} className="editorial-action w-full text-left">Live camera preview</button>
-            <button type="button" onClick={() => startSurvey("photo")} className="min-h-11 w-full border border-[#a3acd2] px-4 py-3 text-left font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff]">Upload a photo</button>
             {stage === "choose" && availability === null && <p role="status" className="flex items-center gap-2 text-sm text-[#51516c]"><LoadingSpinner />Checking preview availability…</p>}
             {availability && !availability.previewAvailable && <p role="status" className="text-sm text-[#51516c]">Preview setup is not ready yet. The options will stay unavailable until integrations and provider approval are complete.</p>}
           </div>
@@ -534,14 +575,14 @@ export function LiveTryOn() {
               </label>
             </> : <p className="text-sm text-[#51516c]">Your camera turns on only after you agree and start the preview. Audio stays off.</p>}
             <p id="showroom-photo-consent" className="text-sm leading-relaxed text-[#51516c]">
-              {mode === "photo" ? "Your photo and the selected garment image are streamed from your browser to Decart to generate the preview. FitCheck does not save either image or the generated video. The preview and photo are cleared from this page when you stop, finish, or close it." : "Your camera video and the selected garment image are streamed from your browser to Decart to generate the preview. FitCheck does not save the video or generated result. The camera stops when you stop, finish, or close the page."} Decart’s handling follows its provider terms; public use stays disabled until those terms are approved.
+              {mode === "photo" ? "Your photo and the selected garment image are streamed from your browser to Decart to generate the preview. FitCheck does not save either image or the generated video. The preview, photo and uploaded garment image are cleared from this page when you stop, finish, or close it." : "Your camera video and the selected garment image are streamed from your browser to Decart to generate the preview. FitCheck does not save the video or generated result. The camera and uploaded garment image are cleared when you stop, finish, or close the page."} Decart’s handling follows its provider terms; public use stays disabled until those terms are approved.
             </p>
             <label className="flex items-start gap-2 text-sm">
               <input type="checkbox" checked={consented} onChange={(event) => setConsented(event.target.checked)} aria-describedby="showroom-photo-consent" className="mt-0.5 size-4 shrink-0 accent-[#0038ff]" />
-              I’m 18 or older and agree to send {mode === "photo" ? "this photo" : "my camera video"} to Decart for a 15-second style preview.
+              I’m 18 or older and agree to send {mode === "photo" ? "this photo" : "my camera video"} and the selected garment image to Decart for a 15-second style preview.
             </label>
             <div className="flex flex-wrap gap-3">
-              <button type="button" onClick={() => void start()} disabled={(mode === "photo" && !photo) || !consented || saving || previewUnavailable} className="editorial-action disabled:cursor-not-allowed disabled:opacity-60">Start 15-second try-on</button>
+              <button type="button" onClick={() => void start()} disabled={(mode === "photo" && !photo) || (garment === "custom" && !customGarment) || cuttingOut || !consented || saving || previewUnavailable} className="editorial-action disabled:cursor-not-allowed disabled:opacity-60">Start 15-second try-on</button>
               {photo && <button type="button" onClick={() => { setPhoto(null); setConsented(false); setMessage(""); }} className="min-h-11 underline underline-offset-4">Remove photo</button>}
             </div>
             <button type="button" onClick={() => { setStage("choose"); setPhoto(null); setConsented(false); setMessage(""); }} className="min-h-11 underline underline-offset-4">Choose a different preview</button>
