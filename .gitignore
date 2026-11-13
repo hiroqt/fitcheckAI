@@ -47,3 +47,6 @@ next-env.d.ts
 # private Google Apps Script deployment source
 /integrations/google-apps-script/Code.gs
 
+
+# onnxruntime-web assets copied from node_modules by scripts/copy-ort-runtime.mjs
+/public/ort
