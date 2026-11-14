@@ -1,8 +1,8 @@
 {
   "info": {
     "_postman_id": "f8a9e2d1-4b3c-4d5e-8f9a-0b1c2d3e4f5a",
-    "name": "FitCheck AI — Work With Us & Inquiry API",
-    "description": "Pre-configured Postman collection for testing the security-hardened Work With Us APIs (General Inquiry, Pricing & Availability, Request a Demo, Zod Validation, Rate Limiting, and Honeypot Defense).",
+    "name": "FitCheck AI — Message Us inquiry API",
+    "description": "POST /api/inquiry forwards to FitCheck Ops. Every request needs consent: true and a Turnstile token (action \"inquiry\"); use Cloudflare testing keys against a staging Ops deployment only. See docs/WORK_WITH_US_API.md.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -10,11 +10,16 @@
       "key": "baseUrl",
       "value": "http://localhost:3000",
       "type": "string"
+    },
+    {
+      "key": "turnstileToken",
+      "value": "XXXX.DUMMY.TOKEN.XXXX",
+      "type": "string"
     }
   ],
   "item": [
     {
-      "name": "1. General Inquiry (POST /api/inquiry)",
+      "name": "1. General inquiry (POST /api/inquiry)",
       "request": {
         "method": "POST",
         "header": [
@@ -25,7 +30,12 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"inquiryType\": \"general\",\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"partnerships@aurastudio.ph\",\n  \"contactPerson\": \"Maria Santos\",\n  \"phone\": \"+639171234567\",\n  \"storeUrl\": \"https://instagram.com/aurastudiomnl\",\n  \"message\": \"We would like to explore integrating FitCheck AI on our online storefront for our new collection.\",\n  \"source\": \"postman_test\"\n}"
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"general\",\n  \"message\": \"We would like to learn how FitCheck works for our boutique.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/api/inquiry",
@@ -37,12 +47,11 @@
             "inquiry"
           ]
         },
-        "description": "Tests a successful General Inquiry submission through the hardened /api/inquiry endpoint."
-      },
-      "response": []
+        "description": "Stored in Ops with interest \"No plan selected\"."
+      }
     },
     {
-      "name": "2. Pricing & Availability (POST /api/inquiry)",
+      "name": "2. Pricing & availability with plan (POST /api/inquiry)",
       "request": {
         "method": "POST",
         "header": [
@@ -53,7 +62,12 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"inquiryType\": \"pricing\",\n  \"brandName\": \"Solara Atelier\",\n  \"contactEmail\": \"founder@solaraatelier.com\",\n  \"contactPerson\": \"Gabriel Cruz\",\n  \"phone\": \"+639189876543\",\n  \"storeUrl\": \"https://solaraatelier.com\",\n  \"selectedPlan\": \"Growth · ₱1,799\",\n  \"garmentStyles\": \"Tailored linen shirts, casual blazers\",\n  \"averagePrice\": 2400,\n  \"monthlyVolume\": \"2,000 monthly visitors\",\n  \"message\": \"Confirming pilot slot availability for next month.\",\n  \"source\": \"postman_test\"\n}"
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"pricing\",\n  \"selectedPlan\": \"1799\",\n  \"storeUrl\": \"@aurastudio\",\n  \"garmentStyles\": \"Linen shirts, barong\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/api/inquiry",
@@ -65,12 +79,11 @@
             "inquiry"
           ]
         },
-        "description": "Tests a successful Pricing & Availability pilot inquiry."
-      },
-      "response": []
+        "description": "Plan 1799 → Growth."
+      }
     },
     {
-      "name": "3. Request a Demo (POST /api/inquiry)",
+      "name": "3. Request a demo (POST /api/inquiry)",
       "request": {
         "method": "POST",
         "header": [
@@ -81,7 +94,12 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"inquiryType\": \"demo\",\n  \"brandName\": \"Harlan Denim Co.\",\n  \"contactEmail\": \"leads@harlandenim.ph\",\n  \"contactPerson\": \"Katrina Reyes\",\n  \"phone\": \"+639175550192\",\n  \"storeUrl\": \"https://harlandenim.ph\",\n  \"preferredDate\": \"Thursday 3:00 PM PHT\",\n  \"garmentCategories\": \"Selvedge denim jackets, chore coats\",\n  \"companySize\": \"10-25 employees\",\n  \"message\": \"We want to see real-time fabric drape and silhouette previews.\",\n  \"source\": \"postman_test\"\n}"
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"demo\",\n  \"preferredDate\": \"Next Tuesday 2:00 PM PHT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/api/inquiry",
@@ -93,12 +111,11 @@
             "inquiry"
           ]
         },
-        "description": "Tests a demo walkthrough request."
-      },
-      "response": []
+        "description": "Preferred time is added to the stored message."
+      }
     },
     {
-      "name": "4. Security Test: Zod Validation Error (Expected 400)",
+      "name": "4. Validation error (expected 400)",
       "request": {
         "method": "POST",
         "header": [
@@ -109,7 +126,12 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"inquiryType\": \"general\",\n  \"brandName\": \"\",\n  \"contactEmail\": \"invalid-email-format\",\n  \"unexpectedMaliciousField\": \"injected\"\n}"
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"\",\n  \"consent\": false,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"general\",\n  \"message\": \"\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/api/inquiry",
@@ -121,12 +143,11 @@
             "inquiry"
           ]
         },
-        "description": "Tests strict Zod schema validation: should reject with HTTP 400 Bad Request detailing missing fields and disallowing unexpected properties."
-      },
-      "response": []
+        "description": "Missing contact name, consent and message."
+      }
     },
     {
-      "name": "5. Security Test: Bot Honeypot Defense (Expected 200 Silent Drop)",
+      "name": "5. Honeypot (expected 200, nothing stored)",
       "request": {
         "method": "POST",
         "header": [
@@ -137,7 +158,12 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"inquiryType\": \"general\",\n  \"brandName\": \"Spam Bot Corp\",\n  \"contactEmail\": \"bot@spammer.net\",\n  \"message\": \"Spam advertisement message\",\n  \"hp_company_website\": \"https://malicious-spam-url.com\"\n}"
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"general\",\n  \"message\": \"Hello there\",\n  \"hp_company_website\": \"https://spam.example\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/api/inquiry",
@@ -149,12 +175,11 @@
             "inquiry"
           ]
         },
-        "description": "Tests Honeypot bot interception: When hp_company_website is populated, the server silently returns 200 OK without forwarding to internal systems."
-      },
-      "response": []
+        "description": "Returns the thank-you without an inquiryId."
+      }
     },
     {
-      "name": "6. Dedicated General Route (POST /api/work-with-us/general)",
+      "name": "6. Idempotent resend (send twice → same inquiryId)",
       "request": {
         "method": "POST",
         "header": [
@@ -165,52 +190,28 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"brandName\": \"Aura Studio\",\n  \"contactEmail\": \"info@aurastudio.ph\",\n  \"message\": \"Testing dedicated general endpoint.\"\n}"
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"general\",\n  \"message\": \"Hello there\",\n  \"submissionId\": \"postman-0001-resend-check\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
-          "raw": "{{baseUrl}}/api/work-with-us/general",
+          "raw": "{{baseUrl}}/api/inquiry",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
-            "work-with-us",
-            "general"
+            "inquiry"
           ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "7. Dedicated Pricing Route (POST /api/work-with-us/pricing)",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"brandName\": \"Solara Atelier\",\n  \"contactEmail\": \"founder@solaraatelier.com\",\n  \"selectedPlan\": \"Growth · ₱1,799\"\n}"
         },
-        "url": {
-          "raw": "{{baseUrl}}/api/work-with-us/pricing",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "work-with-us",
-            "pricing"
-          ]
-        }
-      },
-      "response": []
+        "description": "Needs a fresh Turnstile token each time; the second send returns the first inquiryId."
+      }
     },
     {
-      "name": "8. Dedicated Demo Route (POST /api/work-with-us/demo)",
+      "name": "7. Legacy route (deprecated): POST /api/work-with-us/demo",
       "request": {
         "method": "POST",
         "header": [
@@ -221,7 +222,12 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"brandName\": \"Harlan Denim Co.\",\n  \"contactEmail\": \"leads@harlandenim.ph\",\n  \"preferredDate\": \"Friday 2PM\"\n}"
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"notes\": \"Sent through the legacy path.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/api/work-with-us/demo",
@@ -233,10 +239,9 @@
             "work-with-us",
             "demo"
           ]
-        }
-      },
-      "response": []
+        },
+        "description": "Same handler and rules as /api/inquiry; removed after one release."
+      }
     }
   ]
 }
-
