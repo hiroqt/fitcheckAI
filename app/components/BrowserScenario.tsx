@@ -188,7 +188,6 @@ export function BrowserScenario({ onOpenPilotModal }: BrowserScenarioProps = {})
               width={140}
               height={42}
               className="h-8 w-auto sm:h-9"
-              priority
             />
           </motion.div>
 
