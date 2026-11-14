@@ -1,0 +1,242 @@
+{
+  "info": {
+    "_postman_id": "f8a9e2d1-4b3c-4d5e-8f9a-0b1c2d3e4f5a",
+    "name": "FitCheck AI — Work With Us & Inquiry API",
+    "description": "Pre-configured Postman collection for testing the security-hardened Work With Us APIs (General Inquiry, Pricing & Availability, Request a Demo, Zod Validation, Rate Limiting, and Honeypot Defense).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. General Inquiry (POST /api/inquiry)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"inquiryType\": \"general\",\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"partnerships@aurastudio.ph\",\n  \"contactPerson\": \"Maria Santos\",\n  \"phone\": \"+639171234567\",\n  \"storeUrl\": \"https://instagram.com/aurastudiomnl\",\n  \"message\": \"We would like to explore integrating FitCheck AI on our online storefront for our new collection.\",\n  \"source\": \"postman_test\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Tests a successful General Inquiry submission through the hardened /api/inquiry endpoint."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Pricing & Availability (POST /api/inquiry)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"inquiryType\": \"pricing\",\n  \"brandName\": \"Solara Atelier\",\n  \"contactEmail\": \"founder@solaraatelier.com\",\n  \"contactPerson\": \"Gabriel Cruz\",\n  \"phone\": \"+639189876543\",\n  \"storeUrl\": \"https://solaraatelier.com\",\n  \"selectedPlan\": \"Growth · ₱1,799\",\n  \"garmentStyles\": \"Tailored linen shirts, casual blazers\",\n  \"averagePrice\": 2400,\n  \"monthlyVolume\": \"2,000 monthly visitors\",\n  \"message\": \"Confirming pilot slot availability for next month.\",\n  \"source\": \"postman_test\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Tests a successful Pricing & Availability pilot inquiry."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Request a Demo (POST /api/inquiry)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"inquiryType\": \"demo\",\n  \"brandName\": \"Harlan Denim Co.\",\n  \"contactEmail\": \"leads@harlandenim.ph\",\n  \"contactPerson\": \"Katrina Reyes\",\n  \"phone\": \"+639175550192\",\n  \"storeUrl\": \"https://harlandenim.ph\",\n  \"preferredDate\": \"Thursday 3:00 PM PHT\",\n  \"garmentCategories\": \"Selvedge denim jackets, chore coats\",\n  \"companySize\": \"10-25 employees\",\n  \"message\": \"We want to see real-time fabric drape and silhouette previews.\",\n  \"source\": \"postman_test\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Tests a demo walkthrough request."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Security Test: Zod Validation Error (Expected 400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"inquiryType\": \"general\",\n  \"brandName\": \"\",\n  \"contactEmail\": \"invalid-email-format\",\n  \"unexpectedMaliciousField\": \"injected\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Tests strict Zod schema validation: should reject with HTTP 400 Bad Request detailing missing fields and disallowing unexpected properties."
+      },
+      "response": []
+    },
+    {
+      "name": "5. Security Test: Bot Honeypot Defense (Expected 200 Silent Drop)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"inquiryType\": \"general\",\n  \"brandName\": \"Spam Bot Corp\",\n  \"contactEmail\": \"bot@spammer.net\",\n  \"message\": \"Spam advertisement message\",\n  \"hp_company_website\": \"https://malicious-spam-url.com\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Tests Honeypot bot interception: When hp_company_website is populated, the server silently returns 200 OK without forwarding to internal systems."
+      },
+      "response": []
+    },
+    {
+      "name": "6. Dedicated General Route (POST /api/work-with-us/general)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brandName\": \"Aura Studio\",\n  \"contactEmail\": \"info@aurastudio.ph\",\n  \"message\": \"Testing dedicated general endpoint.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/work-with-us/general",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "work-with-us",
+            "general"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "7. Dedicated Pricing Route (POST /api/work-with-us/pricing)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brandName\": \"Solara Atelier\",\n  \"contactEmail\": \"founder@solaraatelier.com\",\n  \"selectedPlan\": \"Growth · ₱1,799\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/work-with-us/pricing",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "work-with-us",
+            "pricing"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "8. Dedicated Demo Route (POST /api/work-with-us/demo)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brandName\": \"Harlan Denim Co.\",\n  \"contactEmail\": \"leads@harlandenim.ph\",\n  \"preferredDate\": \"Friday 2PM\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/work-with-us/demo",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "work-with-us",
+            "demo"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
+

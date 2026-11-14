@@ -5,7 +5,6 @@ import { LegalNav } from "../LegalNav";
 export const metadata: Metadata = {
   title: "Privacy",
   description: "How FitCheck handles survey answers, account access, try-on photos, and email inquiries.",
-  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
