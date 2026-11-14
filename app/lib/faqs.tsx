@@ -106,7 +106,29 @@ export const brandFaqs: Faq[] = [
   },
 ];
 
+// Direct, definition-style answers to the questions people ask search and AI assistants.
+// Every statement here is already stated elsewhere on the site.
+export const aboutFaqs: Faq[] = [
+  {
+    question: "What is FitCheck?",
+    answer: (
+      <p>
+        FitCheck (FitCheck AI) is a browser-based virtual try-on pilot for Philippine fashion brands. Shoppers pick a featured garment, then use their live camera or upload a photo to see a 15-second AI-generated preview of how the look could appear on them. There is no app to install. It is a visual guide only and does not confirm size or fit.
+      </p>
+    ),
+  },
+  {
+    question: "How much does FitCheck cost for brands?",
+    answer: (
+      <p>
+        Brand plans start at ₱499 for a one-time Starter pack of 5 previews (up to 30 seconds each). Growth is ₱1,799 for 20 previews, Larger business is ₱4,999 per month plus metered usage, and Custom plans are quoted after a discovery call. These are introductory tiers; final allowances and billing terms are confirmed with your team. See the <a href="#scene-pricing" className="text-[#0038ff] underline hover:text-[#002bdc]">pricing section</a> for details.
+      </p>
+    ),
+  },
+];
+
 export const allFaqs: { audience: string; faqs: Faq[] }[] = [
+  { audience: "About FitCheck", faqs: aboutFaqs },
   { audience: "For shoppers", faqs: shopperFaqs },
   { audience: "For brand owners", faqs: brandFaqs },
 ];
