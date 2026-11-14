@@ -208,7 +208,7 @@ export async function handleInquiryRequest(request: NextRequest): Promise<NextRe
     const confirmation = result.duplicate ? null : getConfirmationConfig();
     if (confirmation) {
       runAfterResponse(() =>
-        sendInquiryConfirmation(data.contactEmail, { inquiryType: data.inquiryType, selectedPlan: data.selectedPlan, referenceId: result.id }, confirmation),
+        sendInquiryConfirmation(data.contactEmail, { inquiryType: data.inquiryType, selectedPlan: data.selectedPlan, referenceId: result.id, contactName: data.contactPerson }, confirmation),
       );
     }
     return reply(200, { success: true, inquiryId: result.id, type: data.inquiryType, message: SUCCESS_MESSAGE });
