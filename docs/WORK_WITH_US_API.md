@@ -61,7 +61,20 @@ There are **no automatic retries** (Turnstile tokens are single-use). A honeypot
 | Website (public) | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Turnstile site key for this hostname. |
 | Ops (Convex env) | `WEBSITE_HMAC_SECRET`, `TURNSTILE_SECRET_KEY`, `TURNSTILE_HOSTNAME` | See the Ops contract. |
 
+| Website (server) | `RESEND_API_KEY` | Optional. Resend API key with sending access; enables the visitor confirmation email. |
+| Website (server) | `INQUIRY_CONFIRMATION_FROM` | Optional, required with the key: a sender on a domain verified in Resend, e.g. `FitCheck AI <hello@tryfitcheckai.online>`. |
+| Website (server) | `INQUIRY_CONFIRMATION_REPLY_TO` | Optional: a monitored inbox. When set, the email invites the visitor to reply. |
+
 `FITCHECK_APPS_SCRIPT_URL` / `FITCHECK_APPS_SCRIPT_SECRET` are no longer used.
+
+## Visitor confirmation email
+
+When Ops stores a new inquiry (`201`), the website emails the visitor "We received your FitCheck AI inquiry" through [Resend](https://resend.com/docs/api-reference/emails/send-email), after the response is sent (`after()`), so the form never waits for it.
+
+- Sent **once per stored inquiry**: not for a repeated `submissionId` (Ops `200`), a honeypot hit or any failure. The Resend `Idempotency-Key` is `inquiry-confirmation/<Ops inquiry id>`.
+- Contains **no visitor-typed text**: only the inquiry type, the chosen plan and the reference ID. This keeps the form from being used to send arbitrary content to arbitrary addresses.
+- A failed email is logged (`[inquiry] confirmation email …`, without the address) and never fails the inquiry.
+- Off until `RESEND_API_KEY` and `INQUIRY_CONFIRMATION_FROM` are set.
 
 ## Testing
 

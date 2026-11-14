@@ -9,8 +9,9 @@
  */
 import { createHmac } from "node:crypto";
 import axios from "axios";
-import { NextResponse, type NextRequest } from "next/server";
+import { after, NextResponse, type NextRequest } from "next/server";
 import { checkRateLimit } from "./rateLimit";
+import { getConfirmationConfig, sendInquiryConfirmation } from "./inquiryConfirmation";
 import { composeMessage, inquirySchema, toInterest, type InquiryType, type ValidatedInquiry } from "./inquirySchema";
 
 export const OPS_TIMEOUT_MS = 8000;
@@ -133,6 +134,15 @@ function reply(status: number, body: Record<string, unknown>, headers?: Record<s
   return NextResponse.json(body, { status, headers: { "cache-control": "no-store", ...(headers ?? {}) } });
 }
 
+/** Next's `after()` keeps the function alive for the task; outside a request scope (tests) just start it. */
+function runAfterResponse(task: () => Promise<unknown>) {
+  try {
+    after(task);
+  } catch {
+    void task();
+  }
+}
+
 function clientIpOf(request: NextRequest): string {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "unknown";
 }
@@ -194,6 +204,13 @@ export async function handleInquiryRequest(request: NextRequest): Promise<NextRe
 
   const result = await forwardToOps(toOpsPayload(data), config, clientIp);
   if (result.ok) {
+    // First time this inquiry was stored: email the visitor a confirmation after the response is sent.
+    const confirmation = result.duplicate ? null : getConfirmationConfig();
+    if (confirmation) {
+      runAfterResponse(() =>
+        sendInquiryConfirmation(data.contactEmail, { inquiryType: data.inquiryType, selectedPlan: data.selectedPlan, referenceId: result.id }, confirmation),
+      );
+    }
     return reply(200, { success: true, inquiryId: result.id, type: data.inquiryType, message: SUCCESS_MESSAGE });
   }
   console.error("[inquiry] Ops did not store the inquiry", JSON.stringify({ kind: result.kind, ...("status" in result ? { status: result.status, code: result.code } : {}) }));
