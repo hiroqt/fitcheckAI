@@ -19,9 +19,9 @@ const inquiries: { type: InquiryType; title: string; description: string }[] = [
 export function WorkWithUsModal({ isOpen, onClose, selectedPlan }: WorkWithUsModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto border border-[#d5d5e4] bg-white p-6 text-[#101b43] shadow-2xl sm:max-w-lg sm:p-8">
+      <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto border border-[#d5d5e4] bg-white p-5 text-[#101b43] shadow-2xl sm:max-w-lg sm:p-8">
         <div>
-          <DialogTitle className="text-2xl font-bold tracking-tight text-[#101b43]">
+          <DialogTitle className="text-xl sm:text-2xl font-bold tracking-tight text-[#101b43]">
             Work with us
           </DialogTitle>
           <DialogDescription className="mt-2 text-sm leading-relaxed text-[#515d82]">

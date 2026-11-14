@@ -86,7 +86,7 @@ export function Hero() {
   }, [mouseX, mouseY]);
 
   return (
-    <section id="scene-hero" className="campaign-hero relative left-1/2 -ml-[50vw] -mt-2.5 w-screen text-white sm:-mt-4">
+    <section id="scene-hero" className="campaign-hero relative w-full text-white">
       <div
         ref={stageRef}
         onMouseMove={handleMouseMove}
@@ -180,11 +180,11 @@ export function Hero() {
         {/* Hero Action */}
         <a
           href="#scene-showroom"
-          className="campaign-link relative z-10"
+          className="campaign-link relative z-10 inline-flex items-center justify-center gap-2.5"
         >
           <span>Open the showroom</span>
           <ArrowDownRight
-            size={20}
+            size={18}
             aria-hidden="true"
             className="shrink-0"
           />

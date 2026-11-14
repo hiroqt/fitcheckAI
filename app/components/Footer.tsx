@@ -148,35 +148,38 @@ export function Footer({ onOpenPilotModal, className = "" }: FooterProps) {
       aria-label="Site Footer"
       className={`relative w-full border-t border-white/10 bg-[#0E121E] text-white ${className}`}
     >
-      <section className="relative z-10 mx-auto -mt-14 mb-4 grid max-w-6xl gap-6 overflow-hidden rounded-xl border border-white/20 bg-[#0038ff] px-6 py-7 shadow-xl sm:-mt-16 sm:mb-6 sm:grid-cols-[1fr_auto] sm:items-center sm:px-10 sm:py-9">
+      <section className="relative z-10 mx-4 sm:mx-6 lg:mx-auto -mt-12 mb-6 grid max-w-6xl gap-6 overflow-hidden rounded-2xl border border-white/20 bg-[#0038ff] px-6 py-7 shadow-2xl sm:-mt-16 sm:mb-8 sm:grid-cols-[1fr_auto] sm:items-center sm:px-10 sm:py-9">
         <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-24 size-64 rounded-full border border-white/10" />
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 left-1/3 size-72 rounded-full border border-white/10" />
         <div className="relative">
-          <ScrollHeading delay={0} margin="-80px">
-            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-white/90">
-              See what works for you
-            </p>
-            <h2 className="mt-2 text-balance text-4xl font-black italic tracking-[0.01em] text-white sm:text-5xl lg:text-6xl">
+          <ScrollHeading delay={0} margin="-80px" className="w-full">
+            <h2 className="w-full text-balance text-3xl font-black italic tracking-[-0.03em] text-white sm:text-4xl lg:text-5xl uppercase">
               Curious about FitCheck?
             </h2>
           </ScrollHeading>
           <ScrollText delay={0.1} margin="-80px">
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/90">
+            <p className="mt-2.5 max-w-2xl text-sm sm:text-base font-medium leading-relaxed text-white/90">
               Try a style preview or send us a message. We’re happy to help you get started.
             </p>
           </ScrollText>
         </div>
-        <ScrollReveal delay={0.15} margin="-80px" className="relative flex flex-wrap gap-3">
+        <ScrollReveal delay={0.15} margin="-80px" className="relative flex flex-col sm:flex-row flex-wrap gap-3 w-full sm:w-auto shrink-0">
           <Link
             href="/#scene-showroom"
             onClick={(e) => handleAnchorClick(e, "/#scene-showroom")}
-            className="inline-flex min-h-11 items-center justify-center rounded-md bg-white px-5 text-sm font-semibold text-[#101b43] transition-all duration-150 hover:bg-blue-50 active:scale-95 active:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0038ff] cursor-pointer"
+            className="inline-flex min-h-11 w-full sm:w-auto items-center justify-center rounded-sm bg-white px-6 text-sm font-bold text-[#0038ff] shadow-sm transition-all duration-150 hover:bg-blue-50 active:scale-95 focus-visible:outline-2 focus-visible:outline-white cursor-pointer text-center"
           >
             Try a look
           </Link>
           <a
             href="mailto:fitcheckai0@gmail.com"
-            className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/40 bg-white/10 px-5 text-sm font-semibold text-white transition-all duration-150 hover:bg-white/20 active:scale-95 active:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
+            onClick={(e) => {
+              if (onOpenPilotModal) {
+                e.preventDefault();
+                onOpenPilotModal();
+              }
+            }}
+            className="inline-flex min-h-11 w-full sm:w-auto items-center justify-center rounded-sm border border-white/40 bg-white/10 px-6 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-150 hover:bg-white/20 active:scale-95 focus-visible:outline-2 focus-visible:outline-white cursor-pointer text-center"
           >
             Message us
           </a>

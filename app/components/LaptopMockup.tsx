@@ -5,8 +5,8 @@ import { Marquee } from "@/components/ui/marquee";
 
 const defaultGarments = [
   { name: "Floating Brand Bomber", src: "/floating-jacket.webp", alt: "Illustrative cobalt bomber" },
-  { name: "Embroidered Shirt", src: "/floating-shirt.png", alt: "Illustrative ivory shirt with cobalt embroidery" },
-  { name: "Midnight Barong", src: "/floating-barong.png", alt: "Illustrative ivory embroidered barong" },
+  { name: "Embroidered Shirt", src: "/floating-shirt.webp", alt: "Illustrative ivory shirt with cobalt embroidery" },
+  { name: "Midnight Barong", src: "/floating-barong.webp", alt: "Illustrative ivory embroidered barong" },
 ];
 
 type LaptopMockupProps = {
@@ -38,7 +38,7 @@ export function LaptopMockup({ scenario, garments = defaultGarments }: LaptopMoc
               <span aria-hidden="true" className="size-1.5 rounded-full bg-[#f87171] sm:size-2" />
               <span aria-hidden="true" className="size-1.5 rounded-full bg-[#fbbf24] sm:size-2" />
               <span aria-hidden="true" className="size-1.5 rounded-full bg-[#34d399] sm:size-2" />
-              <span className="ml-2 flex h-[70%] flex-1 items-center rounded bg-[#f0f2f8] px-2 text-[7px] text-[#64708a] sm:text-[9px]">
+              <span className="ml-2 flex h-[70%] flex-1 items-center rounded bg-[#f0f2f8] px-2 text-[8px] text-[#64708a] sm:text-[9px]">
                 tryfitcheckai.online
               </span>
             </div>
@@ -46,7 +46,7 @@ export function LaptopMockup({ scenario, garments = defaultGarments }: LaptopMoc
             <div className="grid min-h-0 min-w-0 grid-cols-[0.95fr_1.05fr]">
               {/* Left side: Floating Brand Horizontal Moving Carousel */}
               <div className="relative flex min-h-0 min-w-0 h-full w-full items-center overflow-hidden bg-[#101633] p-1 sm:p-2">
-                <span className="absolute left-2 top-2 z-20 text-[6px] font-bold tracking-wider text-white/85 sm:left-3 sm:top-3 sm:text-[8px]">
+                <span className="absolute left-2 top-2 z-20 text-[7px] font-bold tracking-wider text-white/85 sm:left-3 sm:top-3 sm:text-[8px]">
                   FLOATING BRAND
                 </span>
 
@@ -73,14 +73,14 @@ export function LaptopMockup({ scenario, garments = defaultGarments }: LaptopMoc
               </div>
 
               {/* Right side: Interactive Style Action Panel */}
-              <div className="flex min-h-0 min-w-0 flex-col justify-center overflow-hidden p-2.5 sm:p-5">
-                <span className="text-[7px] font-semibold uppercase tracking-wider text-[#0038ff] sm:text-[10px]">
+              <div className="flex min-h-0 min-w-0 flex-col justify-center overflow-hidden p-2 sm:p-5">
+                <span className="text-[8px] font-semibold uppercase tracking-wider text-[#0038ff] sm:text-[10px]">
                   {scenario === "shopper" ? "Instant Try-On" : "Brand Showroom"}
                 </span>
-                <h3 className="truncate text-[10px] font-black text-[#101b43] sm:text-base">
+                <h3 className="truncate text-[11px] font-black text-[#101b43] sm:text-base">
                   {scenario === "shopper" ? "Curated Collection" : "Social Commerce Pilot"}
                 </h3>
-                <p className="mt-0.5 truncate text-[6px] text-[#596581] sm:text-[10px]">
+                <p className="mt-0.5 truncate text-[7.5px] text-[#596581] sm:text-[10px]">
                   {scenario === "shopper"
                     ? "Live camera & photo style preview"
                     : "Zero code or native app required"}
@@ -88,22 +88,22 @@ export function LaptopMockup({ scenario, garments = defaultGarments }: LaptopMoc
 
                 {scenario === "shopper" ? (
                   <div className="mt-2 space-y-1 sm:mt-3 sm:space-y-1.5">
-                    <div className="flex items-center justify-between rounded-md bg-[#0038ff] px-2 py-1 text-[7px] font-medium text-white sm:px-2.5 sm:py-1.5 sm:text-[10px]">
+                    <div className="flex items-center justify-between rounded-md bg-[#0038ff] px-2 py-1 text-[8px] font-medium text-white sm:px-2.5 sm:py-1.5 sm:text-[10px]">
                       <span>Camera Mirror</span>
-                      <span className="text-[5px] uppercase opacity-85 sm:text-[8px]">15s Live</span>
+                      <span className="text-[6.5px] uppercase opacity-85 sm:text-[8px]">15s Live</span>
                     </div>
-                    <div className="flex items-center justify-between rounded-md border border-[#d9deed] bg-white px-2 py-1 text-[7px] font-medium text-[#101b43] sm:px-2.5 sm:py-1.5 sm:text-[10px]">
+                    <div className="flex items-center justify-between rounded-md border border-[#d9deed] bg-white px-2 py-1 text-[8px] font-medium text-[#101b43] sm:px-2.5 sm:py-1.5 sm:text-[10px]">
                       <span>Upload Photo</span>
-                      <span className="text-[5px] uppercase text-[#718096] sm:text-[8px]">Static</span>
+                      <span className="text-[6.5px] uppercase text-[#718096] sm:text-[8px]">Static</span>
                     </div>
                   </div>
                 ) : (
                   <div className="mt-2 space-y-1 sm:mt-3 sm:space-y-1.5">
-                    <div className="flex items-center gap-1.5 rounded-md border border-[#d9deed] bg-white px-2 py-1 text-[7px] font-medium text-[#101b43] sm:px-2.5 sm:py-1.5 sm:text-[10px]">
-                      <span className="text-[#0038ff]">✓</span> Runs inside Instagram DMs & Web
+                    <div className="flex items-center gap-1.5 rounded-md border border-[#d9deed] bg-white px-2 py-1 text-[8px] font-medium text-[#101b43] sm:px-2.5 sm:py-1.5 sm:text-[10px]">
+                      <span className="text-[#0038ff]">✓</span> Runs in DMs & Web
                     </div>
-                    <div className="flex items-center gap-1.5 rounded-md border border-[#d9deed] bg-white px-2 py-1 text-[7px] font-medium text-[#101b43] sm:px-2.5 sm:py-1.5 sm:text-[10px]">
-                      <span className="text-[#0038ff]">✓</span> Fixed prepaid trial credits
+                    <div className="flex items-center gap-1.5 rounded-md border border-[#d9deed] bg-white px-2 py-1 text-[8px] font-medium text-[#101b43] sm:px-2.5 sm:py-1.5 sm:text-[10px]">
+                      <span className="text-[#0038ff]">✓</span> Prepaid trial credits
                     </div>
                   </div>
                 )}

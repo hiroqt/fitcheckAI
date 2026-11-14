@@ -117,7 +117,7 @@ const sectionVariant = {
 const textSlideVariant = {
   hidden: (custom?: { x?: number }) => ({
     opacity: 0,
-    x: custom?.x ?? -60,
+    x: custom?.x ? Math.max(custom.x, -30) : -24,
     transition: {
       duration: 0.3,
       ease: REFINED_EASE,
@@ -167,7 +167,7 @@ export function BrowserScenario({ onOpenPilotModal }: BrowserScenarioProps = {})
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.15, margin: "-40px" }}
-      className="relative left-1/2 -ml-[50vw] w-screen isolate overflow-hidden border-y border-white/20 bg-[#0038ff] px-5 py-14 text-white shadow-[0_12px_40px_rgba(0,56,255,0.25)] sm:px-8 sm:py-18 lg:px-12 lg:py-24"
+      className="relative w-full isolate overflow-hidden border-y border-white/20 bg-[#0038ff] px-4 py-12 text-white shadow-[0_12px_40px_rgba(0,56,255,0.25)] sm:px-8 sm:py-18 lg:px-12 lg:py-24"
     >
       <AbstractDrawingsBackground />
 
