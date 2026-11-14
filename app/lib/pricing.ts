@@ -1,5 +1,5 @@
 // Single source of truth for plan tiers: rendered by MinimalPricing and used for the
-// server-side consumers.
+// Service/Offer structured data and /llms.txt.
 export type PricingPack = {
   name: string;
   price: string;
@@ -8,6 +8,10 @@ export type PricingPack = {
   features: string[];
   selection: string;
   recommended?: boolean;
+  /** Numeric price in PHP for structured data; omitted for quote-based plans. */
+  amountPhp?: number;
+  /** Set for subscription plans. */
+  billing?: "monthly";
 };
 
 export const packs: PricingPack[] = [
@@ -18,6 +22,7 @@ export const packs: PricingPack[] = [
     description: "A simple way to try FitCheck with one collection.",
     features: ["One-time prepaid pack", "About ₱100 per preview", "No automatic top-ups"],
     selection: "499",
+    amountPhp: 499,
   },
   {
     name: "Growth",
@@ -26,6 +31,7 @@ export const packs: PricingPack[] = [
     description: "For brands handling regular preview requests.",
     features: ["One-time prepaid pack", "About ₱90 per preview", "Around 10% less per preview than Starter", "No automatic top-ups"],
     selection: "1799",
+    amountPhp: 1799,
     recommended: true,
   },
   {
@@ -35,6 +41,8 @@ export const packs: PricingPack[] = [
     description: "For multi-brand retailers planning a higher-volume pilot.",
     features: ["Monthly plan with metered usage", "Usage and allowances tailored to the pilot", "Confirm session limits before launch"],
     selection: "larger_business",
+    amountPhp: 4999,
+    billing: "monthly",
   },
   {
     name: "Custom",

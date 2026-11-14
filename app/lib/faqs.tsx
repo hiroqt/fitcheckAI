@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 // Single source of truth for the FAQ: rendered by FaqAccordion and serialized into
-// server-side consumers. Answers stay JSX so they can contain links.
+// FAQPage structured data and /llms.txt. Answers stay JSX so they can contain links.
 export type Faq = { question: string; answer: ReactNode };
 
 export const shopperFaqs: Faq[] = [
@@ -133,3 +133,17 @@ export const allFaqs: { audience: string; faqs: Faq[] }[] = [
   { audience: "For brand owners", faqs: brandFaqs },
 ];
 
+/** Flattens a JSX answer to plain text for structured data and /llms.txt. */
+export function toPlainText(node: ReactNode): string {
+  if (node === null || node === undefined || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(toPlainText).join("");
+  if (typeof node === "object" && "props" in node) {
+    return toPlainText((node.props as { children?: ReactNode }).children);
+  }
+  return "";
+}
+
+export function faqAnswerText(faq: Faq): string {
+  return toPlainText(faq.answer).replace(/\s+/g, " ").trim();
+}
