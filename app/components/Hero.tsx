@@ -3,12 +3,12 @@
 import Image from "next/image";
 import { ArrowDownRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
+import { AnimatePresence, motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 
 const HERO_GARMENTS = [
   { name: "jacket", src: "/floating-jacket.webp", alt: "Cobalt technical jacket suspended in midair" },
-  { name: "shirt", src: "/floating-shirt.png", alt: "Ivory long-sleeve shirt with intricate cobalt embroidery suspended in midair" },
-  { name: "barong", src: "/floating-barong.png", alt: "Ivory embroidered barong suspended in midair" },
+  { name: "shirt", src: "/floating-shirt.webp", alt: "Ivory long-sleeve shirt with intricate cobalt embroidery suspended in midair" },
+  { name: "barong", src: "/floating-barong.webp", alt: "Ivory embroidered barong suspended in midair" },
 ];
 
 function subscribeReducedMotion(callback: () => void) {
@@ -51,6 +51,8 @@ export function Hero() {
   const mouseY = useMotionValue(0);
   const spotX = useMotionValue(50);
   const spotY = useMotionValue(50);
+  // Updates the gradient directly on the element as the cursor moves (no React re-render).
+  const spotlight = useMotionTemplate`radial-gradient(750px circle at ${spotX}% ${spotY}%, rgba(255, 255, 255, 0.12), transparent 70%)`;
 
   const springConfig = { damping: 25, stiffness: 180 };
   const garmentRotateX = useSpring(mouseY, springConfig);
@@ -94,11 +96,9 @@ export function Hero() {
       >
         {/* Cursor-driven subtle radial illumination highlight */}
         {!reducedMotion && isHovered && (
-          <div
+          <motion.div
             className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-500"
-            style={{
-              background: `radial-gradient(750px circle at ${spotX.get()}% ${spotY.get()}%, rgba(255, 255, 255, 0.12), transparent 70%)`,
-            }}
+            style={{ background: spotlight }}
             aria-hidden="true"
           />
         )}
@@ -141,7 +141,10 @@ export function Hero() {
           }
           className="campaign-garment pointer-events-auto cursor-grab will-change-transform active:cursor-grabbing"
         >
-          <AnimatePresence mode="sync">
+          {/* initial={false}: the first garment is the LCP element, so it must paint
+              straight from the server HTML instead of waiting for hydration to fade it in.
+              Later garments in the rotation still animate in. */}
+          <AnimatePresence mode="sync" initial={false}>
             <motion.div
               key={garment.name}
               className="absolute inset-0"
@@ -154,6 +157,8 @@ export function Hero() {
                 src={garment.src}
                 fill
                 preload={garmentIndex === 0}
+                loading={garmentIndex === 0 ? "eager" : undefined}
+                fetchPriority={garmentIndex === 0 ? "high" : undefined}
                 sizes="(max-width: 767px) 96vw, (max-width: 1400px) 64vw, 896px"
                 alt={garment.alt}
                 className="object-contain drop-shadow-[0_20px_45px_rgba(0,18,90,0.45)]"

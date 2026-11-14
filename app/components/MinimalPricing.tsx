@@ -56,13 +56,14 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
       </div>
 
       <ScrollStagger
+        as="ul"
         stagger={0.08}
         margin="-80px"
         className="mt-10 grid list-none gap-5 p-0 md:grid-cols-2 md:items-stretch xl:grid-cols-4"
       >
         {packs.map(({ name, price, detail, description, features, selection, recommended }) => (
-          <ScrollStaggerItem key={name} className="flex">
-            <li
+          <ScrollStaggerItem as="li" key={name} className="flex">
+            <div
               className={`relative flex min-w-0 w-full flex-col items-center rounded-md border bg-white p-6 text-center text-[#101b43] transition-all duration-200 hover:border-[#0038ff] hover:shadow-md ${
                 recommended
                   ? "border-2 border-[#0038ff] md:my-[-.75rem] md:py-8"
@@ -106,7 +107,7 @@ export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?:
                 <span>{recommended ? "Choose Growth" : name === "Custom" ? "Discuss custom plan" : name === "Larger business" ? "Contact us" : "Choose Starter"}</span>
                 <ArrowUpRight size={15} aria-hidden="true" />
               </a>
-            </li>
+            </div>
           </ScrollStaggerItem>
         ))}
       </ScrollStagger>

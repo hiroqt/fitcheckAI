@@ -165,6 +165,7 @@ export function HowItWorks({
 
         {/* 3-Column Sequential Step Flow with Bi-directional Staggered Scroll Reveal */}
         <ScrollStagger
+          as="ol"
           stagger={0.12}
           delayChildren={0.15}
           margin="-80px"
@@ -176,8 +177,8 @@ export function HowItWorks({
             const stepNum = typeof item.step === "number" ? item.step : item.step.replace(/\D/g, "") || (index + 1);
 
             return (
-              <ScrollStaggerItem key={item.step} className="w-full">
-                <li className="relative flex flex-col items-center text-center">
+              <ScrollStaggerItem as="li" key={item.step} className="w-full">
+                <div className="relative flex flex-col items-center text-center">
                   {/* Desktop Animated Broken Line Connector with Arrow traveling towards the next step */}
                   {!isLast && (
                     <div
@@ -286,7 +287,7 @@ export function HowItWorks({
                       </div>
                     </div>
                   )}
-                </li>
+                </div>
               </ScrollStaggerItem>
             );
           })}
