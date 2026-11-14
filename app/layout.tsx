@@ -1,8 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "./components/SmoothScroll";
+import {
+  BRAND_COLOR,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+  SOCIAL_PROFILES,
+} from "./lib/site";
 const geistSans = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -19,52 +27,95 @@ const editorialDisplay = Barlow_Condensed({
   weight: "900",
 });
 
-const description = "Explore Floating Brand’s showroom and FitCheck’s live virtual try-on pilot.";
-const siteUrl = process.env.FITCHECK_SHOWROOM_ORIGIN || "https://tryfitcheckai.online";
+const ogImage = {
+  url: "/opengraph.jpg",
+  width: 1672,
+  height: 941,
+  alt: "FitCheck - Virtual Style Preview",
+};
 
+// Icons come from the file conventions: app/favicon.ico, app/icon.png, app/apple-icon.png.
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "FitCheck",
-    template: "%s | FitCheck",
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
-  description,
-  authors: [{ name: "FitCheck" }],
-  openGraph: {
-    title: {
-      default: "FitCheck",
-      template: "%s | FitCheck",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  keywords: [
+    "virtual try-on",
+    "AI fitting room",
+    "try on clothes online",
+    "fashion e-commerce",
+    "Philippine fashion brands",
+    "FitCheck",
+  ],
+  category: "fashion",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
-    description,
+  },
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     type: "website",
+    locale: "en_PH",
     url: "/",
-    siteName: "FitCheck",
-    images: [
-      {
-        url: "/opengraph.png",
-        width: 1672,
-        height: 941,
-        alt: "FitCheck - Virtual Style Preview",
-      },
-    ],
+    siteName: SITE_NAME,
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: {
-      default: "FitCheck",
-      template: "%s | FitCheck",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [ogImage],
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: BRAND_COLOR,
+  colorScheme: "light",
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon.png`,
+      email: "fitcheckai0@gmail.com",
+      sameAs: SOCIAL_PROFILES,
     },
-    description,
-    images: ["/opengraph.png"],
-  },
-  icons: {
-    icon: [
-      { url: "/favicon-fitcheck.png" },
-      { url: "/icon.png" },
-    ],
-    shortcut: "/favicon-fitcheck.png",
-    apple: "/favicon-fitcheck.png",
-  },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: SITE_DESCRIPTION,
+      inLanguage: "en",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -78,6 +129,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${editorialDisplay.variable}`}
     >
       <body className="min-h-screen overflow-x-clip bg-[#f7f8ff] font-sans text-[#101b43] antialiased selection:bg-[#0038ff] selection:text-white">
+        <script
+          type="application/ld+json"
+          // JSON.stringify output is static and server-controlled; escape "<" defensively.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+        />
         <SmoothScroll>
           {children}
         </SmoothScroll>
