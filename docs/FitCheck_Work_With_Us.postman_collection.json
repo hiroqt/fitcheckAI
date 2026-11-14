@@ -209,39 +209,6 @@
         },
         "description": "Needs a fresh Turnstile token each time; the second send returns the first inquiryId."
       }
-    },
-    {
-      "name": "7. Legacy route (deprecated): POST /api/work-with-us/demo",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"notes\": \"Sent through the legacy path.\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/api/work-with-us/demo",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "work-with-us",
-            "demo"
-          ]
-        },
-        "description": "Same handler and rules as /api/inquiry; removed after one release."
-      }
     }
   ]
 }

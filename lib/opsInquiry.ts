@@ -11,7 +11,7 @@ import { createHmac } from "node:crypto";
 import axios from "axios";
 import { NextResponse, type NextRequest } from "next/server";
 import { checkRateLimit } from "./rateLimit";
-import { composeMessage, inquirySchema, normalizePlanKey, toInterest, type InquiryType, type ValidatedInquiry } from "./inquirySchema";
+import { composeMessage, inquirySchema, toInterest, type InquiryType, type ValidatedInquiry } from "./inquirySchema";
 
 export const OPS_TIMEOUT_MS = 8000;
 
@@ -138,37 +138,10 @@ function clientIpOf(request: NextRequest): string {
 }
 
 /**
- * Keeps the old `/api/work-with-us/*` payloads working: picks the fields the form uses and maps
- * `notes` → `message`, `garmentCategories` → `garmentStyles` and plan labels → plan keys.
- */
-export function normalizeLegacyBody(raw: Record<string, unknown>, inquiryType: InquiryType): Record<string, unknown> {
-  const pick = (k: string) => (typeof raw[k] === "string" ? (raw[k] as string) : undefined);
-  const out: Record<string, unknown> = {
-    inquiryType,
-    brandName: raw.brandName,
-    contactEmail: raw.contactEmail,
-    contactPerson: raw.contactPerson,
-    phone: pick("phone"),
-    storeUrl: pick("storeUrl"),
-    garmentStyles: pick("garmentStyles") ?? pick("garmentCategories"),
-    preferredDate: pick("preferredDate"),
-    message: pick("message") ?? pick("notes"),
-    consent: raw.consent,
-    turnstileToken: raw.turnstileToken,
-    submissionId: raw.submissionId,
-    pagePath: pick("pagePath"),
-    hp_company_website: pick("hp_company_website"),
-  };
-  const plan = normalizePlanKey(raw.selectedPlan);
-  if (plan) out.selectedPlan = plan;
-  return Object.fromEntries(Object.entries(out).filter(([, v]) => v !== undefined));
-}
-
-/**
- * The one inquiry handler (`/api/inquiry` and the legacy `/api/work-with-us/*` routes).
+ * The inquiry handler behind `POST /api/inquiry`.
  * Success is reported only after Ops stores the inquiry, with the stored Ops id.
  */
-export async function handleInquiryRequest(request: NextRequest, legacy?: { inquiryType?: InquiryType }): Promise<NextResponse> {
+export async function handleInquiryRequest(request: NextRequest): Promise<NextResponse> {
   const clientIp = clientIpOf(request);
 
   try {
@@ -188,11 +161,6 @@ export async function handleInquiryRequest(request: NextRequest, legacy?: { inqu
   }
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
     return reply(400, { success: false, code: "VALIDATION", message: "Invalid JSON request format." });
-  }
-  if (legacy) {
-    const record = raw as Record<string, unknown>;
-    const type = legacy.inquiryType ?? (typeof record.type === "string" ? record.type : "general");
-    raw = normalizeLegacyBody(record, type as InquiryType);
   }
 
   const parsed = inquirySchema.safeParse(raw);

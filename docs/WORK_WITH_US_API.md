@@ -14,11 +14,7 @@ Source of truth for the Ops side: `fitcheck_sys/docs/contracts/inquiries-api.md`
 
 | Method | Path | Notes |
 |---|---|---|
-| `POST` | `/api/inquiry` | **Preferred.** Same-origin only (no CORS). |
-| `POST` | `/api/work-with-us` | Deprecated, kept for one release. Uses `type` instead of `inquiryType`. |
-| `POST` | `/api/work-with-us/{general,pricing,demo}` | Deprecated, kept for one release. The type comes from the path. |
-
-All paths use the same handler and rules. Legacy field names `notes` (→ `message`) and `garmentCategories` (→ `garmentStyles`) are still accepted; other old fields (`metadata`, `averagePrice`, …) are ignored.
+| `POST` | `/api/inquiry` | The only inquiry endpoint. Same-origin only (no CORS). The old `/api/work-with-us/*` routes were removed. |
 
 ## Request body (`application/json`, unknown keys rejected)
 
