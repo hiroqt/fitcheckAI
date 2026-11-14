@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { ArrowDownRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
+import { AnimatePresence, motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 
 const HERO_GARMENTS = [
   { name: "jacket", src: "/floating-jacket.webp", alt: "Cobalt technical jacket suspended in midair" },
@@ -51,6 +51,8 @@ export function Hero() {
   const mouseY = useMotionValue(0);
   const spotX = useMotionValue(50);
   const spotY = useMotionValue(50);
+  // Updates the gradient directly on the element as the cursor moves (no React re-render).
+  const spotlight = useMotionTemplate`radial-gradient(750px circle at ${spotX}% ${spotY}%, rgba(255, 255, 255, 0.12), transparent 70%)`;
 
   const springConfig = { damping: 25, stiffness: 180 };
   const garmentRotateX = useSpring(mouseY, springConfig);
@@ -94,11 +96,9 @@ export function Hero() {
       >
         {/* Cursor-driven subtle radial illumination highlight */}
         {!reducedMotion && isHovered && (
-          <div
+          <motion.div
             className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-500"
-            style={{
-              background: `radial-gradient(750px circle at ${spotX.get()}% ${spotY.get()}%, rgba(255, 255, 255, 0.12), transparent 70%)`,
-            }}
+            style={{ background: spotlight }}
             aria-hidden="true"
           />
         )}
