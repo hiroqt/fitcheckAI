@@ -5,7 +5,6 @@ import { LegalNav } from "../LegalNav";
 export const metadata: Metadata = {
   title: "Privacy",
   description: "How FitCheck handles survey answers, account access, try-on photos, and email inquiries.",
-  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
@@ -13,7 +12,7 @@ export default function PrivacyPage() {
     <main className="editorial-section pb-24 text-[#101b43]">
       <div className="max-w-4xl">
         <LegalNav currentPage="privacy" />
-        <h1 className="text-balance font-black italic uppercase tracking-[-0.045em] text-4xl sm:text-6xl">Privacy Notice</h1>
+        <h1 className="w-full text-balance font-black italic uppercase tracking-[-0.045em] text-3xl sm:text-5xl lg:text-6xl">Privacy Notice</h1>
         <p className="mt-4 text-sm text-[#62627a]">Last updated: November 12, 2026</p>
         <div className="mt-10 divide-y divide-[#d5d5e4] border-y border-[#d5d5e4] leading-relaxed text-[#34436f]">
           <section className="py-7"><h2 className="text-2xl font-bold tracking-tight text-[#101b43]">Questionnaire and sign-in</h2><p className="mt-3">After you complete the questionnaire and sign in with Google, FitCheck sends your name, optional contact email, survey answers, and submission time to a private Google Sheet for market research. Your verified Google email is used to enforce the one-hour cooldown per account. FitCheck stores a keyed hash of that email and the preview status in a private control tab; the email itself is not added to the survey response sheet. The survey and access records remain until the pilot operator deletes them.</p></section>

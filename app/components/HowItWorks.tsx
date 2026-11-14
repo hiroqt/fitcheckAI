@@ -74,7 +74,7 @@ export function HowItWorks({
     <section
       id={id}
       aria-labelledby="how-it-works-title"
-      className={`w-full bg-[#f8f9fd] py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-y border-[#d5d5e4] scroll-mt-20 ${className}`}
+      className={`w-full bg-[#f8f9fd] py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-y border-[#d5d5e4] scroll-mt-20 ${className}`}
     >
       {/* Scoped CSS animations for flowing broken line and traveling arrow */}
       <style dangerouslySetInnerHTML={{
@@ -145,7 +145,7 @@ export function HowItWorks({
 
       <div className="max-w-6xl mx-auto">
         {/* Centered Section Header formatted with website's standard italic editorial heading and scroll reveal */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
           <ScrollHeading margin="-80px">
             <h2
               id="how-it-works-title"

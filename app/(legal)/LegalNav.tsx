@@ -41,7 +41,7 @@ export function LegalNav({ currentPage }: LegalNavProps) {
       animate={isTransitioning ? { opacity: 0.4, y: -6 } : { opacity: 1, y: 0 }}
       transition={{ duration: 0.22, ease: [0.21, 0.47, 0.32, 0.98] }}
       aria-label="Legal navigation"
-      className="mb-4 flex flex-wrap items-center gap-x-2 font-mono text-xs font-semibold uppercase tracking-[0.2em]"
+      className="mb-4 flex flex-wrap items-center gap-x-2 font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-wider sm:tracking-[0.2em]"
     >
       {/* Inactive on legal pages: Black, hoverable to blue */}
       <Link

@@ -26,70 +26,74 @@ export default function LandingPage() {
   return (
     <>
       <Navbar onOpenPilotModal={() => openWorkWithUs("general")} />
-      <main className="mx-auto max-w-[1600px] px-2.5 pt-2.5 sm:px-4 sm:pt-4">
+      <main className="w-full overflow-x-clip">
         <Hero />
 
-        <HowItWorks className="my-10 sm:my-14 rounded-3xl" />
+        <div className="mx-auto max-w-[1600px] px-3.5 sm:px-6 lg:px-8">
+          <HowItWorks className="my-8 sm:my-14 rounded-2xl sm:rounded-3xl" />
 
-        <InteractiveShowroom />
+          <InteractiveShowroom />
 
-        <section id="demo-preview" className="editorial-section scroll-mt-8">
-          <div className="grid items-center gap-6 md:grid-cols-[minmax(0,1.2fr)_minmax(16rem,0.8fr)] md:gap-12">
-            <ScrollReveal delay={0.05} margin="-80px">
-              <div
-                className="group relative overflow-hidden rounded-md border border-[#2b2b52] bg-[#15152f] shadow-lg transition-all duration-300 hover:border-[#0038ff]/70"
-              >
-                {/* Viewfinder corner brackets */}
-                <span className="viewfinder-bracket viewfinder-top-left text-white/50" />
-                <span className="viewfinder-bracket viewfinder-top-right text-white/50" />
-                <span className="viewfinder-bracket viewfinder-bottom-left text-white/50" />
-                <span className="viewfinder-bracket viewfinder-bottom-right text-white/50" />
+          <section id="demo-preview" className="editorial-section scroll-mt-8">
+            <div className="grid items-center gap-6 md:grid-cols-[minmax(0,1.2fr)_minmax(16rem,0.8fr)] md:gap-12">
+              <ScrollReveal delay={0.05} margin="-80px">
+                <div
+                  className="group relative overflow-hidden rounded-md border border-[#2b2b52] bg-[#15152f] shadow-lg transition-all duration-300 hover:border-[#0038ff]/70"
+                >
+                  {/* Viewfinder corner brackets */}
+                  <span className="viewfinder-bracket viewfinder-top-left text-white/50" />
+                  <span className="viewfinder-bracket viewfinder-top-right text-white/50" />
+                  <span className="viewfinder-bracket viewfinder-bottom-left text-white/50" />
+                  <span className="viewfinder-bracket viewfinder-bottom-right text-white/50" />
 
-                <DemoPreviewVideo />
+                  <DemoPreviewVideo />
+                </div>
+              </ScrollReveal>
+
+              <div className="space-y-4">
+                <ScrollHeading margin="-80px" className="w-full">
+                  <h2 className="w-full text-balance font-black italic uppercase tracking-[-0.045em] text-3xl sm:text-5xl lg:text-6xl">
+                    See it in motion.
+                  </h2>
+                </ScrollHeading>
+
+                <ScrollText delay={0.1} margin="-80px">
+                  <p className="text-sm sm:text-base font-bold tracking-[-0.025em] text-[#0038ff]">
+                    Preview a look using your camera or an uploaded photo.
+                  </p>
+                </ScrollText>
+
+                <ScrollText delay={0.16} margin="-80px">
+                  <p className="text-lg sm:text-2xl font-bold tracking-[-0.035em] text-[#101b43]">
+                    Choose a preview, answer the questionnaire, then see one look for 15 seconds.
+                  </p>
+                </ScrollText>
+
+                <ScrollText delay={0.22} margin="-80px">
+                  <p className="text-sm sm:text-base font-medium tracking-[-0.02em] text-[#34436f]">
+                    Sign in with Google for one try per hour per verified account. Audio stays off, and you can stop anytime.
+                  </p>
+                </ScrollText>
+
+                <ScrollText delay={0.28} margin="-80px">
+                  <p className="border-t border-[#d5d5e4] pt-4 text-xs sm:text-sm font-bold tracking-[-0.02em] text-[#101b43]">
+                    Visual guide only. Check the seller’s size chart for fit.
+                  </p>
+                </ScrollText>
               </div>
-            </ScrollReveal>
-
-            <div className="space-y-4">
-              <ScrollHeading margin="-80px">
-                <h2 className="text-balance font-black italic uppercase tracking-[-0.045em] text-4xl sm:text-6xl">
-                  See it in motion.
-                </h2>
-              </ScrollHeading>
-
-              <ScrollText delay={0.1} margin="-80px">
-                <p className="text-base font-bold tracking-[-0.025em] text-[#0038ff]">
-                  Preview a look using your camera or an uploaded photo.
-                </p>
-              </ScrollText>
-
-              <ScrollText delay={0.16} margin="-80px">
-                <p className="text-xl sm:text-2xl font-bold tracking-[-0.035em] text-[#101b43]">
-                  Choose a preview, answer the questionnaire, then see one look for 15 seconds.
-                </p>
-              </ScrollText>
-
-              <ScrollText delay={0.22} margin="-80px">
-                <p className="text-base font-medium tracking-[-0.02em] text-[#34436f]">
-                  Sign in with Google for one try per hour per verified account. Audio stays off, and you can stop anytime.
-                </p>
-              </ScrollText>
-
-              <ScrollText delay={0.28} margin="-80px">
-                <p className="border-t border-[#d5d5e4] pt-4 text-sm font-bold tracking-[-0.02em] text-[#101b43]">
-                  Visual guide only. Check the seller’s size chart for fit.
-                </p>
-              </ScrollText>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <MinimalPricing onOpenPilotModal={openWorkWithUs} />
+          <MinimalPricing onOpenPilotModal={openWorkWithUs} />
+        </div>
 
         <BrowserScenario onOpenPilotModal={() => openWorkWithUs("general")} />
 
-        <SocialShowcase />
+        <div className="mx-auto max-w-[1600px] px-3.5 sm:px-6 lg:px-8">
+          <SocialShowcase />
 
-        <FaqAccordion />
+          <FaqAccordion />
+        </div>
       </main>
 
       <SiteFooter onOpenPilotModal={() => openWorkWithUs("general")} />

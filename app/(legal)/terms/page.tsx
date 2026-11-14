@@ -5,7 +5,6 @@ import { LegalNav } from "../LegalNav";
 export const metadata: Metadata = {
   title: "Terms",
   description: "Terms for using the FitCheck website and style preview.",
-  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {
@@ -13,7 +12,7 @@ export default function TermsPage() {
     <main className="editorial-section pb-24 text-[#101b43]">
       <div className="max-w-4xl">
         <LegalNav currentPage="terms" />
-        <h1 className="text-balance font-black italic uppercase tracking-[-0.045em] text-4xl sm:text-6xl">Terms of Use</h1>
+        <h1 className="w-full text-balance font-black italic uppercase tracking-[-0.045em] text-3xl sm:text-5xl lg:text-6xl">Terms of Use</h1>
         <p className="mt-4 text-sm text-[#62627a]">Last updated: November 11, 2026</p>
         <div className="mt-10 divide-y divide-[#d5d5e4] border-y border-[#d5d5e4] leading-relaxed text-[#34436f]">
           <section className="py-7"><h2 className="text-2xl font-bold tracking-tight text-[#101b43]">About the preview</h2><p className="mt-3">FitCheck provides a visual style preview for fashion discovery. Results are approximate, may be incomplete or inaccurate, and do not show garment sizing, construction, or fabric behavior. Check the seller’s size chart and product details before buying.</p></section>

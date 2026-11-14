@@ -10,8 +10,8 @@ import { GarmentCutoutError, prepareGarmentCutout, removeGarmentBackground } fro
 
 const GARMENTS = {
   bomber: { name: "Floating Brand Bomber", displayName: ["Floating Brand", "Bomber"], image: "/floating-jacket.webp", prompt: "Dress the person in the cobalt technical bomber jacket from the reference. Preserve its ribbed cuffs and hem, sleeve pocket, zipper, face, body shape, pose and background." },
-  shirt: { name: "Embroidered Long-Sleeve Shirt", displayName: ["Embroidered", "Shirt"], image: "/floating-shirt.png", prompt: "Dress the person in the ivory long-sleeve button-up shirt with intricate cobalt and navy embroidery and chest pockets shown in the reference. Preserve its pattern, the person's face, body shape, pose and background." },
-  barong: { name: "Midnight Barong", displayName: ["Midnight", "Barong"], image: "/floating-barong.png", prompt: "Dress the person in the modern ivory embroidered Filipino barong from the reference. Preserve its embroidery, the person's face, body shape, pose and background." },
+  shirt: { name: "Embroidered Long-Sleeve Shirt", displayName: ["Embroidered", "Shirt"], image: "/floating-shirt.webp", prompt: "Dress the person in the ivory long-sleeve button-up shirt with intricate cobalt and navy embroidery and chest pockets shown in the reference. Preserve its pattern, the person's face, body shape, pose and background." },
+  barong: { name: "Midnight Barong", displayName: ["Midnight", "Barong"], image: "/floating-barong.webp", prompt: "Dress the person in the modern ivory embroidered Filipino barong from the reference. Preserve its embroidery, the person's face, body shape, pose and background." },
 } as const;
 type BuiltInGarment = keyof typeof GARMENTS;
 type Garment = BuiltInGarment | "custom";
@@ -483,10 +483,10 @@ export function LiveTryOn() {
         {stage === "survey" && (
           <Dialog open onOpenChange={(open) => { if (!open) setStage("choose"); }}>
             <DialogContent
-              style={{ display: "flex", flexDirection: "column", maxHeight: "calc(100dvh - 2rem)", overflow: "hidden" }}
-              className="w-[calc(100%-2rem)] gap-4 rounded-none border border-[#a3acd2] bg-white p-5 text-[#101b43] sm:max-w-2xl sm:p-8"
+              style={{ display: "flex", flexDirection: "column", maxHeight: "calc(100dvh - 2rem)" }}
+              className="w-[calc(100%-2rem)] max-h-[calc(100dvh-2rem)] gap-4 overflow-y-auto rounded-none border border-[#a3acd2] bg-white p-5 text-[#101b43] sm:max-w-2xl sm:p-8"
             >
-              <DialogTitle className="pr-8 text-2xl font-bold tracking-tight">FitCheck Market Validation Survey</DialogTitle>
+              <DialogTitle className="pr-8 text-xl sm:text-2xl font-bold tracking-tight">FitCheck Market Validation Survey</DialogTitle>
               <DialogDescription className="text-sm text-[#51516c]">One quick question at a time. Your answers are saved to FitCheck’s private survey Sheet after Google sign-in.</DialogDescription>
               <div role="progressbar" aria-label="Survey progress" aria-valuemin={1} aria-valuemax={7} aria-valuenow={surveyStep + 1} className="h-1.5 w-full bg-[#e8ebf6]">
                 <div className="h-full bg-[#0038ff] transition-[width]" style={{ width: `${((surveyStep + 1) / 7) * 100}%` }} />

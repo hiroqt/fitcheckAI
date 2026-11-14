@@ -18,6 +18,7 @@ const eslintConfig = defineConfig([
     ".codex/**",
     ".gemini/**",
     ".kiro/**",
+    "public/ort/**",
   ]),
 ]);
 
