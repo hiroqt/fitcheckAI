@@ -127,10 +127,11 @@ export const aboutFaqs: Faq[] = [
   },
 ];
 
-export const allFaqs: { audience: string; faqs: Faq[] }[] = [
-  { audience: "About FitCheck", faqs: aboutFaqs },
-  { audience: "For shoppers", faqs: shopperFaqs },
-  { audience: "For brand owners", faqs: brandFaqs },
+// `tab` is the short label shown in the FAQ tabs; `audience` is the full group name.
+export const allFaqs: { audience: string; tab: string; faqs: Faq[] }[] = [
+  { audience: "About FitCheck", tab: "About", faqs: aboutFaqs },
+  { audience: "For shoppers", tab: "Shoppers", faqs: shopperFaqs },
+  { audience: "For brand owners", tab: "Brands", faqs: brandFaqs },
 ];
 
 /** Flattens a JSX answer to plain text for structured data and /llms.txt. */
