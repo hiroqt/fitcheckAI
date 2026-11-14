@@ -99,6 +99,7 @@ export default function LandingPage() {
       <SiteFooter onOpenPilotModal={() => openWorkWithUs("general")} />
 
       <WorkWithUsModal
+        key={selectedPlan ?? "general"}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         selectedPlan={selectedPlan}
