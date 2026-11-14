@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { Geist, Geist_Mono, Barlow_Condensed } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "./components/SmoothScroll";
 import {
@@ -16,15 +16,12 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+// Mono is only used below the fold (HowItWorks, footer, legal nav), so don't let its
+// preload compete with the hero image for bandwidth.
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const editorialDisplay = Barlow_Condensed({
-  variable: "--font-campaign",
-  subsets: ["latin"],
-  weight: "900",
+  preload: false,
 });
 
 const ogImage = {
@@ -126,7 +123,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${editorialDisplay.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body className="min-h-screen overflow-x-clip bg-[#f7f8ff] font-sans text-[#101b43] antialiased selection:bg-[#0038ff] selection:text-white">
         <script

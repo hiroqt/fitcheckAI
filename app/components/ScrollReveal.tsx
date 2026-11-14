@@ -164,6 +164,8 @@ export interface ScrollStaggerProps {
   delayChildren?: number;
   once?: boolean;
   margin?: string;
+  /** Render as a list so ScrollStaggerItem as="li" children are valid markup. */
+  as?: "div" | "ul" | "ol";
 }
 
 const staggerContainerVariants: Variants = {
@@ -214,6 +216,7 @@ export function ScrollStagger({
   delayChildren = 0.05,
   once = false,
   margin = "-80px",
+  as = "div",
 }: ScrollStaggerProps) {
   const reducedMotion = useSyncExternalStore(
     subscribeReducedMotion,
@@ -222,11 +225,13 @@ export function ScrollStagger({
   );
 
   if (reducedMotion) {
-    return <div className={className}>{children}</div>;
+    const Tag = as;
+    return <Tag className={className}>{children}</Tag>;
   }
 
+  const MotionTag = motion[as];
   return (
-    <motion.div
+    <MotionTag
       variants={staggerContainerVariants}
       custom={{ stagger, delayChildren }}
       initial="hidden"
@@ -235,7 +240,7 @@ export function ScrollStagger({
       className={`will-change-[transform,opacity] ${className}`}
     >
       {children}
-    </motion.div>
+    </MotionTag>
   );
 }
 
@@ -247,13 +252,17 @@ export function ScrollStagger({
 export function ScrollStaggerItem({
   children,
   className = "",
+  as = "div",
 }: {
   children: React.ReactNode;
   className?: string;
+  /** Use "li" when the parent ScrollStagger renders as "ul" / "ol". */
+  as?: "div" | "li";
 }) {
+  const MotionTag = motion[as];
   return (
-    <motion.div variants={staggerItemVariants} className={`will-change-[transform,opacity] ${className}`}>
+    <MotionTag variants={staggerItemVariants} className={`will-change-[transform,opacity] ${className}`}>
       {children}
-    </motion.div>
+    </MotionTag>
   );
 }
