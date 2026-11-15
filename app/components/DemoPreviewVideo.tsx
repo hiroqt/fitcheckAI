@@ -15,7 +15,7 @@ export function DemoPreviewVideo() {
     let isLoaded = false;
     const play = () => {
       if (!isLoaded) {
-        video.src = "/demo-preview.mp4";
+        video.src = "/fitcheck-try.mp4";
         video.load();
         isLoaded = true;
       }
@@ -63,7 +63,7 @@ export function DemoPreviewVideo() {
       muted
       playsInline
       preload="none"
-      poster="/demo-preview-poster.jpg"
+      poster="/fitcheck-try-poster.jpg"
       className="block aspect-[53/40] w-full bg-[#101b43] object-cover"
     />
   );
