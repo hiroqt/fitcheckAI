@@ -5,7 +5,6 @@ import { LegalNav } from "../LegalNav";
 export const metadata: Metadata = {
   title: "Terms",
   description: "Terms for using the FitCheck website and style preview.",
-  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

@@ -1,0 +1,214 @@
+{
+  "info": {
+    "_postman_id": "f8a9e2d1-4b3c-4d5e-8f9a-0b1c2d3e4f5a",
+    "name": "FitCheck AI — Message Us inquiry API",
+    "description": "POST /api/inquiry forwards to FitCheck Ops. Every request needs consent: true and a Turnstile token (action \"inquiry\"); use Cloudflare testing keys against a staging Ops deployment only. See docs/WORK_WITH_US_API.md.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "turnstileToken",
+      "value": "XXXX.DUMMY.TOKEN.XXXX",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. General inquiry (POST /api/inquiry)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"general\",\n  \"message\": \"We would like to learn how FitCheck works for our boutique.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Stored in Ops with interest \"No plan selected\"."
+      }
+    },
+    {
+      "name": "2. Pricing & availability with plan (POST /api/inquiry)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"pricing\",\n  \"selectedPlan\": \"1799\",\n  \"storeUrl\": \"@aurastudio\",\n  \"garmentStyles\": \"Linen shirts, barong\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Plan 1799 → Growth."
+      }
+    },
+    {
+      "name": "3. Request a demo (POST /api/inquiry)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"demo\",\n  \"preferredDate\": \"Next Tuesday 2:00 PM PHT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Preferred time is added to the stored message."
+      }
+    },
+    {
+      "name": "4. Validation error (expected 400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"\",\n  \"consent\": false,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"general\",\n  \"message\": \"\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Missing contact name, consent and message."
+      }
+    },
+    {
+      "name": "5. Honeypot (expected 200, nothing stored)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"general\",\n  \"message\": \"Hello there\",\n  \"hp_company_website\": \"https://spam.example\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Returns the thank-you without an inquiryId."
+      }
+    },
+    {
+      "name": "6. Idempotent resend (send twice → same inquiryId)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brandName\": \"Aura Studio Manila\",\n  \"contactEmail\": \"hello@aurastudio.example\",\n  \"contactPerson\": \"Mika Santos\",\n  \"consent\": true,\n  \"turnstileToken\": \"{{turnstileToken}}\",\n  \"inquiryType\": \"general\",\n  \"message\": \"Hello there\",\n  \"submissionId\": \"postman-0001-resend-check\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inquiry",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inquiry"
+          ]
+        },
+        "description": "Needs a fresh Turnstile token each time; the second send returns the first inquiryId."
+      }
+    }
+  ]
+}
