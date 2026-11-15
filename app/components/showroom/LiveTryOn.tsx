@@ -7,6 +7,8 @@ import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FormEv
 import type { createDecartClient } from "@decartai/sdk";
 import { SocialLinks } from "../SocialLinks";
 import { GarmentCutoutError, prepareGarmentCutout, removeGarmentBackground } from "@/lib/garment-cutout";
+import { stepProblem, toSubmission, type SurveyAnswers, type SurveyDefinition } from "@/lib/surveyDefinition";
+import { SurveyQuestionField } from "./SurveyQuestionField";
 
 const GARMENTS = {
   bomber: { name: "Floating Brand Bomber", displayName: ["Floating Brand", "Bomber"], image: "/floating-jacket.webp", prompt: "Dress the person in the cobalt technical bomber jacket from the reference. Preserve its ribbed cuffs and hem, sleeve pocket, zipper, face, body shape, pose and background." },
@@ -17,21 +19,7 @@ type BuiltInGarment = keyof typeof GARMENTS;
 type Garment = BuiltInGarment | "custom";
 type Stage = "choose" | "survey" | "sign-in" | "upload" | "connecting" | "live" | "finished" | "done";
 type PreviewMode = "live" | "photo";
-type Survey = {
-  name: string;
-  contactEmail: string;
-  monthlySpend: string;
-  biggestChallenge: string;
-  biggestChallengeOther: string;
-  skippedPurchase: string;
-  usefulness: string;
-  willingnessToPay: string;
-  purchaseLikelihood: string;
-};
-const EMPTY_SURVEY: Survey = {
-  name: "", contactEmail: "", monthlySpend: "", biggestChallenge: "", biggestChallengeOther: "",
-  skippedPurchase: "", usefulness: "", willingnessToPay: "", purchaseLikelihood: "",
-};
+const EMPTY_SURVEY: SurveyAnswers = { answers: {}, other: {} };
 type GoogleCredential = { credential: string };
 type GoogleIdApi = { initialize: (options: { client_id: string; callback: (response: GoogleCredential) => void }) => void; renderButton: (element: HTMLElement, options: Record<string, string>) => void };
 declare global { interface Window { google?: { accounts: { id: GoogleIdApi } } } }
@@ -41,10 +29,8 @@ const SESSION_SECONDS = 15;
 const CONNECTION_TIMEOUT_MS = 12_000;
 const MAX_PHOTO_BYTES = 10 * 1024 * 1024;
 const PHOTO_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
-const FIELD = "min-h-11 w-full border border-[#a3acd2] bg-white px-3 text-[#101b43] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0038ff]";
-const CHALLENGES = ["Unsure whether the size will fit", "Unsure how the clothing will look on me", "Product looks different from the photos", "Difficult to compare styles", "Other"];
 type RealtimeSession = Awaited<ReturnType<ReturnType<typeof createDecartClient>["realtime"]["connect"]>>;
-type Availability = { surveyAvailable: boolean; previewAvailable: boolean; googleClientId?: string };
+type Availability = { surveyAvailable: boolean; previewAvailable: boolean; googleClientId?: string; survey?: SurveyDefinition };
 type Attempt = {
   abort: AbortController;
   credential: string;
@@ -120,8 +106,9 @@ export function LiveTryOn() {
   const [customGarment, setCustomGarment] = useState<{ file: File; url: string } | null>(null);
   const [cuttingOut, setCuttingOut] = useState(false);
   const [photo, setPhoto] = useState<{ url: string } | null>(null);
-  const [survey, setSurvey] = useState<Survey | null>(null);
-  const [surveyDraft, setSurveyDraft] = useState<Survey>(EMPTY_SURVEY);
+  const [survey, setSurvey] = useState<ReturnType<typeof toSubmission> | null>(null);
+  const [surveyDraft, setSurveyDraft] = useState<SurveyAnswers>(EMPTY_SURVEY);
+  const [stepError, setStepError] = useState("");
   const [surveyStep, setSurveyStep] = useState(0);
   const [credential, setCredential] = useState("");
   const [message, setMessage] = useState("");
@@ -202,7 +189,7 @@ export function LiveTryOn() {
     setSaving(true);
     setMessage("");
     try {
-      const response = await post({ action: "survey", credential: token, survey });
+      const response = await post({ action: "survey", credential: token, ...survey });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "The survey could not be saved.");
       setCredential(token);
@@ -236,24 +223,26 @@ export function LiveTryOn() {
 
   function submitSurvey(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (surveyStep < 6) {
+    const definition = availability?.survey;
+    if (!definition) return;
+    const question = definition.questions[surveyStep];
+    const problem = question ? stepProblem(question, surveyDraft) : "";
+    setStepError(problem);
+    if (problem) return;
+    if (surveyStep < definition.questions.length - 1) {
       setSurveyStep((step) => step + 1);
       return;
     }
-    setSurvey({ ...surveyDraft, name: surveyDraft.name.trim(), contactEmail: surveyDraft.contactEmail.trim(), biggestChallengeOther: surveyDraft.biggestChallengeOther.trim() });
+    setSurvey(toSubmission(definition, surveyDraft));
     setMessage("");
     setSignInLoading(Boolean(availability?.googleClientId));
     setStage("sign-in");
   }
 
-  function updateSurveyDraft(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    const { name, value } = event.currentTarget;
-    setSurveyDraft((draft) => ({ ...draft, [name]: value, ...(name === "biggestChallenge" && value !== "Other" ? { biggestChallengeOther: "" } : {}) }));
-  }
-
   function startSurvey(nextMode: PreviewMode) {
     setMode(nextMode);
     setSurveyDraft(EMPTY_SURVEY);
+    setStepError("");
     setSurveyStep(0);
     setMessage("");
     setStage("survey");
@@ -406,7 +395,10 @@ export function LiveTryOn() {
     }
   }
 
-  const surveyUnavailable = availability !== null && !availability.surveyAvailable;
+  const surveyUnavailable = availability !== null && (!availability.surveyAvailable || !availability.survey);
+  const definition = availability?.survey;
+  const stepCount = Math.max(1, definition?.questions.length ?? 1);
+  const lastStep = surveyStep >= stepCount - 1;
   const previewUnavailable = availability !== null && !availability.previewAvailable;
   const previewLoading = stage === "connecting" ? connectionLabel : stage === "live" && buffering ? "Buffering your preview…" : "";
 
@@ -486,65 +478,26 @@ export function LiveTryOn() {
               style={{ display: "flex", flexDirection: "column", maxHeight: "calc(100dvh - 2rem)" }}
               className="w-[calc(100%-2rem)] max-h-[calc(100dvh-2rem)] gap-4 overflow-y-auto rounded-none border border-[#a3acd2] bg-white p-5 text-[#101b43] sm:max-w-2xl sm:p-8"
             >
-              <DialogTitle className="pr-8 text-xl sm:text-2xl font-bold tracking-tight">FitCheck Market Validation Survey</DialogTitle>
-              <DialogDescription className="text-sm text-[#51516c]">One quick question at a time. Your answers are saved to FitCheck’s private survey Sheet after Google sign-in.</DialogDescription>
-              <div role="progressbar" aria-label="Survey progress" aria-valuemin={1} aria-valuemax={7} aria-valuenow={surveyStep + 1} className="h-1.5 w-full bg-[#e8ebf6]">
-                <div className="h-full bg-[#0038ff] transition-[width]" style={{ width: `${((surveyStep + 1) / 7) * 100}%` }} />
+              <DialogTitle className="pr-8 text-xl sm:text-2xl font-bold tracking-tight">{definition?.title ?? "FitCheck Market Validation Survey"}</DialogTitle>
+              <DialogDescription className="text-sm text-[#51516c]">{definition?.intro || "One quick question at a time. Your answers are saved privately to FitCheck after Google sign-in."}</DialogDescription>
+              <div role="progressbar" aria-label="Survey progress" aria-valuemin={1} aria-valuemax={stepCount} aria-valuenow={surveyStep + 1} className="h-1.5 w-full bg-[#e8ebf6]">
+                <div className="h-full bg-[#0038ff] transition-[width]" style={{ width: `${((surveyStep + 1) / stepCount) * 100}%` }} />
               </div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#51516c]">Step {surveyStep + 1} of 7</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#51516c]">Step {surveyStep + 1} of {stepCount}</p>
               <form onSubmit={submitSurvey} className="flex min-h-0 flex-col gap-5">
                 <div className="min-h-[10rem] flex-1 space-y-4">
-                  {surveyStep === 0 && <>
-                    <label className="block text-sm font-semibold">Name <span aria-hidden="true">*</span>
-                      <input name="name" autoComplete="name" value={surveyDraft.name} onChange={updateSurveyDraft} required maxLength={120} className={`mt-1 ${FIELD}`} />
-                    </label>
-                    <label className="block text-sm font-semibold">Email Address (Optional)
-                      <input name="contactEmail" type="email" autoComplete="email" value={surveyDraft.contactEmail} onChange={updateSurveyDraft} className={`mt-1 ${FIELD}`} />
-                    </label>
-                  </>}
-                  {surveyStep === 1 && <label className="block text-sm font-semibold">How much do you typically spend on clothes online per month?
-                    <select name="monthlySpend" value={surveyDraft.monthlySpend} onChange={updateSurveyDraft} required className={`mt-1 ${FIELD}`}>
-                      <option value="" disabled>Choose an answer</option>
-                      {["Below ₱500", "₱500–₱999", "₱1,000–₱1,999", "₱2,000–₱3,999", "₱4,000 or more"].map((value) => <option key={value}>{value}</option>)}
-                    </select>
-                  </label>}
-                  {surveyStep === 2 && <>
-                    <label className="block text-sm font-semibold">What is your biggest challenge when buying clothes online?
-                      <select name="biggestChallenge" value={surveyDraft.biggestChallenge} onChange={updateSurveyDraft} required className={`mt-1 ${FIELD}`}>
-                        <option value="" disabled>Choose an answer</option>{CHALLENGES.map((value) => <option key={value}>{value}</option>)}
-                      </select>
-                    </label>
-                    {surveyDraft.biggestChallenge === "Other" && <label className="block text-sm font-semibold">What other challenge do you face?
-                      <input name="biggestChallengeOther" value={surveyDraft.biggestChallengeOther} onChange={updateSurveyDraft} required maxLength={300} className={`mt-1 ${FIELD}`} />
-                    </label>}
-                  </>}
-                  {surveyStep === 3 && <label className="block text-sm font-semibold">Have you ever decided not to buy clothing online because you were unsure how it would look on you?
-                    <select name="skippedPurchase" value={surveyDraft.skippedPurchase} onChange={updateSurveyDraft} required className={`mt-1 ${FIELD}`}>
-                      <option value="" disabled>Choose an answer</option>{["Yes, frequently", "Yes, sometimes", "Rarely", "Never"].map((value) => <option key={value}>{value}</option>)}
-                    </select>
-                  </label>}
-                  {surveyStep === 4 && <label className="block text-sm font-semibold">How useful would a live virtual try-on feature be if it let you preview clothes on yourself using your camera?
-                    <select name="usefulness" value={surveyDraft.usefulness} onChange={updateSurveyDraft} required className={`mt-1 ${FIELD}`}>
-                      <option value="" disabled>Choose a rating</option>{["1 — Not useful", "2", "3", "4", "5 — Extremely useful"].map((value, index) => <option key={value} value={String(index + 1)}>{value}</option>)}
-                    </select>
-                  </label>}
-                  {surveyStep === 5 && <label className="block text-sm font-semibold">Would you pay for a 30-second virtual clothing preview?
-                    <select name="willingnessToPay" value={surveyDraft.willingnessToPay} onChange={updateSurveyDraft} required className={`mt-1 ${FIELD}`}>
-                      <option value="" disabled>Choose an answer</option>{["₱1–₱49", "₱50–₱99", "₱100–₱149", "₱150 or more", "No, I would only use it if free"].map((value) => <option key={value}>{value}</option>)}
-                    </select>
-                  </label>}
-                  {surveyStep === 6 && <label className="block text-sm font-semibold">Would a virtual clothing preview make you more likely to purchase from an online clothing brand?
-                    <select name="purchaseLikelihood" value={surveyDraft.purchaseLikelihood} onChange={updateSurveyDraft} required className={`mt-1 ${FIELD}`}>
-                      <option value="" disabled>Choose an answer</option>{["Much more likely", "Somewhat more likely", "No difference", "Less likely"].map((value) => <option key={value}>{value}</option>)}
-                    </select>
-                  </label>}
+                  {availability === null && <p role="status" className="flex items-center gap-2 text-sm text-[#51516c]"><LoadingSpinner />Loading the questions…</p>}
+                  {definition?.questions[surveyStep] && (
+                    <SurveyQuestionField key={definition.questions[surveyStep].id} question={definition.questions[surveyStep]} value={surveyDraft} onChange={(next) => { setSurveyDraft(next); setStepError(""); }} />
+                  )}
+                  {stepError && <p role="alert" className="text-sm text-[#b42318]">{stepError}</p>}
                 </div>
-                {surveyUnavailable && <p role="status" className="text-sm text-[#51516c]">The survey Sheet connection is not configured yet, so answers cannot be submitted.</p>}
+                {surveyUnavailable && <p role="status" className="text-sm text-[#51516c]">The survey isn’t available right now, so answers cannot be submitted.</p>}
                 <div className="flex items-center justify-between gap-3">
                   <button type="button" onClick={() => surveyStep === 0 ? setStage("choose") : setSurveyStep((step) => step - 1)} className="min-h-11 underline underline-offset-4">{surveyStep === 0 ? "Back to preview" : "Back"}</button>
-                  <button type="submit" disabled={saving || (surveyStep === 6 && (availability === null || surveyUnavailable))} className="editorial-action disabled:cursor-not-allowed disabled:opacity-60">
-                    {surveyStep === 6 && availability === null && <LoadingSpinner />}
-                    {surveyStep < 6 ? "Continue" : availability === null ? "Checking setup…" : surveyUnavailable ? "Survey unavailable" : "Continue to Google sign-in"}
+                  <button type="submit" disabled={saving || !definition || (lastStep && (availability === null || surveyUnavailable))} className="editorial-action disabled:cursor-not-allowed disabled:opacity-60">
+                    {availability === null && <LoadingSpinner />}
+                    {!lastStep ? "Continue" : availability === null ? "Checking setup…" : surveyUnavailable ? "Survey unavailable" : "Continue to Google sign-in"}
                   </button>
                 </div>
               </form>
@@ -555,7 +508,7 @@ export function LiveTryOn() {
         {stage === "sign-in" && (
           <div className="space-y-4">
             <h3 ref={status} tabIndex={-1} className="text-2xl font-bold tracking-tight">Save your answers</h3>
-            <p className="text-sm text-[#51516c]">Sign in with Google. FitCheck uses your verified Google email to allow one try-on per hour; it is not added to the survey response sheet.</p>
+            <p className="text-sm text-[#51516c]">Sign in with Google. FitCheck uses your verified Google email to allow one try-on per hour; it is not stored with your answers.</p>
             {availability?.googleClientId && <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" onReady={initializeGoogleSignIn}
               onError={() => { setSignInLoading(false); setMessage("Google sign-in is unavailable. Reload the page and try again."); }} />}
             <div ref={signInButton} aria-label="Continue with Google" hidden={saving} />
