@@ -9,8 +9,8 @@ import {
   SITE_NAME,
   SITE_TITLE,
   SITE_URL,
-  SOCIAL_PROFILES,
 } from "./lib/site";
+import { jsonLd, siteSchema } from "./lib/structured-data";
 const geistSans = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -91,30 +91,6 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      url: SITE_URL,
-      logo: `${SITE_URL}/icon.png`,
-      email: "fitcheckai0@gmail.com",
-      sameAs: SOCIAL_PROFILES,
-    },
-    {
-      "@type": "WebSite",
-      "@id": `${SITE_URL}/#website`,
-      name: SITE_NAME,
-      url: SITE_URL,
-      description: SITE_DESCRIPTION,
-      inLanguage: "en",
-      publisher: { "@id": `${SITE_URL}/#organization` },
-    },
-  ],
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -128,8 +104,7 @@ export default function RootLayout({
       <body className="min-h-screen overflow-x-clip bg-[#f7f8ff] font-sans text-[#101b43] antialiased selection:bg-[#0038ff] selection:text-white">
         <script
           type="application/ld+json"
-          // JSON.stringify output is static and server-controlled; escape "<" defensively.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+          dangerouslySetInnerHTML={jsonLd(siteSchema())}
         />
         <SmoothScroll>
           {children}

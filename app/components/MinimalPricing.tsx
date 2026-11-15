@@ -4,42 +4,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { ScrollHeading, ScrollText, ScrollStagger, ScrollStaggerItem } from "./ScrollReveal";
 import { StorefrontShowcase } from "./StorefrontShowcase";
 import { getPilotMailto } from "@/app/lib/pilotEmail";
-
-const packs = [
-  {
-    name: "Starter",
-    price: "₱499",
-    detail: "5 previews · up to 30 seconds each",
-    description: "A simple way to try FitCheck with one collection.",
-    features: ["One-time prepaid pack", "About ₱100 per preview", "No automatic top-ups"],
-    selection: "499",
-  },
-  {
-    name: "Growth",
-    price: "₱1,799",
-    detail: "20 previews · up to 30 seconds each",
-    description: "For brands handling regular preview requests.",
-    features: ["One-time prepaid pack", "About ₱90 per preview", "Around 10% less per preview than Starter", "No automatic top-ups"],
-    selection: "1799",
-    recommended: true,
-  },
-  {
-    name: "Larger business",
-    price: "₱4,999 / month",
-    detail: "Plus metered usage",
-    description: "For multi-brand retailers planning a higher-volume pilot.",
-    features: ["Monthly plan with metered usage", "Usage and allowances tailored to the pilot", "Confirm session limits before launch"],
-    selection: "larger_business",
-  },
-  {
-    name: "Custom",
-    price: "Custom",
-    detail: "Quote after discovery",
-    description: "A tailored quote based on preview volume, number of brands, team access, and reporting or integration needs.",
-    features: ["Scope expected preview volume and session limits", "Plan for the number of brands and team access", "Discuss reporting or integration needs", "Final features and usage rates agreed before the pilot"],
-    selection: "enterprise",
-  },
-];
+import { packs } from "@/app/lib/pricing";
 
 export function MinimalPricing({ onOpenPilotModal }: { onOpenPilotModal: (pack?: string) => void }) {
   return (
