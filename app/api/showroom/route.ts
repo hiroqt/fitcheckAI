@@ -1,6 +1,7 @@
 import { OAuth2Client } from "google-auth-library";
 import type { CreateTokenResponse } from "@decartai/sdk";
 import { NextResponse, type NextRequest } from "next/server";
+import { getOpsConfig, signOpsBody } from "@/lib/opsInquiry";
 
 const MODEL = "lucy-vton-3.6";
 const googleAuth = new OAuth2Client();
@@ -27,8 +28,9 @@ type Survey = {
 type Settings = {
   origin: URL;
   clientId: string;
-  scriptUrl: URL;
-  scriptSecret: string;
+  /** FitCheck Ops `/public/v1/tryon` (contract: fitcheck_sys docs/contracts/tryon-api.md). */
+  opsUrl: URL;
+  opsSecret: string;
   surveyAvailable: boolean;
   previewAvailable: boolean;
   apiKey?: string;
@@ -41,25 +43,25 @@ class IntegrationError extends Error {
 
 function getSettings(): Settings | undefined {
   const { FITCHECK_SHOWROOM_ORIGIN: originValue, GOOGLE_OAUTH_CLIENT_ID: clientId,
-    FITCHECK_APPS_SCRIPT_URL: scriptUrlValue, FITCHECK_APPS_SCRIPT_SECRET: scriptSecret,
     DECART_API_KEY: apiKey, DECART_PUBLIC_USE_APPROVED: providerApproved,
     FITCHECK_PUBLIC_TRYON_ENABLED: enabled, FITCHECK_SHOWROOM_LIMIT: limitValue } = process.env;
-  if (!originValue || !clientId || !scriptUrlValue || !scriptSecret) return;
+  if (!originValue || !clientId) return;
 
   try {
+    // Same Ops deployment and signing secret as the inquiry form; only the path differs.
+    const ops = getOpsConfig();
+    if (!ops) return;
+    const opsUrl = new URL("/public/v1/tryon", ops.url);
     const origin = new URL(originValue);
-    const scriptUrl = new URL(scriptUrlValue);
     const localOrigin = ["localhost", "127.0.0.1", "[::1]"].includes(origin.hostname);
     const validOrigin = origin.origin === originValue &&
       ((origin.protocol === "https:") || (localOrigin && origin.protocol === "http:"));
-    const validScript = scriptUrl.protocol === "https:" && scriptUrl.hostname === "script.google.com" &&
-      /^\/macros\/s\/[^/]+\/exec$/.test(scriptUrl.pathname);
     const trialLimit = Number(limitValue);
     const validLimit = Boolean(limitValue && /^\d+$/.test(limitValue) && Number.isSafeInteger(trialLimit) && trialLimit > 0);
-    if (!validOrigin || !validScript) return;
+    if (!validOrigin) return;
     const surveyAvailable = true;
     const previewAvailable = surveyAvailable && Boolean(apiKey?.trim() && validLimit && providerApproved === "true" && enabled === "true");
-    return { origin, clientId, scriptUrl, scriptSecret, surveyAvailable, previewAvailable,
+    return { origin, clientId, opsUrl, opsSecret: ops.secret, surveyAvailable, previewAvailable,
       ...(previewAvailable && apiKey && validLimit ? { apiKey, trialLimit } : {}) };
   } catch {
     return;
@@ -135,19 +137,31 @@ async function verifiedEmail(credential: unknown, clientId: string) {
   }
 }
 
-async function callAppsScript(settings: Settings, action: string, data: object) {
-  const response = await fetch(settings.scriptUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ secret: settings.scriptSecret, action, ...data }),
-    signal: AbortSignal.timeout(12_000),
-    cache: "no-store",
-    redirect: "follow",
-  });
+/**
+ * Signed call to Ops. The body is serialized once and that exact string is signed and sent.
+ * `email` is the verified Google email; Ops stores only a keyed hash of it.
+ */
+async function callOps(settings: Settings, action: string, data: object) {
+  const body = JSON.stringify({ action, ...data });
+  const timestamp = String(Math.floor(Date.now() / 1000));
+  let response: Response;
+  try {
+    response = await fetch(settings.opsUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-ops-timestamp": timestamp, "x-ops-signature": signOpsBody(settings.opsSecret, body, timestamp) },
+      body,
+      signal: AbortSignal.timeout(8_000),
+      cache: "no-store",
+      redirect: "error",
+    });
+  } catch {
+    throw new IntegrationError("google_service_unavailable", 503);
+  }
   let result: Record<string, unknown>;
   try { result = await response.json() as Record<string, unknown>; }
   catch { throw new IntegrationError("google_service_unavailable", 503); }
   if (!response.ok || result.ok !== true) {
+    // Business codes come back as `{ ok: false, code }`; auth, validation and rate errors as `{ error }`.
     const code = typeof result.code === "string" ? result.code : "google_service_unavailable";
     const status = code === "already_used" || code === "reservation_expired" || code === "reservation_in_progress" ? 409 :
       code === "trial_limit_reached" ? 429 : code === "survey_required" ? 400 : 503;
@@ -207,27 +221,27 @@ export async function POST(request: NextRequest) {
     if (body.action === "survey" && Object.keys(body).length === 3) {
       const survey = validSurvey(body.survey);
       if (!survey) return json({ error: "Check your questionnaire answers and try again." }, 400);
-      const result = await callAppsScript(settings, "survey", { email, survey });
+      const result = await callOps(settings, "survey", { email, survey });
       return json({ success: true, alreadyUsed: result.alreadyUsed === true, previewAvailable: settings.previewAvailable });
     }
 
     const lifecycle = body.action === "commit" || body.action === "release";
     if (lifecycle && Object.keys(body).length === 3 && typeof body.reservationId === "string" && /^[a-f0-9-]{36}$/.test(body.reservationId)) {
-      const result = await callAppsScript(settings, body.action, { email, reservationId: body.reservationId });
+      const result = await callOps(settings, body.action, { email, reservationId: body.reservationId });
       return json({ success: true, ...("used" in result ? { used: result.used === true } : {}) });
     }
 
     if (body.action === "start" && Object.keys(body).length === 4 && body.consent === true &&
       typeof body.garment === "string" && GARMENTS.has(body.garment)) {
       if (!settings.previewAvailable || !settings.apiKey) return json({ error: "The preview is not enabled yet." }, 503);
-      const reservation = await callAppsScript(settings, "reserve", { email, trialLimit: settings.trialLimit });
+      const reservation = await callOps(settings, "reserve", { email, trialLimit: settings.trialLimit });
       const reservationId = typeof reservation.reservationId === "string" ? reservation.reservationId : "";
       if (!reservationId) return json({ error: MESSAGES.google_service_unavailable }, 503);
       try {
         const apiKey = await mintToken(settings.apiKey, settings.origin.origin);
         return json({ apiKey, reservationId });
       } catch {
-        await callAppsScript(settings, "release", { email, reservationId }).catch(() => undefined);
+        await callOps(settings, "release", { email, reservationId }).catch(() => undefined);
         return json({ error: "The live preview is temporarily unavailable. Your try has been restored." }, 502);
       }
     }

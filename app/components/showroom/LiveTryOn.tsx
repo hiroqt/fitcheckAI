@@ -487,7 +487,7 @@ export function LiveTryOn() {
               className="w-[calc(100%-2rem)] max-h-[calc(100dvh-2rem)] gap-4 overflow-y-auto rounded-none border border-[#a3acd2] bg-white p-5 text-[#101b43] sm:max-w-2xl sm:p-8"
             >
               <DialogTitle className="pr-8 text-xl sm:text-2xl font-bold tracking-tight">FitCheck Market Validation Survey</DialogTitle>
-              <DialogDescription className="text-sm text-[#51516c]">One quick question at a time. Your answers are saved to FitCheck’s private survey Sheet after Google sign-in.</DialogDescription>
+              <DialogDescription className="text-sm text-[#51516c]">One quick question at a time. Your answers are saved privately to FitCheck after Google sign-in.</DialogDescription>
               <div role="progressbar" aria-label="Survey progress" aria-valuemin={1} aria-valuemax={7} aria-valuenow={surveyStep + 1} className="h-1.5 w-full bg-[#e8ebf6]">
                 <div className="h-full bg-[#0038ff] transition-[width]" style={{ width: `${((surveyStep + 1) / 7) * 100}%` }} />
               </div>
@@ -523,12 +523,12 @@ export function LiveTryOn() {
                       <option value="" disabled>Choose an answer</option>{["Yes, frequently", "Yes, sometimes", "Rarely", "Never"].map((value) => <option key={value}>{value}</option>)}
                     </select>
                   </label>}
-                  {surveyStep === 4 && <label className="block text-sm font-semibold">How useful would a live virtual try-on feature be if it let you preview clothes on yourself using your camera?
+                  {surveyStep === 4 && <label className="block text-sm font-semibold">How useful would a virtual try-on be if it let you preview clothes on yourself using your camera or a photo?
                     <select name="usefulness" value={surveyDraft.usefulness} onChange={updateSurveyDraft} required className={`mt-1 ${FIELD}`}>
                       <option value="" disabled>Choose a rating</option>{["1 — Not useful", "2", "3", "4", "5 — Extremely useful"].map((value, index) => <option key={value} value={String(index + 1)}>{value}</option>)}
                     </select>
                   </label>}
-                  {surveyStep === 5 && <label className="block text-sm font-semibold">Would you pay for a 30-second virtual clothing preview?
+                  {surveyStep === 5 && <label className="block text-sm font-semibold">Would you pay for a 15-second virtual clothing preview?
                     <select name="willingnessToPay" value={surveyDraft.willingnessToPay} onChange={updateSurveyDraft} required className={`mt-1 ${FIELD}`}>
                       <option value="" disabled>Choose an answer</option>{["₱1–₱49", "₱50–₱99", "₱100–₱149", "₱150 or more", "No, I would only use it if free"].map((value) => <option key={value}>{value}</option>)}
                     </select>
@@ -539,7 +539,7 @@ export function LiveTryOn() {
                     </select>
                   </label>}
                 </div>
-                {surveyUnavailable && <p role="status" className="text-sm text-[#51516c]">The survey Sheet connection is not configured yet, so answers cannot be submitted.</p>}
+                {surveyUnavailable && <p role="status" className="text-sm text-[#51516c]">The survey isn’t available right now, so answers cannot be submitted.</p>}
                 <div className="flex items-center justify-between gap-3">
                   <button type="button" onClick={() => surveyStep === 0 ? setStage("choose") : setSurveyStep((step) => step - 1)} className="min-h-11 underline underline-offset-4">{surveyStep === 0 ? "Back to preview" : "Back"}</button>
                   <button type="submit" disabled={saving || (surveyStep === 6 && (availability === null || surveyUnavailable))} className="editorial-action disabled:cursor-not-allowed disabled:opacity-60">
@@ -555,7 +555,7 @@ export function LiveTryOn() {
         {stage === "sign-in" && (
           <div className="space-y-4">
             <h3 ref={status} tabIndex={-1} className="text-2xl font-bold tracking-tight">Save your answers</h3>
-            <p className="text-sm text-[#51516c]">Sign in with Google. FitCheck uses your verified Google email to allow one try-on per hour; it is not added to the survey response sheet.</p>
+            <p className="text-sm text-[#51516c]">Sign in with Google. FitCheck uses your verified Google email to allow one try-on per hour; it is not stored with your answers.</p>
             {availability?.googleClientId && <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" onReady={initializeGoogleSignIn}
               onError={() => { setSignInLoading(false); setMessage("Google sign-in is unavailable. Reload the page and try again."); }} />}
             <div ref={signInButton} aria-label="Continue with Google" hidden={saving} />
