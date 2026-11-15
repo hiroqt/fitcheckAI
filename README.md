@@ -45,16 +45,19 @@ Shared page styles and metadata are in `app/globals.css` and `app/layout.tsx`. P
 
 The questionnaire follows the supplied [FitCheck Market Validation Survey](https://forms.gle/YuevfVHSMdS3B3BX9). It has seven steps. After a visitor chooses live camera or photo, the site collects the questionnaire and Google sign-in before offering the preview flow. Survey answers and try-on access state (survey completion, the one-hour cooldown, reservations and the global cap) are stored in FitCheck Ops through a signed server-to-server call (`POST /public/v1/tryon`; contract in fitcheck_sys `docs/contracts/tryon-api.md`). Ops stores a keyed hash of the verified Google email, never the email itself. The previous Apps Script and Google Sheet are no longer used.
 
+The questions themselves are managed in Ops (Try-on survey → Survey builder). The site reads the published version from `GET /public/v1/tryon/survey` and renders one question per step; a newly published version appears within about a minute. Ops checks every answer against the version the visitor answered.
+
 ### Google and Ops setup
 
 1. In Google Cloud, configure the OAuth consent screen and a Web application OAuth client. Add the exact site origin to its authorized JavaScript origins. Only the client ID is public; never place an OAuth client secret in this app.
 2. Configure the same Ops values the inquiry form uses (see `docs/WORK_WITH_US_API.md`). The survey reuses that deployment and secret and calls `/public/v1/tryon` on the same host. Previews must point at **staging** Ops; production points at production Ops.
-3. Create a local, gitignored `.env` file or configure server environment variables in the hosting provider. Set these four values to make the questionnaire and verified Google sign-in available:
+3. Create a local, gitignored `.env` file or configure server environment variables in the hosting provider. Set these five values to make the questionnaire and verified Google sign-in available:
 
    ```dotenv
    GOOGLE_OAUTH_CLIENT_ID=your-web-client-id.apps.googleusercontent.com
    INTERNAL_SYSTEM_API_URL=https://your-ops-deployment.convex.site/public/v1/inquiries
    WEBSITE_HMAC_SECRET=the-same-secret-configured-in-ops
+   WEBSITE_READ_KEY=the-same-read-key-configured-in-ops
    FITCHECK_SHOWROOM_ORIGIN=https://your-exact-site-origin
    ```
 
@@ -77,7 +80,7 @@ Once enabled, a verified Gmail or Google Workspace account can reserve one 15-se
 
 The live-camera mode streams browser video to Decart. The photo mode accepts JPG, PNG, or WebP up to 10 MB, then repeats the selected still image into a video stream for the same provider model. In either mode, the browser also sends the selected garment image to Decart. FitCheck does not send body media through its own server or store body media or generated video. Stopping the preview clears local media, but cannot remove media already sent to Decart. Provider-side handling depends on the approved terms.
 
-The survey wording is version 2: it describes the camera-or-photo preview and the 15-second length. If you change a question or its choices, update the route validation and the Ops contract together, and bump `SURVEY_VERSION` in Ops so old and new answers stay comparable.
+Survey questions, choices and wording are edited and published in Ops; no website change is needed. The built-in survey (version 2) describes the camera-or-photo preview and the 15-second length.
 
 ## Work With Us email drafts
 
