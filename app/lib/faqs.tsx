@@ -84,7 +84,7 @@ export const brandFaqs: Faq[] = [
     question: "Does contacting you obligate or enroll my business?",
     answer: (
       <p>
-        No. &ldquo;Work with us&rdquo; opens choices for a general inquiry, pricing and availability, or a demo request. Choosing one opens a prepared email draft for you to review and send. There is no automatic commitment or obligation.
+        No. &ldquo;Work with us&rdquo; opens choices for a general inquiry, pricing and availability, or a demo request. Choosing one opens a short inquiry form that you fill in and send yourself, or you can open an email draft instead. Sending an inquiry only starts a conversation; there is no automatic commitment or obligation.
       </p>
     ),
   },
