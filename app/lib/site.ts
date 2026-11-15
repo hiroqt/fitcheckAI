@@ -5,6 +5,11 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://tryfitchec
 
 export const SITE_NAME = "FitCheck";
 
+// Other names people use for the brand (the domain is tryfitcheckai.online).
+export const SITE_ALTERNATE_NAMES = ["FitCheck AI", "Try FitCheck AI"];
+
+export const CONTACT_EMAIL = "fitcheckai0@gmail.com";
+
 export const SITE_TITLE = "FitCheck: Live Virtual Try-On for Fashion Brands";
 
 export const SITE_DESCRIPTION =
